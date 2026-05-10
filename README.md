@@ -376,18 +376,76 @@ The important principle: use them as ingredients, not religion. The cookbook app
 
 ## Installation
 
-Add this repo as a globally-installed Claude Code plugin:
+Product OS is installed as a **Claude Code plugin** — a local directory that Claude Code loads automatically in every session. There is no package manager, no npm install, no binary. You clone the repo once and point Claude Code at it.
+
+**Prerequisite:** [Claude Code](https://claude.ai/code) installed and working.
+
+### Step 1: Clone the repo
+
+Clone it somewhere permanent on your machine. A good location is alongside other tools you keep globally:
+
+```bash
+git clone https://github.com/YOUR_USERNAME/product-dev-os.git ~/tools/product-dev-os
+```
+
+Or wherever you prefer — the path just needs to be stable.
+
+### Step 2: Register it as a global plugin
+
+Open (or create) `~/.claude/settings.json` and add the repo path to the `plugins` array:
 
 ```json
-// ~/.claude/settings.json
 {
   "plugins": [
-    "/path/to/product-dev-os"
+    "/Users/YOUR_USERNAME/tools/product-dev-os"
   ]
 }
 ```
 
-After installation, all `product:*` skills are available in every repo.
+Use the absolute path to where you cloned the repo. If `settings.json` doesn't exist yet, create it with that content.
+
+### Step 3: Verify
+
+Open any project in Claude Code and type:
+
+```
+product:next
+```
+
+Claude should respond with a product status report (or a message that no artifacts exist yet). If it does, the plugin is loaded and all `product:*` skills are available.
+
+### That's it
+
+All 9 skills are now available in every repo you open — no per-project setup required. Artifacts always land in the current project's `docs/` folder, so the plugin stays global while the output stays local.
+
+---
+
+### Local installation (project-scoped)
+
+If you want the skills available only in a specific project rather than globally, create a `.claude/settings.json` file in that project's root instead:
+
+```json
+{
+  "plugins": [
+    "/Users/YOUR_USERNAME/tools/product-dev-os"
+  ]
+}
+```
+
+Claude Code merges project-level and global settings, so both approaches can coexist.
+
+---
+
+### Updating
+
+To get the latest recipes and skills:
+
+```bash
+cd ~/tools/product-dev-os
+git pull
+```
+
+No restart needed — Claude Code reads plugin files on each invocation.
 
 ---
 
