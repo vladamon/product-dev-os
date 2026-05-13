@@ -16,6 +16,7 @@ When the user invokes a `product:*` skill, load and follow the corresponding ski
 | `product:shape` | `skills/shape.md` | Before building — scope a bounded feature slice |
 | `product:spec` | `skills/spec.md` | Before building a screen — write the screen specification |
 | `product:build` | `skills/build.md` | After shaping + speccing — verify build readiness |
+| `product:measure` | `skills/measure.md` | After ship — set up instrumentation before product:reflect needs evidence |
 | `product:reflect` | `skills/reflect.md` | After shipping — retrospective and iterate/kill decision |
 
 ## Plugin Structure
@@ -30,12 +31,12 @@ templates/  ← artifact templates (filled in by skills when producing output)
 
 **New product:**
 ```
-product:discover → product:model → product:journey → product:shape → product:spec → product:build → product:reflect
+product:discover → product:model → product:journey → product:shape → product:spec → product:build → [ship] → product:measure → product:reflect
 ```
 
 **Existing product / revamp:**
 ```
-product:audit → product:model → product:shape → product:spec → product:build → product:reflect
+product:audit → product:model → product:shape → product:spec → product:build → [ship] → product:measure → product:reflect
 ```
 
 **Navigator (any time):**
