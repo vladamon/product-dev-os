@@ -8,6 +8,11 @@ Verify that a shaped feature has everything needed to start building. Run the bu
 
 Read recipes `recipes/14-build-checklist.md` and `recipes/13-technical-architecture.md` for the authoritative process.
 
+## Contract
+Requires: docs/specs/YYYY-MM-DD-[slug]-pitch.md (required), docs/screens/ matching the feature (recommended)
+Produces: docs/specs/YYYY-MM-DD-[slug]-build.md
+Updates: nothing (new date-prefixed file per run)
+
 ## Step 1: Identify the feature
 
 If the user invoked `product:build` without specifying a feature:
@@ -16,11 +21,10 @@ If the user invoked `product:build` without specifying a feature:
 
 If a feature name is passed: search `docs/specs/` for a matching pitch file.
 
-## Step 2: Determine tier
-
-If no tier specified:
-- `docs/product/product-model.md` exists → suggest `pro`
-- Otherwise: ask "Run **lite** (product readiness checklist only) or **pro** (checklist + architecture skeleton + instrumentation plan)?"
+## Step 2: Tier resolution
+1. User specified `lite` or `pro` in invocation → use it, no questions asked
+2. `docs/product/product-model.md` exists → default to `pro`, announce: "Defaulting to pro — product model found. Run lite? (y/n)"
+3. Otherwise → ask: "Run **lite** (readiness checklist only, ~5 min) or **pro** (checklist + architecture skeleton + instrumentation plan, ~15 min)?"
 
 ## Step 3: Read context
 
@@ -111,11 +115,28 @@ Build readiness complete → docs/specs/[date]-[slug]-build.md
 Status: [Ready to build / [N] blockers found]
 
 Blockers to fix: [list if any]
-
-Recommended next step:
-  [If ready]: Start building. Use the done criteria from the pitch as your acceptance test.
-  [If blockers]: Fix the [N] blockers, then re-run `product:build`.
 ```
+
+[If blockers]: Fix the [N] blockers above, then re-run `product:build`.
+
+[If ready]:
+```
+Implementation handoff:
+  All specs are ready. To turn this build doc into an executable plan:
+
+  If using superpowers: invoke `writing-plans` and pass:
+    - This build file:  docs/specs/[date]-[slug]-build.md
+    - The shaped pitch: docs/specs/[date]-[slug]-pitch.md
+    - Screen specs:     docs/screens/[matching screens]
+
+  The architecture skeleton above maps directly to a task decomposition —
+  "New files" → create tasks, "Modified files" → modify tasks.
+
+  Or run `product:measure "[feature]"` first if instrumentation is not yet set up.
+```
+
+## Artifact naming
+Point-in-time artifact — never overwritten. If `docs/specs/` already contains a build file for this slug, create a new date-prefixed file for this run. Both versions are preserved. `product:next` will show all versions grouped by slug, with the newest marked as current.
 
 ## Rules
 
