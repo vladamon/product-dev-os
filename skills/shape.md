@@ -8,6 +8,11 @@ Shape a bounded, buildable feature slice. Define appetite, solution outline, wha
 
 Read recipe `recipes/09-shaped-pitch.md` for the authoritative process.
 
+## Contract
+Requires: docs/product/product-model.md (recommended), docs/product/journeys/ (recommended)
+Produces: docs/specs/YYYY-MM-DD-[slug]-pitch.md
+Updates: nothing (new date-prefixed file per run; see Artifact naming)
+
 ## Step 1: Extract feature name
 
 The feature idea is passed as an argument: `product:shape "reusable connection library"`
@@ -16,12 +21,11 @@ If no argument is given, ask: "What feature or problem are you scoping?"
 
 Derive a kebab-case slug from the feature name for the filename: `connection-library`
 
-## Step 2: Determine tier
-
-If no tier specified:
-- `docs/product/product-model.md` exists → suggest `pro`
-- No product model → suggest `lite` (note: "For best results, run `product:model` first")
-- Otherwise: ask "Run **lite** (problem + appetite + inclusions/exclusions + done criteria, ~5 min) or **pro** (full pitch with risks, rabbit holes, user flow, ~15 min)?"
+## Step 2: Tier resolution
+1. User specified `lite` or `pro` in invocation → use it, no questions asked
+2. `docs/product/product-model.md` exists → default to `pro`, announce: "Defaulting to pro — product model found. Run lite? (y/n)"
+3. No product model → default to `lite`, announce: "Defaulting to lite — no product model found (for best results, run product:model first). Run pro anyway? (y/n)"
+4. Otherwise → ask: "Run **lite** (problem + appetite + in/out + done criteria, ~5 min) or **pro** (full pitch with risks, rabbit holes, user flow, ~15 min)?"
 
 ## Step 3: Read context
 
@@ -88,6 +92,23 @@ Recommended next step:
   Or if you want to verify build readiness first:
   product:build
 ```
+
+## Fallback questions (if recipe unavailable)
+1. "What problem does this solve? Describe what happens today without this feature."
+2. "How much time is this worth — meaning, if you had to cut scope to ship in that time, you would? Not an estimate — a maximum."
+3. "Name 3 things that will NOT be built as part of this. Be specific."
+4. "What's the biggest risk — what could make this harder or take longer than expected?"
+5. "How will you know it's done? Give 3 specific, testable done criteria."
+
+## Pivot interrupt
+If at any point the user signals the premise is wrong ("actually this is wrong", "I need to rethink", "let's pivot"):
+1. Stop the interview immediately
+2. Record what was learned so far as a partial artifact: `docs/product/[date]-[feature-slug]-partial.md` with `status: abandoned`
+3. Update `docs/product/assumptions.md` — add a new entry noting the signal that triggered the pivot and why the current framing was abandoned
+4. Say: "Pivot noted. New signal: [what changed]. Recommended: re-run product:shape with the corrected framing, or run product:discover if the problem statement has fundamentally changed."
+
+## Artifact naming
+Point-in-time artifact — never overwritten. If `docs/specs/` already contains a pitch for this slug, create a new date-prefixed file for this run. Both versions are preserved. `product:next` shows all versions grouped by slug, with the newest marked as current.
 
 ## Rules
 
