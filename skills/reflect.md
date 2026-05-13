@@ -8,6 +8,11 @@ Close the loop on a shipped feature. Gather evidence. Force a decision. Produces
 
 Read recipes `recipes/17-retrospective.md` and `recipes/16-measure.md` for the authoritative process.
 
+## Contract
+Requires: docs/specs/YYYY-MM-DD-[slug]-pitch.md (required), docs/specs/YYYY-MM-DD-[slug]-build.md (recommended), docs/product/journeys/[slug]-telemetry.md (recommended)
+Produces: docs/specs/YYYY-MM-DD-[slug]-retro.md
+Updates: nothing (new date-prefixed file per run)
+
 ## Step 1: Identify the feature
 
 If no feature specified:
@@ -16,9 +21,11 @@ If no feature specified:
 
 If a feature name is passed: search for matching pitch and build files.
 
-## Step 2: Determine tier
-
-If no tier specified: ask "Run **lite** (what shipped + decision, ~5 min) or **pro** (full retrospective with evidence and next slice, ~15 min)?"
+## Step 2: Tier resolution
+1. User specified `lite` or `pro` in invocation → use it, no questions asked
+2. Build file found for this feature → default to `pro`, announce: "Defaulting to pro — build file found. Run lite? (y/n)"
+3. Only pitch found, no build file → default to `lite`, announce: "Defaulting to lite — no build file found. Run pro? (y/n)"
+4. Otherwise → ask: "Run **lite** (what shipped + decision, ~5 min) or **pro** (full retrospective with evidence and next slice, ~15 min)?"
 
 ## Step 3: Read context
 
@@ -115,6 +122,9 @@ Recommended next step:
   [If kill]: Plan removal of [feature] from the product
   [If simplify]: product:shape "[simplified version]" with explicit no-gos for cut parts
 ```
+
+## Artifact naming
+Point-in-time artifact — never overwritten. If `docs/specs/` already contains a retro for this slug, create a new date-prefixed file. Both versions are preserved. `product:next` shows all versions grouped by slug.
 
 ## Rules
 
