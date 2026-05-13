@@ -8,6 +8,11 @@ Map a specific named user journey from trigger to completion. Produces `docs/pro
 
 Read recipe `recipes/07-journey-map.md` for the authoritative process.
 
+## Contract
+Requires: docs/product/product-model.md (recommended)
+Produces: docs/product/journeys/[kebab-case-name].md
+Updates: docs/product/journeys/[kebab-case-name].md (in update mode if journey already exists)
+
 ## Step 1: Extract journey name
 
 The journey name is passed as an argument: `product:journey "create pipeline"`
@@ -16,11 +21,10 @@ If no argument: ask "Which user journey are you mapping? Describe it in 3–5 wo
 
 Derive a kebab-case filename: `create-pipeline.md`
 
-## Step 2: Determine tier
-
-If no tier specified:
-- `docs/product/product-model.md` exists → suggest `pro`
-- Otherwise: ask "Run **lite** (happy path + 2 failure states, ~5 min) or **pro** (full journey with all states, decisions, edge cases, ~15 min)?"
+## Step 2: Tier resolution
+1. User specified `lite` or `pro` in invocation → use it, no questions asked
+2. `docs/product/product-model.md` exists → default to `pro`, announce: "Defaulting to pro — product model found. Run lite? (y/n)"
+3. Otherwise → ask: "Run **lite** (happy path + 2 failure states, ~5 min) or **pro** (full journey with all states, decisions, edge cases, ~15 min)?"
 
 ## Step 3: Check for existing journeys
 
@@ -86,6 +90,19 @@ Recommended next step:
   Or when primary journeys are mapped:
   product:shape "[feature idea]" — to scope a feature that improves a journey
 ```
+
+## Fallback questions (if recipe unavailable)
+1. "What is the user trying to accomplish? One sentence — their goal."
+2. "What triggers this journey? What just happened that makes them need this now?"
+3. "Walk me through the happy path step by step. For each step: what does the user do, and what does the system do?"
+4. "For each step: what can go wrong? What does the user see and how do they recover?"
+5. "How does the user know the journey succeeded? What is the completion signal?"
+
+## Pivot interrupt
+If the user signals the journey's framing is wrong ("this isn't how users actually do it", "we're mapping the wrong flow"):
+1. Stop the interview immediately
+2. Record what was captured as a partial artifact: `docs/product/journeys/[name]-partial.md` with `status: abandoned`
+3. Say: "Journey paused. Recommended: clarify which journeys matter most with product:model (information architecture section), then re-run product:journey with the corrected framing."
 
 ## Rules
 
