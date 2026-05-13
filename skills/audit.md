@@ -8,14 +8,16 @@ Analyze an existing product. Reconstruct the mental model from what actually exi
 
 Read recipe `recipes/00-audit.md` for the authoritative process. This skill executes that recipe.
 
-## Step 1: Determine tier
+## Contract
+Requires: existing codebase (reads structure automatically via find/grep); docs/intake/ (optional)
+Produces: docs/product/audit.md
+Updates: docs/product/audit.md (in update mode if file exists — asks about what's changed or missing)
 
-Check if the user specified a tier in the invocation (`product:audit lite` or `product:audit pro`).
-
-If no tier specified:
-- If `docs/product/product-model.md` exists → suggest `pro`
-- If `docs/product/audit.md` already exists → this is an update run → suggest `pro`
-- Otherwise → ask: "Run **lite** (screen inventory + top 5 problems, ~5–10 min) or **pro** (full extraction including object model, state audit, terminology, ~20–40 min)?"
+## Step 1: Tier resolution
+1. User specified `lite` or `pro` in invocation → use it, no questions asked
+2. `docs/product/product-model.md` exists → default to `pro`, announce: "Defaulting to pro — product model found (full audit will be more valuable). Run lite? (y/n)"
+3. `docs/product/audit.md` already exists → default to `pro` (update mode), announce: "Defaulting to pro — updating existing audit. Run lite? (y/n)"
+4. Otherwise → ask: "Run **lite** (screen inventory + top 5 problems, ~5–10 min) or **pro** (full extraction including object model, state audit, terminology, ~20–40 min)?"
 
 ## Step 2: Check for existing audit
 
@@ -107,6 +109,13 @@ Recommended next step:
   Or if you want to jump straight to scoping the most important fix:
   product:shape "[description of top problem]"
 ```
+
+## Fallback questions (if recipe unavailable)
+1. "List every screen or page in the product, even half-built or rarely-used ones."
+2. "What do users complain about most? What breaks, confuses, or frustrates them?"
+3. "What's inconsistent — the same term used two different ways, or features that partially overlap?"
+4. "If you had to cut 30% of the product to make the rest coherent, what would you remove?"
+5. "What was the original design assumption that is no longer true?"
 
 ## Rules
 
