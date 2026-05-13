@@ -8,11 +8,15 @@ Walk through idea brief → assumption mapping → discovery inputs for a brand-
 
 Read recipes `recipes/01-idea-brief.md`, `recipes/02-assumption-map.md`, and `recipes/03-discovery.md` for the authoritative process.
 
-## Step 1: Determine tier
+## Contract
+Requires: nothing (blank-slate entry point; reads docs/intake/ if present)
+Produces: docs/product/product-model.md (seed version), docs/product/assumptions.md
+Updates: nothing (creates new; if files exist, shows conflict and asks to overwrite or merge)
 
-If no tier specified:
-- `docs/product/` exists with other products → likely `lite` (scoping a new feature area)
-- No existing product docs → ask "Run **lite** (idea brief + top 5 assumptions, ~10 min) or **pro** (full discovery through opportunity mapping, ~30 min)?"
+## Step 1: Tier resolution
+1. User specified `lite` or `pro` in invocation → use it, no questions asked
+2. `docs/product/` exists with product docs → default to `lite`, announce: "Defaulting to lite — scoping a new area in an existing product. Run pro for full discovery? (y/n)"
+3. No existing product docs → default to `lite`, announce: "Defaulting to lite for initial discovery. Run pro for full opportunity mapping including competitive analysis? (y/n)"
 
 ## Step 2: Read context (intake)
 
@@ -112,6 +116,20 @@ Suggested test: [How to test it]
 Recommended next step:
   product:model — to formalize the full product model, objects, and glossary
 ```
+
+## Fallback questions (if recipe unavailable)
+1. "What problem does this product solve? Describe what users do today without it."
+2. "Who is the specific target user? Describe one real person, not a demographic."
+3. "What is the trigger moment — what just happened that makes them need this right now?"
+4. "What is the riskiest assumption? If it turns out to be false, the whole idea fails."
+5. "How would you test that assumption without building anything?"
+
+## Pivot interrupt
+If at any point the user signals the idea has fundamentally changed ("actually the real problem is...", "wrong user", "I need to rethink this"):
+1. Stop the interview immediately
+2. Record what was learned as a partial artifact: `docs/product/[date]-discovery-partial.md` with `status: abandoned`
+3. Note the new insight in the partial doc's frontmatter: `pivot_signal: "[what changed]"`
+4. Say: "Pivot noted. New signal: [what changed]. Restart with product:discover with this corrected framing."
 
 ## Rules
 
