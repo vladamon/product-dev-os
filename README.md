@@ -2,6 +2,20 @@
 
 A repeatable, AI-native product development operating system. Globally installed as a Claude Code plugin. Works across every project repo.
 
+## Quick Start
+
+**New to Product OS? Run these three commands in order:**
+
+```
+product:discover        ← new product idea → 10 min → produces: product-model.md + assumptions.md
+product:model           ← formalize the model → 20 min → produces: glossary.md + full product-model.md
+product:shape "your feature"  ← scope what to build → 10 min → produces: dated pitch doc
+```
+
+Not sure where you are? `product:next` reads your project and tells you exactly what to run.
+
+**Existing product?** Start with `product:audit` instead — it reads your codebase and produces a current-state analysis before you touch anything.
+
 ---
 
 ## What this is
@@ -127,7 +141,7 @@ This OS was designed first with GlassFlow in mind — a product that already exi
 
 ---
 
-## The 9 skills
+## The 10 skills
 
 ### `product:next`
 
@@ -236,16 +250,27 @@ This OS was designed first with GlassFlow in mind — a product that already exi
 
 ---
 
+### `product:measure`
+
+**When to use:** After `product:build`, before or immediately after ship. Run this before `product:reflect` needs evidence to evaluate.
+
+**What it does:** Defines the primary success metric and baseline from the shaped pitch's done criteria. Plans analytics events covering the feature's lifecycle (entered, completed, abandoned, error). Sets targets and a review cadence. For pro: adds secondary metrics and false-positive signals.
+
+**Produces:**
+- `docs/product/journeys/[feature]-telemetry.md`
+
+---
+
 ## The two tracks
 
 **New product:**
 ```
-product:discover → product:model → product:journey → product:shape → product:spec → product:build → product:reflect
+product:discover → product:model → product:journey → product:shape → product:spec → product:build → [ship] → product:measure → product:reflect
 ```
 
 **Existing product / revamp:**
 ```
-product:audit → product:model → product:shape → product:spec → product:build → product:reflect
+product:audit → product:model → product:shape → product:spec → product:build → [ship] → product:measure → product:reflect
 ```
 
 **Navigator (any time):**
@@ -451,20 +476,26 @@ No restart needed — Claude Code reads plugin files on each invocation.
 
 ## First use
 
-Run `product:audit` on an existing product to validate the system end-to-end. The audit skill is the highest-value entry point for any product that already exists and needs clarity.
-
+**Existing product (recommended starting point):**
 ```
 product:audit
 ```
+Reads your codebase, interviews you on what works and what doesn't, produces `docs/product/audit.md` — a current-state analysis ready to feed into `product:model`.
 
-Or if you're starting fresh:
-
+**New product:**
 ```
 product:discover
 ```
+Runs idea brief → assumption mapping → discovery inputs. Produces a seed product model and a ranked assumption list.
 
-Or if you don't know where to start:
-
+**Not sure where to start:**
 ```
 product:next
+```
+Reads all existing artifacts and tells you exactly what phase you're in and what to run next. Safe to run any time — read-only, never writes anything.
+
+**After shipping a feature, always close the loop:**
+```
+product:measure "feature name"   ← set up measurement before data disappears
+product:reflect "feature name"   ← evaluate the bet with evidence
 ```
