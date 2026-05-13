@@ -8,6 +8,11 @@ Produce a complete specification for a single screen — the text-based replacem
 
 Read recipes `recipes/10-screen-spec.md` and `recipes/11-interaction-rules.md` for the authoritative process.
 
+## Contract
+Requires: docs/specs/YYYY-MM-DD-[slug]-pitch.md (recommended), docs/product/journeys/ (recommended)
+Produces: docs/screens/[kebab-case-name].md
+Updates: docs/screens/[kebab-case-name].md (in update mode if screen already exists; screen specs are living documents)
+
 ## Step 1: Extract screen name
 
 The screen name is passed as an argument: `product:spec "pipeline detail overview"`
@@ -16,11 +21,10 @@ If no argument: ask "Which screen are you speccing?"
 
 Derive a kebab-case filename: `pipeline-detail-overview.md`
 
-## Step 2: Determine tier
-
-If no tier specified:
-- `docs/product/product-model.md` exists → suggest `pro`
-- Otherwise: ask "Run **lite** (purpose + question + layout + core states, ~5 min) or **pro** (full spec with all states, copy rules, acceptance criteria, ~15 min)?"
+## Step 2: Tier resolution
+1. User specified `lite` or `pro` in invocation → use it, no questions asked
+2. `docs/product/product-model.md` exists → default to `pro`, announce: "Defaulting to pro — product model found. Run lite? (y/n)"
+3. Otherwise → ask: "Run **lite** (purpose + question + layout + core states, ~5 min) or **pro** (full spec with all states, copy rules, acceptance criteria, ~15 min)?"
 
 ## Step 3: Check for existing spec
 
@@ -36,6 +40,7 @@ If `docs/screens/[screen-name].md` already exists:
 **3. Related pitch:** `docs/specs/` — find the pitched feature this screen belongs to
 **4. Existing screens:** `docs/screens/` — read 2–3 nearby screens for terminology and pattern consistency
 **5. Component library:** look for `src/components/`, `components/ui/` — list available component names
+**6. Screen inventory from pitch:** If a related pitch was found, scan it for screen names implied by the "What's Included" section and done criteria. Build a list of screens this feature requires.
 
 ## Step 5: Show context summary
 
@@ -48,10 +53,18 @@ Context found:
   Nearby screens for consistency reference: [list]
   Components available: [list of component directories]
 
+Screen inventory for this feature (from pitch):
+  ✓ [screen-name].md — already specced
+  → [screen-name].md — speccing now
+  ○ [screen-name].md — not yet specced
+  [or "Pitch not found — cannot determine remaining screens"]
+
 Will ask about: [what's needed for the spec]
 
 Correct anything?
 ```
+
+The screen inventory gives a complete picture of how much spec work remains for the feature.
 
 ## Step 6: Conduct the interview
 
@@ -108,6 +121,27 @@ Recommended next step:
   Or when all screens for the feature are specced:
   product:build — to verify build readiness
 ```
+
+## Artifact naming
+Screen specs are living documents — always updated in place using update mode (Step 3). Never create a new file for the same screen name. To record that a screen was redesigned, add a change note in the frontmatter before updating:
+```yaml
+changes:
+  - date: YYYY-MM-DD
+    note: "Redesigned for [feature] — previous version archived in git history"
+```
+
+## Fallback questions (if recipe unavailable)
+1. "What is the primary user question this screen answers? One sentence."
+2. "What brings the user to this screen? Name 2–3 entry points."
+3. "What data or content does this screen need to display?"
+4. "What does this screen look like when: data is loading / there's no data yet / something went wrong?"
+5. "What's the primary action a user takes on this screen? What happens next?"
+
+## Pivot interrupt
+If at any point the user signals the screen's purpose is unclear or the design needs rethinking:
+1. Stop the interview immediately
+2. Record what was learned as a partial artifact: `docs/screens/[name]-partial.md` with `status: abandoned`
+3. Say: "Spec paused. Recommended: clarify the screen's purpose with product:journey first, then re-run product:spec."
 
 ## Rules
 
