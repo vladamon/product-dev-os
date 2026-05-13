@@ -43,6 +43,34 @@ Based on what exists, classify the project:
 | Build ready | docs/specs/ has a build file matching a pitch |
 | Post-ship | docs/specs/ has a retro file |
 
+## Step 2b: Check for drift, orphans, and blocking deferrals
+
+After classifying the phase, perform these checks:
+
+**Drift check** — compare file dates:
+For each pitch file in `docs/specs/`, check if the pitch is significantly older than `docs/product/product-model.md`. If a pitch predates the product model by more than 30 days, flag:
+```
+⚠ Drift: [slug]-pitch.md ([date]) predates product-model.md update ([model date])
+  → Review pitch for consistency with current model before building
+```
+
+**Orphan check** — look for mismatched document sets:
+- A `*-build.md` with no matching `*-pitch.md` for the same slug:
+  `⚠ Orphan: [date]-[slug]-build.md — no matching pitch found`
+- A `*-retro.md` with no matching `*-build.md`:
+  `⚠ Orphan: [date]-[slug]-retro.md — no matching build file found`
+
+**Blocking deferrals** — check if deferred sections in living docs block the next skill:
+- If `docs/product/product-model.md` contains `[deferred]` lifecycle states, and the recommended next step is `product:shape` or `product:spec`:
+  `⚠ Blocking: product-model.md has deferred lifecycle states — product:shape will have incomplete context; consider running product:model pro first`
+
+**Multi-feature state** — if multiple pitches exist without retros, list each:
+```
+Active features (shaped but not yet reflected):
+  [date] [slug] — pitch ✓, build [✓/○], retro [✓/○]
+  [date] [slug] — pitch ✓, build [✓/○], retro [✓/○]
+```
+
 ## Step 3: Output the status report
 
 Format:
@@ -59,6 +87,12 @@ What exists:
 
 What's deferred:
   [list any artifacts with status: deferred and which sections need completing]
+
+Warnings:
+  [drift / orphan / blocking deferral findings from Step 2b, or "none"]
+
+Active features:
+  [multi-feature state table if multiple pitches in flight, otherwise omit]
 
 Intake:
   [X files in docs/intake/ ready to use] / [no intake files found]
