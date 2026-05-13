@@ -8,13 +8,17 @@ Formalize the product's internal world: core objects, relationships, lifecycle s
 
 Read recipes `04-opportunity-map.md`, `05-positioning.md`, `06-product-model.md`, and `08-information-architecture.md` for the authoritative process.
 
-## Step 1: Determine tier
+## Contract
+Requires: docs/product/assumptions.md or docs/product/audit.md (recommended)
+Produces: docs/product/product-model.md, docs/product/glossary.md, docs/product/information-architecture.md (pro)
+Updates: docs/product/product-model.md (in update mode if file exists), docs/product/glossary.md
 
-If no tier specified:
-- `docs/product/audit.md` exists → suggest `pro`
-- `docs/product/product-model.md` exists with deferred sections → suggest `pro` (update mode)
-- No existing product docs → suggest `lite`
-- Otherwise: ask "Run **lite** (objects + states + IA skeleton, ~5–10 min) or **pro** (full model + positioning + non-goals + complete IA, ~20–40 min)?"
+## Step 1: Tier resolution
+1. User specified `lite` or `pro` in invocation → use it, no questions asked
+2. `docs/product/audit.md` exists → default to `pro`, announce: "Defaulting to pro — audit found. Run lite? (y/n)"
+3. `docs/product/product-model.md` exists with `[deferred]` sections → default to `pro` (update mode), announce: "Defaulting to pro — model has deferred sections to complete. Run lite? (y/n)"
+4. No existing product docs → default to `lite`, announce: "Defaulting to lite for initial model. Run pro? (y/n)"
+5. Otherwise → ask: "Run **lite** (objects + states + IA skeleton, ~5–10 min) or **pro** (full model + positioning + non-goals + complete IA, ~20–40 min)?"
 
 ## Step 2: Check for existing model
 
@@ -99,6 +103,20 @@ Recommended next step:
   Or if you need to scope a specific improvement:
   product:shape "[feature idea]"
 ```
+
+## Fallback questions (if recipe unavailable)
+1. "What are the main things this product creates, manages, or tracks? List them all — we'll define each one."
+2. For each object: "What states can a [object] be in? Beginning state, end state, and anything in between."
+3. For each object: "What does a [object] belong to or reference?"
+4. "What term does your target user use for [key object] in their day-to-day language?"
+5. "What is the one thing this product does that no current workaround does as well?"
+
+## Pivot interrupt
+If at any point the model reveals a fundamental mismatch ("that object doesn't exist", "our mental model is completely wrong"):
+1. Stop the interview immediately
+2. Record what was defined so far in `docs/product/product-model.md` with `status: draft` (partial)
+3. Note the conflict explicitly in the file: `<!-- PIVOT: [what was wrong] — restart from product:audit or product:discover -->`
+4. Say: "Model paused. Conflict found: [what's wrong]. Recommended: run product:audit to reconstruct from what actually exists, then re-run product:model."
 
 ## Rules
 
