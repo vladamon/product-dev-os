@@ -16,6 +16,8 @@ Not sure where you are? `product:next` reads your project and tells you exactly 
 
 **Existing product?** Start with `product:audit` instead — it reads your codebase and produces a current-state analysis before you touch anything.
 
+**Multiple projects competing for attention?** Run `product:triage` from a parent directory — it ranks all your projects, names one focus for the week, and forces an honest look at kill candidates.
+
 ---
 
 ## What this is
@@ -24,8 +26,8 @@ A system for turning ideas into coherent, buildable, shippable products — and 
 
 It has two layers:
 
-- **Recipes** — 17 markdown files that define the process. The authoritative knowledge base. What to do, why to do it, what questions to ask, what a good artifact looks like, and what "done" means.
-- **Skills** — 9 Claude Code skills that execute the recipes. They read your repo, interview you, and produce structured artifacts into your project's `docs/` folder.
+- **Recipes** — 20 markdown files that define the process. The authoritative knowledge base. What to do, why to do it, what questions to ask, what a good artifact looks like, and what "done" means.
+- **Skills** — 12 Claude Code skills that execute the recipes. They read your repo, interview you, and produce structured artifacts. Each skill enforces a Step 0 gate that refuses to run if upstream artifacts are missing or incomplete — so the workflow is sequenced by structure, not discipline.
 
 The skills are runners. The recipes are the authority. Improving a recipe improves the skill that uses it automatically.
 
@@ -141,7 +143,7 @@ This OS was designed first with GlassFlow in mind — a product that already exi
 
 ---
 
-## The 10 skills
+## The 12 skills
 
 ### `product:next`
 
@@ -150,6 +152,17 @@ This OS was designed first with GlassFlow in mind — a product that already exi
 **What it does:** Reads all artifacts in `docs/`, builds a status snapshot, tells you what exists vs. what's missing vs. what's deferred. Outputs a "run this next" recommendation.
 
 **Produces:** Nothing. Pure output.
+
+---
+
+### `product:triage`
+
+**When to use:** You have multiple projects in flight and feel scattered. Run from a parent directory that contains your project repos.
+
+**What it does:** Scans sibling project directories, interviews you on each (money potential, learning value, urgency, strategic fit, energy required, blockers), and produces a ranked focus / secondary / do-not-touch / kill-candidates list. Forces one choice: what you actually work on this week.
+
+**Produces:**
+- `docs/triage/YYYY-MM-DD-triage.md` (in the cwd where invoked, not in each project)
 
 ---
 
@@ -173,6 +186,20 @@ This OS was designed first with GlassFlow in mind — a product that already exi
 
 **Produces:**
 - `docs/product/audit.md`
+
+---
+
+### `product:experiment`
+
+**When to use:** After `product:discover` (or `product:audit` for a revamp), when at least one assumption is high-risk. This is the cheap-test gate that sits between discovery and shaping — before you commit to building.
+
+**Invocation:** `product:experiment` or `product:experiment record [slug]` to record the verdict after running.
+
+**What it does:** Walks you through picking exactly one of five lightweight methods (landing page, concierge, wizard of oz, fake door, smoke test), defining a success threshold, and setting a hard time budget. After the experiment runs, records the verdict (validated / invalidated / inconclusive) and updates the assumption map. `product:shape` refuses to proceed on untested high-risk assumptions.
+
+**Produces:**
+- `docs/specs/YYYY-MM-DD-[assumption-slug]-experiment.md`
+- Updates `docs/product/assumptions.md` with the experiment link and verdict
 
 ---
 
@@ -265,12 +292,12 @@ This OS was designed first with GlassFlow in mind — a product that already exi
 
 **New product:**
 ```
-product:discover → product:model → product:journey → product:shape → product:spec → product:build → [ship] → product:measure → product:reflect
+product:discover → product:experiment → product:model → product:journey → product:shape → product:spec → product:build → [ship] → product:measure → product:reflect
 ```
 
 **Existing product / revamp:**
 ```
-product:audit → product:model → product:shape → product:spec → product:build → [ship] → product:measure → product:reflect
+product:audit → product:model → (product:experiment if revamp adds a high-risk assumption) → product:shape → product:spec → product:build → [ship] → product:measure → product:reflect
 ```
 
 **Navigator (any time):**
@@ -278,7 +305,12 @@ product:audit → product:model → product:shape → product:spec → product:b
 product:next
 ```
 
-Skills are independent. You don't have to run the full track. Enter at the phase you need.
+**Portfolio layer (across projects):**
+```
+product:triage
+```
+
+Skills are independent. You don't have to run the full track. Enter at the phase you need — but each skill's Step 0 gate will refuse if its prerequisites are missing (overridable with `--skip-gate`).
 
 ---
 

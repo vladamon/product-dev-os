@@ -4,20 +4,24 @@ A globally-installed Claude Code plugin providing a repeatable, AI-native produc
 
 ## Available Skills
 
-When the user invokes a `product:*` skill, load and follow the corresponding skill file from `skills/`.
+When the user invokes a `product:*` skill, load and follow the corresponding `SKILL.md` file from `skills/`.
+
+Each skill is gated by a Step 0 prerequisite check. If upstream artifacts are missing or incomplete, the skill refuses with a specific "run X first" message rather than proceeding. Override with `--skip-gate` is possible but logged in the resulting artifact.
 
 | Skill | File | When to use |
 |-------|------|-------------|
-| `product:next` | `skills/next.md` | Orientation — returning to a project, need to know where you are |
-| `product:discover` | `skills/discover.md` | New product idea, blank canvas, no prior artifacts |
-| `product:audit` | `skills/audit.md` | Existing product — analyze, understand, prepare for revamp |
-| `product:model` | `skills/model.md` | After discover or audit — formalize the product model |
-| `product:journey` | `skills/journey.md` | Before designing screens — map a specific user flow |
-| `product:shape` | `skills/shape.md` | Before building — scope a bounded feature slice |
-| `product:spec` | `skills/spec.md` | Before building a screen — write the screen specification |
-| `product:build` | `skills/build.md` | After shaping + speccing — verify build readiness |
-| `product:measure` | `skills/measure.md` | After ship — set up instrumentation before product:reflect needs evidence |
-| `product:reflect` | `skills/reflect.md` | After shipping — retrospective and iterate/kill decision |
+| `product:next` | `skills/next/SKILL.md` | Orientation — returning to a project, need to know where you are |
+| `product:triage` | `skills/triage/SKILL.md` | Portfolio layer — choose which project to work on this week |
+| `product:discover` | `skills/discover/SKILL.md` | New product idea, blank canvas, no prior artifacts |
+| `product:audit` | `skills/audit/SKILL.md` | Existing product — analyze, understand, prepare for revamp |
+| `product:experiment` | `skills/experiment/SKILL.md` | After discover/audit — test the riskiest assumption cheaply before shaping |
+| `product:model` | `skills/model/SKILL.md` | After discover or audit — formalize the product model |
+| `product:journey` | `skills/journey/SKILL.md` | Before designing screens — map a specific user flow |
+| `product:shape` | `skills/shape/SKILL.md` | Before building — scope a bounded feature slice |
+| `product:spec` | `skills/spec/SKILL.md` | Before building a screen — write the screen specification |
+| `product:build` | `skills/build/SKILL.md` | After shaping + speccing — verify build readiness |
+| `product:measure` | `skills/measure/SKILL.md` | After ship — set up instrumentation before product:reflect needs evidence |
+| `product:reflect` | `skills/reflect/SKILL.md` | After shipping — retrospective and iterate/kill decision |
 
 ## Plugin Structure
 
@@ -31,17 +35,22 @@ templates/  ← artifact templates (filled in by skills when producing output)
 
 **New product:**
 ```
-product:discover → product:model → product:journey → product:shape → product:spec → product:build → [ship] → product:measure → product:reflect
+product:discover → product:experiment → product:model → product:journey → product:shape → product:spec → product:build → [ship] → product:measure → product:reflect
 ```
 
 **Existing product / revamp:**
 ```
-product:audit → product:model → product:shape → product:spec → product:build → [ship] → product:measure → product:reflect
+product:audit → product:model → (product:experiment if revamp introduces a high-risk assumption) → product:shape → product:spec → product:build → [ship] → product:measure → product:reflect
 ```
 
 **Navigator (any time):**
 ```
 product:next
+```
+
+**Portfolio (across projects):**
+```
+product:triage
 ```
 
 ## Depth Tiers

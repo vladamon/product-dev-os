@@ -13,9 +13,84 @@ Verify that a shaped feature has everything needed to start building. Run the bu
 Read recipes `recipes/14-build-checklist.md` and `recipes/13-technical-architecture.md` for the authoritative process.
 
 ## Contract
-Requires: docs/specs/YYYY-MM-DD-[slug]-pitch.md (required), docs/screens/ matching the feature (recommended)
+Requires: docs/specs/YYYY-MM-DD-[slug]-pitch.md (required: complete done criteria + no-gos), docs/screens/ with at least one screen spec for this feature (required for non-trivial features), docs/product/product-model.md (required for pro tier)
 Produces: docs/specs/YYYY-MM-DD-[slug]-build.md
 Updates: nothing (new date-prefixed file per run)
+
+## Step 0: Verify prerequisites (gate)
+
+This skill says "ready to build." That claim must be defensible. The gate enforces every input that has to exist before you write production code.
+
+**Check 1 — pitch exists and is complete:**
+
+Locate the pitch for the feature (Step 1 below). If missing:
+```
+✗ Cannot run product:build yet.
+
+No pitch found for "[feature]" in docs/specs/.
+
+Run this first:
+  product:shape "[feature]"
+```
+Then STOP.
+
+Read the pitch. If it has empty / placeholder sections in:
+- Done criteria (must have at least 1 specific, testable criterion)
+- What's Excluded / No-gos (must have at least 1 specific exclusion)
+- Appetite (must be a specific time budget)
+
+Refuse:
+```
+✗ Pitch [slug]-pitch.md is incomplete.
+
+Missing or vague:
+  - [section]: [what's wrong]
+  - [section]: [what's wrong]
+
+Run: product:shape pro to complete it, or edit the pitch directly.
+```
+Then STOP.
+
+**Check 2 — screen specs exist for non-trivial features:**
+
+If the pitch's "What's Included" section mentions any screens (look for terms like "screen", "page", "view", "wizard", "dashboard"), at least one `docs/screens/*.md` must exist that matches the feature.
+
+If missing:
+```
+✗ Cannot run product:build yet.
+
+Pitch implies these screens are in scope: [list inferred from pitch]
+No matching screen specs found in docs/screens/.
+
+Run this first:
+  product:spec "[screen name]"  (one invocation per screen)
+```
+Then STOP.
+
+For purely backend / library features that don't introduce screens, the pitch should explicitly say "No new screens" in the included/excluded section. If it does, skip this check.
+
+**Check 3 — screen specs cover required states:**
+
+For each matching screen spec, verify the spec includes loading, empty, and error states (look for those section headers or state lists). If any screen is missing a required state:
+```
+⚠ Screen spec [name].md is missing the [state] state.
+
+Fix this in the spec before building, or run product:build with --skip-gate
+to proceed anyway (will block on this in the readiness checklist).
+```
+This is a warning, not a hard refusal — the build skill will still flag it in Step 5. The gate makes it visible up front.
+
+**Check 4 — product model exists for pro tier:**
+
+If pro tier and `docs/product/product-model.md` is missing or has Core Objects deferred:
+```
+✗ Cannot run product:build pro without a product model.
+
+Run: product:model pro
+Or: product:build lite (skips the architecture and instrumentation sections).
+```
+
+If all checks pass, proceed to Step 1.
 
 ## Step 1: Identify the feature
 

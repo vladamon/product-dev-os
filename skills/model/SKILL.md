@@ -13,9 +13,36 @@ Formalize the product's internal world: core objects, relationships, lifecycle s
 Read recipes `04-opportunity-map.md`, `05-positioning.md`, `06-product-model.md`, and `08-information-architecture.md` for the authoritative process.
 
 ## Contract
-Requires: docs/product/assumptions.md or docs/product/audit.md (recommended)
+Requires: docs/product/assumptions.md (new track) OR docs/product/audit.md (revamp track) — at least one
 Produces: docs/product/product-model.md, docs/product/glossary.md, docs/product/information-architecture.md (pro)
 Updates: docs/product/product-model.md (in update mode if file exists), docs/product/glossary.md
+
+## Step 0: Verify prerequisites (gate)
+
+The model has to be grounded in something — either fresh discovery or an audit of what exists. Modeling from a blank slate produces fiction.
+
+**Check — at least one entry point document exists:**
+
+If both `docs/product/assumptions.md` AND `docs/product/audit.md` are missing:
+```
+✗ Cannot run product:model yet.
+
+Need at least one of:
+  - docs/product/assumptions.md  (from product:discover)
+  - docs/product/audit.md        (from product:audit)
+
+Run one of these first:
+  product:discover   (new product)
+  product:audit      (existing product / revamp)
+
+Override: product:model --skip-gate (model from imagination; not recommended)
+```
+Then STOP unless override.
+
+If only one entry point doc exists, note which track is active:
+- `assumptions.md` only → new product track
+- `audit.md` only → revamp track
+- Both → revamp track (audit takes precedence; assumptions is supplementary)
 
 ## Step 1: Tier resolution
 1. User specified `lite` or `pro` in invocation → use it, no questions asked

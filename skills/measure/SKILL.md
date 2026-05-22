@@ -13,9 +13,41 @@ Set up instrumentation to measure whether a shaped bet is paying off. Define suc
 Read recipe `recipes/16-measure.md` for the authoritative process.
 
 ## Contract
-Requires: docs/specs/YYYY-MM-DD-[slug]-pitch.md (required), docs/specs/YYYY-MM-DD-[slug]-build.md (recommended)
+Requires: docs/specs/YYYY-MM-DD-[slug]-pitch.md (required: complete done criteria), docs/specs/YYYY-MM-DD-[slug]-build.md (recommended)
 Produces: docs/product/journeys/[slug]-telemetry.md
 Updates: docs/product/journeys/[slug]-telemetry.md (in update mode if the feature ships iterations)
+
+## Step 0: Verify prerequisites (gate)
+
+The pitch's done criteria are the seed for the primary metric. Without them, this skill is guessing.
+
+**Check — pitch exists with done criteria:**
+
+If no pitch matches the feature:
+```
+✗ Cannot run product:measure yet.
+
+No pitch found for "[feature]".
+
+Run this first:
+  product:shape "[feature]"
+
+Why this matters:
+  Done criteria from the pitch become the primary metrics. Without a pitch,
+  metrics are invented in a vacuum and rarely match what the feature was supposed to do.
+```
+Then STOP.
+
+If the pitch exists but has no done criteria (empty or placeholder section):
+```
+✗ Pitch [slug]-pitch.md has no done criteria to measure against.
+
+Run: product:shape pro to complete the pitch, or edit the pitch directly to add
+at least one specific, testable done criterion.
+```
+Then STOP.
+
+If checks pass, proceed.
 
 ## Step 1: Identify the feature
 

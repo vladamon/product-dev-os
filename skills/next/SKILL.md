@@ -39,6 +39,8 @@ Based on what exists, classify the project:
 |-------|--------|
 | Pre-discovery | No docs/product/ directory or all files missing |
 | Discovery in progress | assumptions.md exists but no product-model.md |
+| Assumptions pending test | assumptions.md has high-risk rows without an experiment verdict |
+| Experiment in flight | docs/specs/*-experiment.md exists with verdict: pending |
 | Audit complete | audit.md exists but no full product-model.md |
 | Model defined | product-model.md exists (check status: complete vs. deferred) |
 | Journey mapped | journeys/ has files |
@@ -67,6 +69,11 @@ For each pitch file in `docs/specs/`, check if the pitch is significantly older 
 **Blocking deferrals** — check if deferred sections in living docs block the next skill:
 - If `docs/product/product-model.md` contains `[deferred]` lifecycle states, and the recommended next step is `product:shape` or `product:spec`:
   `⚠ Blocking: product-model.md has deferred lifecycle states — product:shape will have incomplete context; consider running product:model pro first`
+
+**Untested high-risk assumptions** — check the experiment gate before shape:
+- Read `docs/product/assumptions.md` if present. For each row with `Risk: high`, check whether `Verdict:` is present (validated / invalidated / inconclusive / waived). If any high-risk row has no verdict:
+  `⚠ Blocking: [N] high-risk assumption(s) untested — product:shape will refuse; run product:experiment`
+- Also list each untested assumption text so the user knows what's pending.
 
 **Multi-feature state** — if multiple pitches exist without retros, list each:
 ```

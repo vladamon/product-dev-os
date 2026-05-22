@@ -13,9 +13,62 @@ Produce a complete specification for a single screen — the text-based replacem
 Read recipes `recipes/10-screen-spec.md` and `recipes/11-interaction-rules.md` for the authoritative process.
 
 ## Contract
-Requires: docs/specs/YYYY-MM-DD-[slug]-pitch.md (recommended), docs/product/journeys/ (recommended)
+Requires: docs/specs/YYYY-MM-DD-[slug]-pitch.md (required: the feature this screen belongs to, with done criteria), docs/product/glossary.md (required for terminology consistency), docs/product/journeys/ (recommended)
 Produces: docs/screens/[kebab-case-name].md
 Updates: docs/screens/[kebab-case-name].md (in update mode if screen already exists; screen specs are living documents)
+
+## Step 0: Verify prerequisites (gate)
+
+A screen spec needs a pitched feature to belong to and a glossary to use the right words. Without both, the spec drifts.
+
+**Check 1 — at least one pitch exists:**
+
+If `docs/specs/` contains no `*-pitch.md` files:
+```
+✗ Cannot run product:spec yet.
+
+No shaped pitches found in docs/specs/.
+
+Run this first:
+  product:shape "[feature name]"
+
+Why this matters:
+  A screen serves a feature. Without a pitch, the screen has no scope to anchor to,
+  no done criteria to satisfy, and no excluded behaviors to respect.
+```
+Then STOP.
+
+**Check 2 — glossary exists:**
+
+If `docs/product/glossary.md` does not exist:
+```
+✗ Cannot run product:spec yet.
+
+Missing requirement:
+  - docs/product/glossary.md
+
+Run this first:
+  product:model
+
+Why this matters:
+  Without a glossary, this spec will introduce terminology that contradicts other
+  screens. Terminology drift is the #1 cause of incoherent products.
+```
+Then STOP.
+
+**Check 3 — screen belongs to a known feature:**
+
+Read all pitches. Ask the user (if not obvious from the screen name): "Which pitch does this screen belong to?" Show the list of pitches. If they pick one whose status indicates done criteria are incomplete, refuse:
+```
+✗ Pitch [slug] has incomplete done criteria.
+
+Run this first:
+  product:shape pro to complete the pitch.
+
+Or override: product:spec --skip-gate "[screen]"
+```
+
+If all checks pass, proceed.
 
 ## Step 1: Extract screen name
 

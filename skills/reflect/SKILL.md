@@ -17,6 +17,61 @@ Requires: docs/specs/YYYY-MM-DD-[slug]-pitch.md (required), docs/specs/YYYY-MM-D
 Produces: docs/specs/YYYY-MM-DD-[slug]-retro.md
 Updates: nothing (new date-prefixed file per run)
 
+## Step 0: Verify prerequisites (gate)
+
+A retro without a pitch is a story. The pitch is the bet; the retro evaluates the bet.
+
+**Check 1 — pitch exists for this feature:**
+
+If no `*-pitch.md` matches the feature being reflected on:
+```
+✗ Cannot run product:reflect yet.
+
+No pitch found for "[feature]". A retro without a pitch has nothing to evaluate.
+
+If this feature was built without going through product:shape, you have two options:
+  1. Backfill: create a minimal pitch retroactively from memory
+     (product:shape lite "[feature]") then re-run reflect.
+  2. Skip: product:reflect --skip-gate "[feature]" — the retro will lack
+     "what we expected" anchoring and become a journal entry, not a learning.
+
+Recommended: backfill. It takes 5 minutes and makes the retro useful.
+```
+Then STOP unless override.
+
+**Check 2 — actual shipping happened:**
+
+Confirm with the user: "Has the feature actually shipped (deployed / live)?" If no:
+```
+✗ Cannot run product:reflect yet.
+
+product:reflect is for SHIPPED features. The feature has not shipped.
+
+Options:
+  - Wait until it ships, then reflect.
+  - If you've decided to kill before ship, use product:reflect --pre-ship "[feature]"
+    — this produces a retro with decision=kill and rationale=cancelled-before-ship.
+```
+Then STOP unless override.
+
+**Check 3 — measurement exists (warning, not refusal):**
+
+If `docs/product/journeys/[slug]-telemetry.md` is missing:
+```
+⚠ No telemetry plan found for this feature.
+
+The retro will rely on qualitative evidence only. This is OK for lite,
+but the "Did it work?" question will lack quantitative grounding.
+
+If the feature has been live for >3 days and you want better evidence:
+  Run product:measure "[feature]" first to retroactively plan instrumentation
+  and gather what data exists.
+
+Proceed with qualitative-only retro? (y/n)
+```
+
+If checks pass (or user overrides), proceed.
+
 ## Step 1: Identify the feature
 
 If no feature specified:

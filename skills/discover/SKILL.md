@@ -118,6 +118,11 @@ Top riskiest assumption: [The one that would kill the idea]
 Suggested test: [How to test it]
 
 Recommended next step:
+  [If the top assumption is high-risk and testable cheaply:]
+  product:experiment — design a cheap test for "[riskiest assumption]"
+                        before committing to model + shape
+
+  [Otherwise, or after experiment verdict:]
   product:model — to formalize the full product model, objects, and glossary
 ```
 

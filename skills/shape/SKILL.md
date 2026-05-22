@@ -13,9 +13,59 @@ Shape a bounded, buildable feature slice. Define appetite, solution outline, wha
 Read recipe `recipes/09-shaped-pitch.md` for the authoritative process.
 
 ## Contract
-Requires: docs/product/product-model.md (recommended), docs/product/journeys/ (recommended)
+Requires: docs/product/product-model.md (required: Core Objects + Lifecycle States non-deferred), docs/product/journeys/ (recommended), docs/specs/*-experiment.md with verdict (required if assumptions.md has untested high-risk assumptions)
 Produces: docs/specs/YYYY-MM-DD-[slug]-pitch.md
 Updates: nothing (new date-prefixed file per run; see Artifact naming)
+
+## Step 0: Verify prerequisites (gate)
+
+This skill commits you to building. The gate enforces that you've done the upstream work that prevents wasted builds.
+
+**Check 1 — product model exists and has core sections complete:**
+
+If `docs/product/product-model.md` is missing OR has `[deferred]` markers on Core Objects or Lifecycle States sections:
+```
+✗ Cannot run product:shape yet.
+
+Missing requirements:
+  - docs/product/product-model.md [missing OR sections deferred]
+    Specifically: [Core Objects | Lifecycle States | both] not complete.
+
+Run this first:
+  product:model pro
+
+Why this matters:
+  Shaping without a model produces a pitch grounded in vague terms.
+  The pitch's "what's in / what's out" will not survive contact with the codebase.
+```
+Then STOP. Do not proceed to Step 1.
+
+**Check 2 — high-risk assumptions have been tested or explicitly waived:**
+
+If `docs/product/assumptions.md` exists and contains any assumption with `Risk: high` whose row does NOT have a recorded experiment verdict (`Verdict: validated | invalidated | inconclusive` or `Verdict: waived` with a reason):
+```
+✗ Cannot run product:shape yet.
+
+Untested high-risk assumption(s):
+  - [verbatim assumption text]
+  - [verbatim assumption text]
+
+Run this first:
+  product:experiment
+
+Or, to proceed at acknowledged risk, edit docs/product/assumptions.md and add
+`Verdict: waived — [your reason]` to each high-risk row. The reason will be
+copied into the pitch's Risks section.
+```
+Then STOP.
+
+**Check 3 — feature scope is named:**
+
+If the user invoked `product:shape` without a feature name, ask for one before proceeding. Pitches without a feature name produce pitches without scope.
+
+If all three checks pass, proceed to Step 1.
+
+To override the gate explicitly (e.g., experimental sandbox): the user can invoke `product:shape --skip-gate "feature"`. Log the override in the pitch's frontmatter as `gate_override: true` and note in Risks: "Gate skipped — pitch may rest on incomplete upstream work."
 
 ## Step 1: Extract feature name
 

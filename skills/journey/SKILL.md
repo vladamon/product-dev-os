@@ -13,9 +13,34 @@ Map a specific named user journey from trigger to completion. Produces `docs/pro
 Read recipe `recipes/07-journey-map.md` for the authoritative process.
 
 ## Contract
-Requires: docs/product/product-model.md (recommended)
+Requires: docs/product/product-model.md (required: Core Objects section non-deferred, so journey steps reference real objects)
 Produces: docs/product/journeys/[kebab-case-name].md
 Updates: docs/product/journeys/[kebab-case-name].md (in update mode if journey already exists)
+
+## Step 0: Verify prerequisites (gate)
+
+Journeys describe how users move objects through states. Without an object model, "the user creates a thing then it does something" is the kind of vague journey that survives until implementation breaks it.
+
+**Check — product model has Core Objects defined:**
+
+If `docs/product/product-model.md` is missing OR Core Objects section is marked `[deferred]` or empty:
+```
+✗ Cannot run product:journey yet.
+
+Missing requirement:
+  - docs/product/product-model.md [missing OR Core Objects deferred]
+
+Run this first:
+  product:model
+
+Why this matters:
+  A journey's steps reference objects ("user creates a Pipeline", "system marks Pipeline as Deployed").
+  Without defined objects and states, journey steps are vague and can't be checked
+  against later screen specs.
+
+Override (acknowledged risk): product:journey --skip-gate "[journey]"
+```
+Then STOP unless override.
 
 ## Step 1: Extract journey name
 
