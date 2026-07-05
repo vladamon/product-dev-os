@@ -45,4 +45,11 @@ if [ ! -f "$LOG_FILE" ]; then
 fi
 
 printf '| %s | %s | %s | %s | | |\n' "$ts" "$project" "$skill" "$args" >> "$LOG_FILE"
+
+# Nag when previously logged runs are still unscored (empty Load-bearing? column).
+# ponytail: counts the row just written too, hence -gt 1
+unscored="$(grep -c ' | | |$' "$LOG_FILE" || true)"
+if [ "${unscored:-0}" -gt 1 ]; then
+  printf '{"systemMessage":"os-usage-log.md has %s unscored run(s) — fill the Load-bearing? column so the freeze review has evidence."}' "$((unscored - 1))"
+fi
 exit 0

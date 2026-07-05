@@ -13,6 +13,34 @@ related:
 
 # Build Checklist: FEATURE_NAME
 
+## Execution Brief
+
+Self-contained handoff for the implementing agent. Scope below is inlined from
+the pitch, glossary, and screen specs — do not re-derive scope from other documents.
+
+**Problem:** [one sentence, from pitch]
+**Appetite:** [max time budget, from pitch — descope rather than overrun]
+
+**In scope:** [from pitch's What's Included]
+
+**Out of scope (no-gos — reject any work here):**
+- [no-go, verbatim from pitch]
+
+**Done criteria (each must pass a yes/no test):**
+- [ ] [criterion, verbatim from pitch]
+
+**Screens to build** (full specs in `docs/screens/`):
+
+| Screen | Spec file | States required |
+|--------|-----------|-----------------|
+| | | loading, empty, error, [domain-specific] |
+
+**Terminology (use these exact terms in all user-facing copy):**
+
+| Term | Definition |
+|------|------------|
+| | |
+
 ## Domain Model
 
 - [ ] Core objects for this feature exist in the codebase (types, interfaces, or models defined)
@@ -56,13 +84,6 @@ related:
 - [ ] Key user actions are tracked
 - [ ] Failure events are tracked
 - [ ] Completion/success events are tracked
-
-## Acceptance Criteria (from pitch)
-
-[Copy done criteria from the shaped pitch]
-
-- [ ] [Criterion 1]
-- [ ] [Criterion 2]
 
 ---
 *Updated YYYY-MM-DD via product:build*

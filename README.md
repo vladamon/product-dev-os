@@ -473,7 +473,7 @@ Claude should respond with a product status report (or a message that no artifac
 
 ### That's it
 
-All 9 skills are now available in every repo you open — no per-project setup required. Artifacts always land in the current project's `docs/` folder, so the plugin stays global while the output stays local.
+All 12 skills are now available in every repo you open — no per-project setup required. Artifacts always land in the current project's `docs/` folder, so the plugin stays global while the output stays local.
 
 ---
 

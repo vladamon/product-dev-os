@@ -186,6 +186,13 @@ Event                    | When it fires              | Properties
 
 Write `docs/specs/[today's date]-[feature-slug]-build.md` using `templates/build-checklist.md`.
 
+The Execution Brief section must be self-contained: inline the pitch's problem,
+appetite, in-scope list, no-gos, and done criteria **verbatim**; list each screen
+with its spec file and required states; copy the glossary terms (term + definition)
+the feature's copy must use. An execution agent must be able to build the feature
+from this file plus the referenced screen specs alone — without opening the pitch,
+product model, or glossary.
+
 ## Step 9: Summarize
 
 ```
@@ -201,12 +208,12 @@ Blockers to fix: [list if any]
 [If ready]:
 ```
 Implementation handoff:
-  All specs are ready. To turn this build doc into an executable plan:
+  The Execution Brief in the build file is self-contained. Hand the execution
+  agent exactly two things:
+    - docs/specs/[date]-[slug]-build.md  (scope, done criteria, no-gos, terminology)
+    - docs/screens/[matching screens]     (full screen specs)
 
-  If using superpowers: invoke `writing-plans` and pass:
-    - This build file:  docs/specs/[date]-[slug]-build.md
-    - The shaped pitch: docs/specs/[date]-[slug]-pitch.md
-    - Screen specs:     docs/screens/[matching screens]
+  If using superpowers: invoke `writing-plans` and pass those files.
 
   The architecture skeleton above maps directly to a task decomposition —
   "New files" → create tasks, "Modified files" → modify tasks.

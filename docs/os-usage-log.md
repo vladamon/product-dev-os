@@ -14,3 +14,7 @@ or cut); skills with mostly `Y` are the spine. See
 
 | Date | Project | Skill | Args | Load-bearing? (Y/N) | Note |
 |------|---------|-------|------|---------------------|------|
+| 2026-06-20 00:59 | workers-management | product-next | workers-management (cwd: /Users/vladimir.cutkovic/Documents/code/github-vladamon.com/indie-haeven/indie-triage/workers-management) | | |
+| 2026-06-20 01:06 | workers-management | product-reflect | fast-project-creation-from-email (cwd: /Users/vladimir.cutkovic/Documents/code/github-vladamon.com/indie-haeven/indie-triage/workers-management) | | |
+| 2026-06-20 01:15 | workers-management | product-measure | fast-project-creation-from-email (cwd: /Users/vladimir.cutkovic/Documents/code/github-vladamon.com/indie-haeven/indie-triage/workers-management) | | |
+| 2026-07-02 | indie-triage | product-triage | (manual entry — run predates hook coverage) | Y | Ranked projects: picked one focus project, parked the other. First confirmed load-bearing run. |
