@@ -172,6 +172,14 @@ its `observability-saas` profile, enforced by a `tenant-scope` CI gate:
 - **Not a Next.js frontend** → arche-ui doesn't apply; architecture remains a
   manual step (no skill covers it yet).
 
+**Deployment profile** (the second axis of the same check):
+
+| Project shape | Path |
+|---|---|
+| Scalable SaaS, multi-env fleet (GlassFlow lineage) | arche-ui doc 12 as-is: `k8s-helm` profile — Helm/GHCR, init-container migrations |
+| Simple project, single node or managed container host | Keep arche-ui docs 01/12's *image* half (one container, `startup.sh` runtime env); borrow orchestration from the host's proven recipe — Kamal or Docker Compose on a VPS, Fly.io, Coolify, Railway. No arche-ui doc covers this yet, by design: it gets written by extraction after the first such project ships |
+| Frontend-only / serverless (e.g. next-forge on Vercel) | Vercel's own recipes; arche-ui docs 01 and 12 don't apply |
+
 **Known seam:** in an arche-ui-seeded repo, ignore the folder pattern in
 `recipes/13-technical-architecture.md` — the architecture skeleton in
 `product:build` must follow arche-ui docs 09/15 (`components/ui → common →
