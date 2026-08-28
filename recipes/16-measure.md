@@ -3,8 +3,8 @@ id: 16-measure
 phase: learning
 tier-lite: false
 tier-pro: true
-produces: docs/specs/YYYY-MM-DD-[feature]-retro.md (evidence section)
-skill: product:reflect
+produces: docs/product/journeys/[slug]-telemetry.md (via product:measure); docs/specs/YYYY-MM-DD-[feature]-retro.md (evidence section, via product:reflect)
+skill: product:measure, product:reflect
 ---
 
 # Recipe: Measure

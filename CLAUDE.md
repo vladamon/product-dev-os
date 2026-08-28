@@ -6,7 +6,7 @@ A globally-installed Claude Code plugin providing a repeatable, AI-native produc
 
 When the user invokes a `product:*` skill, load and follow the corresponding `SKILL.md` file from `skills/`.
 
-Each skill is gated by a Step 0 prerequisite check. If upstream artifacts are missing or incomplete, the skill refuses with a specific "run X first" message rather than proceeding. Override with `--skip-gate` is possible but logged in the resulting artifact.
+Each skill is gated by a Step 0 prerequisite check. If upstream artifacts are missing or incomplete, the skill refuses with a specific "run X first" message rather than proceeding. Override with `--skip-gate` is possible; today only `product:shape` logs `gate_override: true` in the artifact frontmatter — other skills accept the flag without logging it.
 
 | Skill | File | When to use |
 |-------|------|-------------|
@@ -52,6 +52,10 @@ product:next
 ```
 product:triage
 ```
+
+## Scenario Playbooks
+
+When the user describes a **situation** rather than naming a skill (e.g. "nearly done and a customer is waiting", "can't converge on the feature set", "someone handed me an idea", "need to replace a legacy product", "too many projects"), consult `docs/playbooks.md` — it maps eight common situations to exact skill sequences that pass every gate without `--skip-gate`.
 
 ## Depth Tiers
 

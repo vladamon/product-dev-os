@@ -458,3 +458,16 @@ Build in this order:
 13. `README.md` — comprehensive rationale and usage guide
 
 First real use: run `product:audit` on GlassFlow to validate the system end-to-end before building remaining skills.
+
+---
+
+## Addendum — 2026-08-29 (state drift note)
+
+This spec is preserved as approved on 2026-05-09. The system has since grown beyond it; the body above is historical, not current. As of 2026-08-29:
+
+- **12 skills**, not 9 — `product:experiment`, `product:measure`, and `product:triage` were added after approval.
+- **20 recipes**, not 17 — `03b-experiment.md`, `16-measure.md` (now shared by `product:measure` and `product:reflect`), and `18-triage.md` were added.
+- Skills live at `skills/<name>/SKILL.md`, not `skills/<name>.md` as shown in the file map above.
+- `docs/playbooks.md` was added as a situation-based routing layer on top of the two tracks.
+
+The current authority for the skill/recipe inventory is the `CLAUDE.md` skill table plus the reference table in `docs/playbooks.md`.
