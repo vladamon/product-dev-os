@@ -18,6 +18,8 @@ Not sure where you are? `product:next` reads your project and tells you exactly 
 
 **Multiple projects competing for attention?** Run `product:triage` from a parent directory — it ranks all your projects, names one focus for the week, and forces an honest look at kill candidates.
 
+**In a specific situation** — nearly-launched product, unfocused prototype, handed-over idea, legacy replacement? [`docs/playbooks.md`](docs/playbooks.md) maps eight common situations to exact skill sequences.
+
 ---
 
 ## What this is
@@ -311,6 +313,25 @@ product:triage
 ```
 
 Skills are independent. You don't have to run the full track. Enter at the phase you need — but each skill's Step 0 gate will refuse if its prerequisites are missing (overridable with `--skip-gate`).
+
+---
+
+## Scenario playbooks
+
+Tracks answer "what kind of product is this?" Playbooks answer "what situation am I in?" — [`docs/playbooks.md`](docs/playbooks.md) maps each situation to an exact skill sequence, the recipes behind every step, and the gates along the way.
+
+| Your situation sounds like… | Start with |
+|---|---|
+| "Nearly finished, a real customer is waiting — are all scenarios covered?" | `product:audit pro` → playbook 1 |
+| "I keep building but can't converge on the feature set or offering" | `product:audit lite` → playbook 2 |
+| "Someone handed me a clear, ready-made idea" | `product:discover lite` → playbook 3 |
+| "An existing product must be replaced with a modern implementation" | `product:audit pro` → playbook 4 |
+| "Too many projects and ideas" | `product:triage` → playbook 5 |
+| "Brand-new idea, nothing validated" | `product:discover` → playbook 6 |
+| "I shipped something" | `product:measure` → playbook 7 |
+| "Where was I?" | `product:next` → playbook 8 |
+
+Followed in order, no playbook ever needs `--skip-gate`.
 
 ---
 
