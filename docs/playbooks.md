@@ -16,6 +16,7 @@ Every sequence respects the Step 0 gates: followed in order, no playbook needs `
 | "Brand-new idea, nothing validated yet" | [6. New idea, full validation](#6-new-idea-full-validation) |
 | "I shipped something" | [7. Close the loop](#7-close-the-loop) |
 | "Where was I?" | [8. Reorientation](#8-reorientation) |
+| "Starting a new frontend codebase — want proven architecture, not a blank page" | [Stack profiles](#stack-profiles-seeding-from-arche-ui) |
 
 ---
 
@@ -141,6 +142,45 @@ Every sequence respects the Step 0 gates: followed in order, no playbook needs `
 **Situation:** Returning to a project after a break, or unsure what phase you're in.
 
 Run `product:next`. Read-only, writes nothing, safe any time. Reports what exists, what's missing, what's deferred, and the exact next command.
+
+---
+
+## Stack profiles: seeding from arche-ui
+
+For frontend projects there is a companion repo — **arche-ui**
+(`~/Documents/code/glassflow/arche-ui`) — holding canonical, production-extracted
+architecture decisions for a Next.js/TypeScript/Zustand/Zod/shadcn stack: layered
+request/hydration lifecycles, design tokens, CI-enforced guardrails, a deployment
+recipe (k8s/Helm), a component gallery, and mechanical scaffolding skills
+(`add-proxy-route`, `add-zustand-slice`, `add-zod-form`) plus a `review-changes`
+drift review. It answers the two questions this OS deliberately leaves open:
+project-level frontend architecture and deployment.
+
+**Where it slots into any playbook:** after `product:model`, before
+`product:journey` / `product:shape`. Seeding *is* the architecture decision, and
+it needs core objects + IA to check fit against.
+
+**Profile-fit check before seeding.** arche-ui docs 16–17 bake in *product*
+decisions — workspace-as-tenant, roles, `/w/[workspaceId]` IA, onboarding — as
+its `observability-saas` profile, enforced by a `tenant-scope` CI gate:
+
+- **Full fit** (multi-tenant SaaS, workspace-as-tenant) → seed everything per
+  the arche-ui README.
+- **Different tenancy** → seed docs 00–15 only; delete doc 17 (and 16 if
+  single-tenant), skip the `tenant-scope` gate; tenancy comes from *your*
+  `product-model.md`.
+- **Not a Next.js frontend** → arche-ui doesn't apply; architecture remains a
+  manual step (no skill covers it yet).
+
+**Known seam:** in an arche-ui-seeded repo, ignore the folder pattern in
+`recipes/13-technical-architecture.md` — the architecture skeleton in
+`product:build` must follow arche-ui docs 09/15 (`components/ui → common →
+shared → modules/*`), which CI enforces there. The build skill's own rule
+already defers to codebase patterns; this note makes the precedence explicit.
+
+**Execution composition:** hand the execution agent the build file + screen
+specs as usual; in seeded repos it should scaffold via arche-ui's `add-*` skills
+and run `review-changes` on the diff before handing back.
 
 ---
 
