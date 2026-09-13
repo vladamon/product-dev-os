@@ -1,5 +1,5 @@
 ---
-name: product:spec
+name: spec
 description: Use this skill when the user invokes `/product:spec [screen name]` or asks to specify, define, or document a screen before building it.
 ---
 # product:spec — Screen Specification
@@ -18,6 +18,8 @@ Produces: docs/screens/[kebab-case-name].md
 Updates: docs/screens/[kebab-case-name].md (in update mode if screen already exists; screen specs are living documents)
 
 ## Step 0: Verify prerequisites (gate)
+
+**Gate override:** `--skip-gate` proceeds past any refusal below; write `gate_override: true` in the screen spec frontmatter and `Gate skipped — [check]` above its Acceptance Criteria (`docs/conventions.md` §3).
 
 A screen spec needs a pitched feature to belong to and a glossary to use the right words. Without both, the spec drifts.
 

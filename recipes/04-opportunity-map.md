@@ -1,6 +1,6 @@
 ---
 id: 04-opportunity-map
-phase: definition
+phase: define
 tier-lite: false
 tier-pro: true
 produces: docs/product/product-model.md (opportunity section)

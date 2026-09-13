@@ -471,3 +471,17 @@ This spec is preserved as approved on 2026-05-09. The system has since grown bey
 - `docs/playbooks.md` was added as a situation-based routing layer on top of the two tracks.
 
 The current authority for the skill/recipe inventory is the `CLAUDE.md` skill table plus the reference table in `docs/playbooks.md`.
+
+---
+
+## Addendum — 2026-09-14 (companion expansion)
+
+The OS was expanded from a product-development spine into a solo-founder companion. Design: `docs/superpowers/specs/2026-09-14-companion-expansion-design.md`; findings and decision: `docs/notes/2026-09-14-findings-and-companion-expansion.md`.
+
+- **22 skills** — added `ideate`, `critique`, `interview`, `viability`, `gtm`, `stack`, `plan`, `launch`, `pmf`, `checkin`.
+- **30 recipes** — added 19–28.
+- **9 templates** — added `business-model.md`, `go-to-market.md`, `architecture.md`.
+- Tracks are now organized by the **companion map** (stages 0–10 + always) in `docs/conventions.md`, which also defines the canonical assumption map, artifact map, gate-override logging, and research/honesty protocols.
+- The repo is a real Claude Code plugin: `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, `hooks/hooks.json`. SKILL.md `name:` fields are short names; the plugin supplies the `product:` namespace.
+
+Authority for the current inventory: `CLAUDE.md` + `docs/conventions.md` + the reference table in `docs/playbooks.md`.

@@ -1,6 +1,6 @@
 ---
-name: product:experiment
-description: Use this skill when the user invokes `/product:experiment` or asks to design a cheap test for a risky assumption before building.
+name: experiment
+description: Use this skill when the user invokes `/product:experiment`, wants a cheap test for a risky assumption before building, wants to check if people will pay before building, or needs to record the result of a test that ran.
 ---
 # product:experiment — Assumption Test
 
@@ -8,18 +8,18 @@ Use this skill when the user invokes `/product:experiment` or asks to design a c
 
 ## Purpose
 
-Test the riskiest assumption with the cheapest viable experiment before committing to a build. Produces `docs/specs/YYYY-MM-DD-[assumption-slug]-experiment.md`. This skill sits between `product:discover` (or `product:audit`) and `product:shape`.
+Test the riskiest assumption with the cheapest viable experiment before committing to a build. Produces `docs/specs/YYYY-MM-DD-[assumption-slug]-experiment.md` and records its verdict in the assumption map. Sits between the validation skills (`discover`, `critique`, `interview`, `viability`, `gtm`) and `product:model` / `product:shape`.
 
-Read recipe `recipes/03b-experiment.md` for the authoritative process.
+Read recipe `recipes/03b-experiment.md` for the authoritative process. The assumption map format is `docs/conventions.md` §5.
 
 ## Contract
-Requires: docs/product/assumptions.md (required) with at least one assumption marked `Risk: high`
+Requires: docs/product/assumptions.md with at least one untested high-risk row (Risk `high`, Verdict blank or `pending`)
 Produces: docs/specs/YYYY-MM-DD-[assumption-slug]-experiment.md
-Updates: docs/product/assumptions.md (appends verdict to the corresponding row after the experiment runs)
+Updates: docs/product/assumptions.md — Test and Verdict columns of the tested row (on design, and again on `record`)
 
 ## Step 0: Verify prerequisites (gate)
 
-1. Read `docs/product/assumptions.md`. If the file does not exist:
+1. If `docs/product/assumptions.md` does not exist:
    ```
    ✗ Cannot run product:experiment yet.
 
@@ -32,43 +32,43 @@ Updates: docs/product/assumptions.md (appends verdict to the corresponding row a
    ```
    Then STOP.
 
-2. Read the file and look for at least one assumption with `Risk: high` or in the "Riskiest Assumptions" section. If none:
+2. Find untested high-risk rows per the gate rule (legacy `Risk: high` list lines count). If none:
    ```
    ✗ Cannot run product:experiment yet.
 
-   docs/product/assumptions.md has no high-risk assumptions to test.
+   docs/product/assumptions.md has no untested high-risk assumptions.
 
-   Either: run product:discover pro to deepen the assumption map,
-   or: skip experiment and proceed to product:shape if you're proceeding on faith
-       (acknowledge the risk in the pitch).
+   Either: run product:critique or product:discover pro to pressure-test the ratings,
+   or: proceed to product:model / product:shape — nothing high-risk is waiting on a test.
    ```
    Then STOP.
 
-3. If multiple high-risk assumptions exist, list them and ask: "Which assumption are we testing? Pick the one whose invalidation would kill the most downstream work."
+3. If several qualify, list them by ID and ask: "Which one are we testing? Pick the one whose invalidation would kill the most downstream work."
 
-If all checks pass, proceed.
+**Gate override:** `--skip-gate` proceeds; write `gate_override: true` in the experiment frontmatter and `Gate skipped — [check]` in its Setup section.
 
 ## Step 1: Tier resolution
 1. User specified `lite` or `pro` in invocation → use it, no questions asked
-2. `assumptions.md` has 3+ high-risk assumptions → default to `pro`, announce: "Defaulting to pro — multiple high-risk assumptions; tighter experiment design matters. Run lite? (y/n)"
+2. `assumptions.md` has 3+ untested high-risk rows → default to `pro`, announce: "Defaulting to pro — multiple high-risk assumptions; tighter design matters. Run lite? (y/n)"
 3. Otherwise → ask: "Run **lite** (method + threshold + time budget, ~5 min) or **pro** (full design with false-positive guards and audience, ~15 min)?"
 
 ## Step 2: Read context
 
-**1. `docs/product/assumptions.md`** — read fully, identify the target assumption verbatim
-**2. Prior experiments:** scan `docs/specs/*-experiment.md` — note any prior experiments for related assumptions to avoid duplication
-**3. User-specified files** (from `--from`, `--using`, or natural mention) — any prior notes, competitor screenshots, drafts
+1. **`docs/product/assumptions.md`** — the target row verbatim (ID, text, type, evidence so far)
+2. **Prior experiments** — `docs/specs/*-experiment.md` for related assumptions, to avoid duplicates
+3. **Related work** — the latest critique (its "cheapest test"), interview syntheses (evidence), `go-to-market.md` (channels for smoke tests), `business-model.md` (price for pre-sales)
+4. **User-specified files** (from `from`, `using`, or natural mention)
 
 ## Step 3: Show context summary
 
 ```
-product:experiment — designing test for "[assumption text]"
+product:experiment — designing test for A[n]: "[assumption text]"
 
-Source: docs/product/assumptions.md (line [N])
-Risk type: [desirability | viability | feasibility | usability | distribution | trust]
-Risk level: high
+Type: [desirability | viability | feasibility | usability | distribution | trust]
+Evidence so far: [Evidence column]
+Suggested by critique: [cheapest test, or "no critique"]
 
-Prior experiments for this product: [N] — [list slugs or "none"]
+Prior experiments for this product: [N] — [slugs or "none"]
 
 Will ask about: method, threshold, time budget, audience, false-positive guards
 
@@ -79,82 +79,81 @@ Wait for confirmation.
 
 ## Step 4: Conduct the interview
 
-Read `recipes/03b-experiment.md`. Follow lite or pro question set.
+Read `recipes/03b-experiment.md` and follow the lite or pro set.
 
-**Method selection — always ask:** Show the five-method table from the recipe and ask which one fits.
-
-**Cheapest viable version — always push:** After the user proposes a method, ask: "Is there a version of this that's half the work and still gives signal?" Most first drafts overreach.
-
-**Verdict criteria — always elicit:** What numeric or observable signal would count as validated vs. invalidated? If the user cannot answer this before running, the experiment is unrunnable. Push back.
+- **Method selection — always:** show the six-method table from the recipe; match method to assumption type. Viability rows ("they will pay") default toward **pre-sale**; distribution rows toward **smoke test**.
+- **Cheapest viable version — always push:** "Is there a version of this that's half the work and still gives signal?"
+- **Verdict criteria — always elicit before running:** the numeric or observable signal for validated vs. invalidated. If the founder cannot state it, the experiment is unrunnable — push back.
 
 ## Step 5: Produce the artifact
 
-Write `docs/specs/[today's date]-[assumption-slug]-experiment.md` using the structure in `recipes/03b-experiment.md`.
+Write `docs/specs/[today]-[assumption-slug]-experiment.md` using the structure in the recipe. Slug: kebab-case, 3–5 words from the assumption ("Solo developers will pay for an AI product OS" → `solo-devs-pay-for-os`).
 
-Derive `assumption-slug` from the assumption text: kebab-case, 3–5 words. Example assumption "Solo developers will pay for an AI product OS" → slug `solo-devs-pay-for-os`.
-
-Initial frontmatter:
-- `status: planned`
-- `verdict: pending`
-- `ran:` and `concluded:` left blank — filled in later
+Initial frontmatter: `status: planned`, `verdict: pending`, `assumption_id: A[n]`, `conclude_by: <created + time budget>`; `ran:` and `concluded:` blank. Set `status: running` and `ran:` when the founder says the experiment has started. `product:next` and `product:checkin` flag a running experiment past `conclude_by`.
 
 ## Step 6: Update assumptions.md
 
-Append to the relevant assumption row in `docs/product/assumptions.md`:
-```
-Test method: [method] → see docs/specs/[date]-[slug]-experiment.md
-Verdict: pending
-```
+On the tested row set:
+- `Test` → `[method] → docs/specs/[date]-[slug]-experiment.md`
+- `Verdict` → `pending`
 
-This keeps the assumption map as the single index — every high-risk assumption links to its experiment.
+Update frontmatter `updated:`.
 
 ## Step 7: Summarize
 
 ```
 Experiment designed → docs/specs/[date]-[slug]-experiment.md
 
-Assumption: [short text]
+Assumption: A[n] — [short text]
 Method: [method]
 Success threshold: [threshold]
-Time budget: [days]
+Time budget: [days] — conclude by [date]
 
 Recommended next step:
   Run the experiment within the time budget.
-
-  When the verdict is in, re-invoke this skill to record the result:
-    product:experiment record "[slug]"
-
-  Then:
-    Validated → product:shape "[feature]"
-    Invalidated → assumption killed; revisit product:discover or product:model
-    Inconclusive → redesign experiment or proceed at acknowledged risk
+  When results are in:  product:experiment record [slug]
 ```
 
-## Recording results (post-run)
+## Mode: record
 
-If invoked with `record` and a slug — e.g. `product:experiment record solo-devs-pay-for-os` — open the existing experiment file and conduct a short interview:
+Invoked as `product:experiment record [slug]`. Open the experiment file and ask, one at a time:
 
-1. "What were the raw results? (Numbers, observations.)"
+1. "What were the raw results? Numbers and observations."
 2. "Did you meet the success threshold? Yes / No / Inconclusive."
 3. "Did any false-positive signal show up?"
 4. "Verdict: validated / invalidated / inconclusive."
 5. "What does this change?"
 
-Update the file's frontmatter (`status: complete`, `verdict: <value>`, `concluded: <today>`) and the Results, Verdict, and "What this changes" sections.
+Update the experiment file: frontmatter `status: complete`, `verdict: <value>`, `concluded: <today>`; fill Results, Verdict, What this changes.
 
-Also update `docs/product/assumptions.md` — change the verdict on the corresponding row from `pending` to the actual verdict.
+Update `assumptions.md` on the row: `Verdict` → the verdict; append the result to `Evidence` (e.g. `pre-sale: 4/15 paid deposit → [file]`).
+
+Summarize with routing:
+```
+Verdict recorded: A[n] — [verdict]
+
+Recommended next step:
+  validated    → product:viability / product:gtm if missing, otherwise product:model
+  invalidated  → product:critique (re-run with this result) or product:discover with a new framing
+  inconclusive → redesign: product:experiment, or waive explicitly in assumptions.md
+                 (Verdict: waived — <reason>) and proceed at acknowledged risk
+```
 
 ## Fallback questions (if recipe unavailable)
-1. "Which high-risk assumption are we testing? Read it back verbatim."
-2. "What method fits — landing page / concierge / wizard of oz / fake door / smoke test?"
+1. "Which high-risk assumption are we testing? Read it back verbatim with its ID."
+2. "Which method fits — landing page / concierge / wizard of oz / fake door / smoke test / pre-sale?"
 3. "What would 'validated' look like? Specific, observable, numeric if possible."
 4. "What is the hard time budget — days, not weeks?"
-5. "What will the verdict actually change about your next move?"
+5. "What will the verdict change about your next move?"
+
+## Artifact naming
+Point-in-time. One file per experiment; only Results, Verdict, What this changes, and status/verdict/concluded frontmatter are filled later by `record`. A redesigned experiment is a new date-prefixed file.
 
 ## Rules
 
-- An assumption that can't produce a binary verdict is not testable. Sharpen it before designing the experiment.
-- The method must be one of the five — combinations dilute the signal. If the user wants to combine, push them to pick the most important one.
-- The success threshold is set before the experiment runs, not interpreted after. Reject "we'll see how it feels."
-- If the experiment ships as a real product instead of a test, it's no longer an experiment — flag this and redirect to `product:shape`.
+- An assumption that can't produce a binary verdict is not testable. Sharpen it before designing.
+- The method is one of the six — combinations dilute the signal.
+- The success threshold is set before the experiment runs, never interpreted after. Reject "we'll see how it feels."
+- For "will they pay", asking people is not a test — money, a deposit, or a signed commitment is.
+- If the experiment turns into a real product build, it is no longer an experiment — flag it and redirect to `product:shape`.
 - Recording verdicts is mandatory. An experiment without a recorded verdict is a story you tell yourself.

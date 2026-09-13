@@ -1,554 +1,383 @@
 # Product OS
 
-A repeatable, AI-native product development operating system. Globally installed as a Claude Code plugin. Works across every project repo.
+A companion for solo builders, indie hackers, and aspiring founders — from "I don't know what to build" to "is this idea any good" to "it's launched, should I keep going?" Installed once as a Claude Code plugin, available in every repo.
+
+It interviews you, researches the market, reads your codebase, and writes short artifacts into your project's `docs/`. It tells you what to do next — and, when the evidence says so, that you should stop.
 
 ## Quick Start
 
-**New to Product OS? Run these three commands in order:**
+**Tell it your situation:**
 
 ```
-product:discover        ← new product idea → 10 min → produces: product-model.md + assumptions.md
-product:model           ← formalize the model → 20 min → produces: glossary.md + full product-model.md
-product:shape "your feature"  ← scope what to build → 10 min → produces: dated pitch doc
+product:next "my friend has an idea and wants to know if it's worth pursuing"
+product:next "launched two weeks ago, 3 signups"
+product:next "I keep building and can't decide what the product is"
 ```
 
-Not sure where you are? `product:next` reads your project and tells you exactly what to run.
+It matches your words to one of 19 [playbooks](docs/playbooks.md) and gives you the exact sequence, adjusted for what already exists in the project.
 
-**Existing product?** Start with `product:audit` instead — it reads your codebase and produces a current-state analysis before you touch anything.
+**Or start directly:**
 
-**Multiple projects competing for attention?** Run `product:triage` from a parent directory — it ranks all your projects, names one focus for the week, and forces an honest look at kill candidates.
-
-**In a specific situation** — nearly-launched product, unfocused prototype, handed-over idea, legacy replacement? [`docs/playbooks.md`](docs/playbooks.md) maps eight common situations to exact skill sequences.
+| You are… | Run |
+|---|---|
+| Judging an idea (yours or someone's) in 15 minutes | `product:critique "the idea in a paragraph"` |
+| Judging an idea properly | `product:discover lite` → `product:critique` → [playbook 10](docs/playbooks.md#10-judge-an-idea) |
+| Without an idea | `product:ideate` |
+| Juggling several projects | `product:triage` (from the folder that holds them) |
+| Improving a product that exists | `product:audit` |
+| Returning after a break | `product:next` |
+| Stuck or drifting | `product:checkin` |
 
 ---
 
 ## What this is
 
-A system for turning ideas into coherent, buildable, shippable products — and for auditing and revamping products that already exist but have grown incoherent.
+Five layers:
 
-It has two layers:
+- **Skills** (22) — runners that interview you, read context, and write artifacts. Each gated skill refuses to run when upstream work is missing, so the sequence is enforced by structure, not willpower.
+- **Recipes** (30) — the authoritative process: what to ask, what good output looks like, what "done" means. Improving a recipe improves its skill.
+- **Templates** (9) — the shape of living documents.
+- **Conventions** — [`docs/conventions.md`](docs/conventions.md): the companion map, the canonical assumption map, the artifact map, gates, and the research and honesty protocols every skill follows.
+- **Playbooks** — [`docs/playbooks.md`](docs/playbooks.md): situation → skill sequence.
 
-- **Recipes** — 20 markdown files that define the process. The authoritative knowledge base. What to do, why to do it, what questions to ask, what a good artifact looks like, and what "done" means.
-- **Skills** — 12 Claude Code skills that execute the recipes. They read your repo, interview you, and produce structured artifacts. Each skill enforces a Step 0 gate that refuses to run if upstream artifacts are missing or incomplete — so the workflow is sequenced by structure, not discipline.
+## The companion map
 
-The skills are runners. The recipes are the authority. Improving a recipe improves the skill that uses it automatically.
+| # | Stage | Question | Skills |
+|---|---|---|---|
+| 0 | Choose | What should I work on at all? | `ideate` · `triage` |
+| 1 | Understand | Who has what problem, really? | `discover` · `audit` · `interview` |
+| 2 | Challenge | Is this idea any good? What kills it? | `critique` |
+| 3 | Money & reach | Can it pay? Can I reach buyers? | `viability` · `gtm` |
+| 4 | Test | Is the riskiest assumption true? | `experiment` |
+| 5 | Define | What is the product's world? | `model` · `journey` |
+| 6 | Architect | What do I build it with? | `stack` |
+| 7 | Scope | What exactly do I build next? | `shape` · `spec` |
+| 8 | Build | Ready? In what order? | `build` · `plan` |
+| 9 | Launch | Safe to ship? Who hears about it? | `launch` · `measure` |
+| 10 | Learn | Did it work? Keep going? | `reflect` · `pmf` |
+| ∞ | Always | Where am I? Am I on track? | `next` · `checkin` |
+
+Stages order concerns; they are not a mandatory pipeline. Enter wherever you are.
 
 ---
 
 ## Why this exists
 
-### The problem it solves
+Building alone means you are also the researcher, the PM, the designer, the salesperson, and the co-founder who says "this isn't working." The structure those roles provide is what's missing — not ability.
 
-Building products alone — without a designer, without a researcher, without a product manager — is hard not because you lack the ability, but because you lack the **structure** to compensate for those missing roles.
+Solo products rarely die from bad code. They die because:
 
-The typical failure mode is not "bad execution." It's building the wrong thing with coherence problems that compound over time:
+- **Nobody had the problem badly enough.** The founder asked friends, who were polite.
+- **Nobody would pay.** The price was never tested; the math never worked.
+- **Nobody heard about it.** Distribution was "later."
+- **It never converged.** No positioning, no non-goals, features accumulated.
+- **It never shipped.** Scope grew past any appetite; agent handoffs wandered.
+- **Nobody decided.** It limped on for a year because no one set a kill criterion.
 
-- Screens that don't know what question they're answering
-- Terminology that drifts across the codebase, the UI, and the docs
-- Features that were never scoped so they grow forever
-- A product model that lives only in one person's head and slowly becomes wrong
-- Components that create consistent incoherence rather than fixing it
+And there's the opposite failure: a planning system that becomes the product. Long PRDs nobody reads.
 
-The other failure mode is the opposite: creating an elaborate planning system that becomes the thing you build instead of the product. Long PRDs nobody reads. Beautiful frameworks that gather dust.
+This OS attacks both: every stage has a skill that forces the decision it's responsible for, and every artifact is short enough to re-read in two minutes.
 
-This OS is designed to prevent both failure modes at once. It enforces discipline without bureaucracy. It produces artifacts that are short enough to actually use and specific enough to actually guide decisions.
+### Why an adversary, not just structure
 
-### Why AI-native
+Structuring your beliefs is not the same as testing them. A skill that helps you fill in an assumption map will happily record "people will pay $30/month" as low risk. So the OS includes skills whose job is to disagree: `critique` researches the landscape and attacks the idea through fixed lenses, `discover` rates risk independently and shows where it disagrees, `viability` does the arithmetic, `pmf` excludes vanity metrics, `checkin` names avoidance. Their verdicts come from fixed sets — "it depends" isn't one.
 
-The previous generation of product frameworks assumed you'd write documents manually and follow checklists in your head. That works with a team. Alone, it collapses under execution pressure.
+### Why evidence labels
 
-This OS is different: the AI interviews you, reads your codebase, pre-populates what it already knows, and writes the artifacts. You provide judgment; the system provides structure. The result is that you get the benefits of a thorough process in a fraction of the time.
+An AI that invents a competitor or a market size is worse than no research. Outward-looking skills label every claim `[sourced: url]`, `[estimate: method]`, or `[founder-stated]`, and produce a research checklist instead of fiction when web search isn't available.
 
-### Why skills over documents
+### Why a spine, not a catalog
 
-A document you read is a reference. A skill you invoke is a process. The OS is built as skills because the goal is not for you to know the framework — it's for the framework to run when you need it.
-
-You don't need to remember the 17 steps. You need to know: "I have an idea, so I run `product:discover`." Everything else follows.
+Big skill catalogs reintroduce the friction a scattered founder is trying to escape: choice. Here, every skill belongs to a stage, gates enforce the dependencies that matter, and `product:next` plus the playbooks do the choosing. You never browse a list.
 
 ---
 
-## The rationale behind every major decision
+## Design decisions
 
-### One unified system with tiered depth — not two separate systems
+### One system, two depth tiers
 
-The temptation is to build a "lite" system for personal projects and a "pro" system for serious products. That creates two things to maintain and two mental models to hold.
+`lite` (3–5 questions, essential sections, rest `[deferred]`) and `pro` (everything). Same skill, same file. Start lite; a pro run later fills the gaps without starting over.
 
-Instead: one system, two depth tiers. The same skill, the same artifact template, the same output location. The tier controls how thorough the interview is and which sections are required vs. deferred. A lite run produces the same file as a pro run — lite just leaves some sections marked `[deferred]`.
+### Interview-first, context-aware
 
-This means you can start lite on a personal project, decide it's worth investing in, and deepen it with a pro run without starting over. Same artifacts, additive process.
+Skills read your repo, `docs/intake/`, and upstream artifacts first, show what they found, and ask only about what's missing. Draft-first anchors you to the AI's guess; interview-first doesn't.
 
-### Interview-first, repo-aware — not template-first
+### Recipes are the authority
 
-Most productivity frameworks give you templates and expect you to fill them in. That requires you to already know what to write, which defeats the purpose.
+Process lives in `recipes/`, not in skill files. Refine the recipe; the skill improves.
 
-This OS flips it: the skill reads your repo first, then interviews you on what it couldn't determine from context. The interview is dynamic — questions you can answer from existing artifacts are pre-populated and shown for confirmation, not asked again. Only missing or stale information gets asked about.
+### One assumption map, shared
 
-The draft-from-context mode (where the skill generates a first draft and you refine it) exists as a fallback, but the default is interview-first because generating a draft too early anchors you to whatever the AI guessed, which is often close enough to accept but wrong in subtle ways.
+`docs/product/assumptions.md` has one canonical table (ID, type, risk, source, evidence, test, verdict). Discover, critique, interview, viability, gtm, stack, and experiment all write to it; `shape` refuses to run while high-risk rows are untested or unwaived. Interviews add evidence; only experiments (or an explicit written waiver) set verdicts.
 
-### Skills read recipes — recipes are the authority
+### Gates that refuse — and log when overridden
 
-This is the most important architectural decision in the system.
+A gated skill that lacks its inputs stops and names the command that fixes it. `--skip-gate` works, but the artifact records `gate_override: true` and `product:next` reports it. Routine overrides are a signal the OS isn't fitting.
 
-If the interview logic lived inside the skill files, improving the process would require editing skill files. That's fine while the system is new, but as you learn what works and what doesn't, you want to refine the process without touching skill infrastructure.
+### Point-in-time decisions, living definitions
 
-By separating recipes (what to ask, what constitutes good output, exit conditions) from skills (the runner that conducts the interview), you get a clean upgrade path: refine the recipe, the skill improves automatically.
+Critiques, experiments, pitches, build files, plans, launches, retros, PMF reviews, check-ins: date-prefixed, never rewritten (only their result fields get filled). Product model, assumptions, business model, go-to-market, architecture, journeys, screens: living, updated in place with change notes.
 
-### Two tracks — not one linear flow
+### Conflicts are flagged, never silently resolved
 
-"New product" and "existing product" are fundamentally different starting conditions. Forcing an existing product through a discovery process it doesn't need is waste. Forcing a new product through an audit process that has nothing to audit is nonsense.
+Code that contradicts the model, a positioning that contradicts the critique, scope that contradicts the architecture — the skill shows the conflict and you decide.
 
-The two tracks diverge at the entry point and converge at `product:model`. After that, the process is the same: shape a slice, spec the screens, build it, reflect.
+### A navigator, not an orchestrator
 
-The audit skill is arguably the most valuable skill in the set for anyone working on a product that already exists, which is most products most of the time. It reconstructs the mental model from what's actually there, rather than from what you think is there.
+`product:next` reads, reports, and recommends. You invoke. Skills stay independent; you can enter at any stage.
 
-### `docs/intake/` as a read-only drop zone
+### `docs/intake/` is yours
 
-Context documents — a brief you wrote, research notes, competitor analysis, user feedback, a Slack thread, a Linear issue — are often the starting point for product work. Without a designated place for them, they end up scattered, linked, or lost.
+Drop briefs, notes, transcripts, tickets, exports there (interview material in `docs/intake/interviews/`). Skills read it; nothing writes to it.
 
-`docs/intake/` is the designated drop zone. Skills read from it. Nothing writes to it. It's yours.
+---
 
-You can also bypass the default and point skills at any folder or file at invocation time:
+## The 22 skills
 
+### Always
+
+**`product:next`** — Status: stage, gaps behind it, overdue decisions (kill dates, overrun experiments, unrecorded launches, due PMF reviews), and the next command. Situation mode: `product:next "<situation>"` → playbook. Read-only.
+
+**`product:checkin`** — Weekly, ~10 min. Last week's commitments vs evidence, the one number, time split, energy, pattern detection across 4 weeks (building instead of selling, polishing without users, new-idea itch, burnout), kill-criteria check, ≤3 commitments for next week. → `docs/checkins/YYYY-MM-DD-checkin.md`
+
+### 0 · Choose
+
+**`product:ideate`** — Founder inventory (skills, access, audiences, constraints) → idea sources → kill filters (can you reach 20 users? do they already pay? fits your hours?) → scoring → exactly one pick and the first 5 people to talk to. → `docs/ideas/YYYY-MM-DD-ideation.md` (cwd)
+
+**`product:triage`** — Scores every project in a folder on six dimensions, forces one focus, an explicit do-not-touch list, and kill candidates (including projects whose own critique or PMF review said Kill). → `docs/triage/YYYY-MM-DD-triage.md` (cwd)
+
+### 1 · Understand
+
+**`product:discover`** — Idea brief → canonical assumption map (must cover desirability, viability, distribution) with independent AI risk rating → evidence check (none / opinion / behavioral). → `docs/product/product-model.md` (seed), `docs/product/assumptions.md`
+
+**`product:audit`** — Reads the codebase (routes, components, types, nav) and interviews you → screen inventory, extracted object model, terminology and state gaps, prioritized problems. → `docs/product/audit.md`
+
+**`product:interview`** — `prep`: who qualifies, where to find them, a non-pitching outreach message, a Mom Test script mapped to assumption IDs, what would change your mind. `synthesize`: reads notes, transcripts, tickets, and feature requests; separates behavior from compliments; clusters patterns across ≥2 sources; updates evidence. → `docs/research/…-interview-kit.md`, `…-synthesis.md`
+
+### 2 · Challenge
+
+**`product:critique`** — The red team. Restates the idea as a falsifiable sentence, researches competitors, substitutes, and prior failures, scores 7–11 lenses (problem reality, why now, why you, willingness to pay, distribution, commoditization, unit economics…), runs a pre-mortem and a steelman, re-rates your risks, and ends with **Pursue / Sharpen / Park / Kill**, the riskiest assumption, the cheapest test, and a dated kill criterion. Works cold on a paragraph or warm on discovery artifacts. → `docs/specs/…-critique.md`
+
+### 3 · Money & reach
+
+**`product:viability`** — Founder income goal → revenue model → price anchored to value and alternatives → ramen math (customers needed, churn, leads) → bottom-up market → unit economics incl. per-user AI cost → runway → funding path → **Math works / works only if… / doesn't work**. → `docs/product/business-model.md`
+
+**`product:gtm`** — Narrow beachhead ICP → named watering holes → channel bullseye → first-10-customers plan with real names or places → messaging → distribution time budget → channel experiments. Also the post-launch "nobody came" diagnosis. → `docs/product/go-to-market.md`
+
+### 4 · Test
+
+**`product:experiment`** — One of six methods (landing page, concierge, wizard of oz, fake door, smoke test, **pre-sale**), threshold set before running, hard time budget; `record` writes the verdict into the assumption map. → `docs/specs/…-experiment.md`
+
+### 5 · Define
+
+**`product:model`** — Core objects, relationships, lifecycle states, glossary, information architecture, opportunities, positioning (pre-filled from the critique and go-to-market), non-goals. → `product-model.md`, `glossary.md`, `information-architecture.md`
+
+**`product:journey "<flow>"`** — Trigger → steps (user action + system response) → failure states per step → completion. → `docs/product/journeys/<name>.md`
+
+### 6 · Architect
+
+**`product:stack`** — Use-what-you-know constraints, build-vs-buy for auth/billing/email/jobs/analytics/AI (default: managed), max 2 innovation tokens, data model sketch, hosting profile, cost at 0/100/1,000 users, security baseline, mandatory not-now list. → `docs/product/architecture.md`
+
+### 7 · Scope
+
+**`product:shape "<feature>"`** — Problem, appetite (a maximum, not an estimate), solution outline, no-gos, risks, rabbit holes, testable done criteria. Refuses on untested high-risk assumptions; warns when business model or go-to-market is missing. → `docs/specs/…-pitch.md`
+
+**`product:spec "<screen>"`** — Purpose, primary user question, layout, all states (loading, empty, error, domain-specific), copy rules, acceptance criteria. → `docs/screens/<name>.md`
+
+### 8 · Build
+
+**`product:build`** — Readiness checklist, architecture skeleton, instrumentation plan, and a self-contained execution brief; records `readiness: ready|blocked`. → `docs/specs/…-build.md`
+
+**`product:plan`** — Walking skeleton first, riskiest work early, tasks ≤2 sessions with verifiable acceptance checks, coverage of every done criterion and screen state, cuts proposed when estimates exceed appetite, per-task agent handoff blocks, parking lot. → `docs/specs/…-plan.md`
+
+### 9 · Launch
+
+**`product:launch`** — Readiness where every item is a blocker (loses data, money, or trust) or nice; payments, legal and ops checklists; launch threshold set in advance; channel sequence from your go-to-market; T-14 → T+7 timeline; launch-day runbook; `record` mode for results. → `docs/specs/…-launch.md`
+
+**`product:measure`** — Feature mode: primary metric from the pitch's done criteria, baseline, target, events. `product` mode: activation moment, active-user definition, retention cohorts, acquisition sources, revenue events. → `docs/product/journeys/<slug>-telemetry.md` · `product-telemetry.md`
+
+### 10 · Learn
+
+**`product:reflect "<feature>"`** — Evaluates the pitch's bet against evidence → continue / improve / simplify / pivot / kill. → `docs/specs/…-retro.md`
+
+**`product:pmf`** — Cohort retention, Sean Ellis survey, segment pull, vanity metrics excluded, the sunk-cost question → fit verdict (too early → strong) and decision (persevere-narrow / iterate core / pivot / kill with a shutdown plan) with a next review date. → `docs/specs/…-pmf.md`
+
+---
+
+## Tracks
+
+**Judge an idea — stop before building:**
 ```
-product:shape using docs/brief.md, docs/research/competitors.md
+product:discover lite → product:critique → product:interview prep → [talk to 5 people] → product:interview synthesize → product:viability → product:experiment
 ```
 
-The system is flexible about where context comes from. The important thing is that it reads it before asking you to repeat it.
-
-### Point-in-time artifacts for decisions, living documents for definitions
-
-Shaped pitches, build checklists, and retrospectives are decisions made at a point in time. They should be immutable — you want to be able to look back at what you decided and why, without the artifact being updated to match current reality.
-
-Product model, glossary, information architecture, screen specs, and journeys are definitions of the current state of the product. They should be updated as the product evolves. Re-running the relevant skill enters update mode — asks only about what changed, appends a change note, never silently overwrites.
-
-The date prefix on decision artifacts (`YYYY-MM-DD-feature-pitch.md`) makes it obvious which are which.
-
-### Conflict detection — never silent resolution
-
-When a skill reads the codebase and finds something that contradicts the existing docs — a route that isn't in the IA, an object that exists in code but not in the product model, a screen that was removed but still has a spec — it flags the discrepancy and asks you to decide.
-
-It never silently resolves conflicts. Silent resolution is how documentation diverges from reality and becomes worthless. You always own the resolution.
-
-### No full orchestrator — a lightweight navigator instead
-
-The temptation is to build a `product:next` skill that reads the project state and automatically kicks off the right next skill. That's a beautiful concept that becomes fragile in practice.
-
-Instead, `product:next` is a navigator: it reads artifacts, reports what exists vs. what's missing, and tells you what to run next. You make the invocation. The system gives you orientation, not automation.
-
-This keeps the skills independent. You can enter at any phase. A mature project with a solid product model can go straight to `product:shape` without running `product:model` again. A project that needs one specific screen spec doesn't have to run the full journey mapping phase first.
-
-### The `product:audit` skill as the GlassFlow entry point
-
-This OS was designed first with GlassFlow in mind — a product that already exists, is partially incoherent, and needs a revamp rather than a ground-up rebuild. That's the hardest case: you have context, constraints, existing users, existing code. You can't ignore what exists, but you also can't be constrained by every decision that was made when the product was simpler.
-
-`product:audit` handles this by separating **what exists** from **what it should be**. It reads the codebase and produces a factual current-state document. Then `product:model` takes that and helps you formalize the target state. The gap between them is the revamp scope.
-
----
-
-## The 12 skills
-
-### `product:next`
-
-**When to use:** Orientation. Use it when returning to a project after a break, when you're not sure where you are in the process, or when starting a new work session.
-
-**What it does:** Reads all artifacts in `docs/`, builds a status snapshot, tells you what exists vs. what's missing vs. what's deferred. Outputs a "run this next" recommendation.
-
-**Produces:** Nothing. Pure output.
-
----
-
-### `product:triage`
-
-**When to use:** You have multiple projects in flight and feel scattered. Run from a parent directory that contains your project repos.
-
-**What it does:** Scans sibling project directories, interviews you on each (money potential, learning value, urgency, strategic fit, energy required, blockers), and produces a ranked focus / secondary / do-not-touch / kill-candidates list. Forces one choice: what you actually work on this week.
-
-**Produces:**
-- `docs/triage/YYYY-MM-DD-triage.md` (in the cwd where invoked, not in each project)
-
----
-
-### `product:discover`
-
-**When to use:** You have a new product idea and nothing exists yet, or you're starting a fresh feature area with no prior artifacts.
-
-**What it does:** Walks you through idea brief → assumption mapping → discovery inputs. Reads `docs/intake/` or any specified context files first. Pre-populates what it can from context. Interviews you on the problem, target user, current workarounds, trigger moments, desired outcome, existing alternatives, risky assumptions, and scope boundaries.
-
-**Produces:**
-- `docs/product/product-model.md` (seed version)
-- `docs/product/assumptions.md`
-
----
-
-### `product:audit`
-
-**When to use:** You have an existing product, codebase, or MVP that needs to be understood, revamped, or made coherent. This is the starting point for any revamp track.
-
-**What it does:** Reads the codebase structure, route definitions, component names, TypeScript interfaces, navigation structure, and all existing docs. Interviews you on what's working, what's broken, what users complain about, and what the revamp goal is. Produces a current-state document with a screen inventory, extracted object model, identified inconsistencies, terminology gaps, and prioritized problem list.
-
-**Produces:**
-- `docs/product/audit.md`
-
----
-
-### `product:experiment`
-
-**When to use:** After `product:discover` (or `product:audit` for a revamp), when at least one assumption is high-risk. This is the cheap-test gate that sits between discovery and shaping — before you commit to building.
-
-**Invocation:** `product:experiment` or `product:experiment record [slug]` to record the verdict after running.
-
-**What it does:** Walks you through picking exactly one of five lightweight methods (landing page, concierge, wizard of oz, fake door, smoke test), defining a success threshold, and setting a hard time budget. After the experiment runs, records the verdict (validated / invalidated / inconclusive) and updates the assumption map. `product:shape` refuses to proceed on untested high-risk assumptions.
-
-**Produces:**
-- `docs/specs/YYYY-MM-DD-[assumption-slug]-experiment.md`
-- Updates `docs/product/assumptions.md` with the experiment link and verdict
-
----
-
-### `product:model`
-
-**When to use:** After `product:discover` or `product:audit`. When you need to formalize the product's internal world before designing screens or shaping features.
-
-**What it does:** Formalizes core objects + relationships, lifecycle states, user-facing terminology, information architecture, product positioning, and non-goals. For revamp track: reconciles the extracted model from audit with what you want it to be.
-
-**Produces:**
-- `docs/product/product-model.md` (full version)
-- `docs/product/glossary.md`
-- `docs/product/information-architecture.md`
-
----
-
-### `product:journey`
-
-**When to use:** Before designing screens for a specific user flow. Run once per primary journey — typically 3–5 journeys per product.
-
-**Invocation:** `product:journey "create pipeline"`
-
-**What it does:** Maps the named journey from trigger to completion. Reads the product model. Interviews you on: user goal, trigger, entry point, preconditions, required decisions per step, system responses, failure states, completion criteria, follow-up actions.
-
-**Produces:**
-- `docs/product/journeys/[kebab-case-name].md`
-
----
-
-### `product:shape`
-
-**When to use:** Before building any feature. This is the gate between "thinking about it" and "building it."
-
-**Invocation:** `product:shape "reusable connection library"`
-
-**What it does:** Shapes a bounded, buildable feature slice. Reads the product model, existing journeys, existing pitches, and any specified context. Interviews you on: problem statement, appetite (time budget), solution outline, what's explicitly in and out, risks, rabbit holes, done criteria.
-
-**Produces:**
-- `docs/specs/YYYY-MM-DD-[feature]-pitch.md`
-
----
-
-### `product:spec`
-
-**When to use:** Before building a specific screen. One spec per screen.
-
-**Invocation:** `product:spec "pipeline detail overview"`
-
-**What it does:** Produces a complete screen specification. Reads the relevant journey, shaped pitch, existing screen specs (for consistency), and component library structure. Interviews you on: purpose, primary user question, entry points, layout, required data, all states (loading, empty, healthy, degraded, failed, permission denied), components, copy rules, acceptance criteria.
-
-**Produces:**
-- `docs/screens/[kebab-case-name].md`
-
----
-
-### `product:build`
-
-**When to use:** After shaping a feature and speccing its screens, before writing code.
-
-**What it does:** Runs a build readiness checklist. Verifies: domain model exists, empty/loading/error states are specced, copy uses glossary terms, instrumentation is planned. Optionally generates an architecture skeleton suggestion based on the product model and codebase structure.
-
-**Produces:**
-- `docs/specs/YYYY-MM-DD-[feature]-build.md`
-
----
-
-### `product:reflect`
-
-**When to use:** After a feature ships. Always. This is the loop-closer.
-
-**What it does:** Reads the shaped pitch and build checklist. Accepts metrics exports, user feedback, or analytics docs as context. Interviews you on what shipped, what you expected vs. what happened, evidence, and problems found. Forces a structured decision: continue / improve / simplify / pivot / kill.
-
-**Produces:**
-- `docs/specs/YYYY-MM-DD-[feature]-retro.md`
-
----
-
-### `product:measure`
-
-**When to use:** After `product:build`, before or immediately after ship. Run this before `product:reflect` needs evidence to evaluate.
-
-**What it does:** Defines the primary success metric and baseline from the shaped pitch's done criteria. Plans analytics events covering the feature's lifecycle (entered, completed, abandoned, error). Sets targets and a review cadence. For pro: adds secondary metrics and false-positive signals.
-
-**Produces:**
-- `docs/product/journeys/[feature]-telemetry.md`
-
----
-
-## The two tracks
-
-**New product:**
+**New product, full:**
 ```
-product:discover → product:experiment → product:model → product:journey → product:shape → product:spec → product:build → [ship] → product:measure → product:reflect
+(product:ideate) → product:discover → product:critique → product:interview → product:viability → product:gtm → product:experiment → product:model → product:stack → product:journey → product:shape → product:spec → product:build → product:plan → [build] → product:measure product → product:launch → product:reflect / product:pmf
+```
+
+**Fast MVP:**
+```
+product:discover lite → product:critique lite → product:experiment → product:model lite → product:shape lite → product:build lite → product:plan lite → product:launch lite → product:pmf
 ```
 
 **Existing product / revamp:**
 ```
-product:audit → product:model → (product:experiment if revamp adds a high-risk assumption) → product:shape → product:spec → product:build → [ship] → product:measure → product:reflect
+product:audit → product:model → (product:stack) → (product:experiment) → product:shape → product:spec → product:build → product:plan → product:launch → product:measure → product:reflect / product:pmf
 ```
 
-**Navigator (any time):**
-```
-product:next
-```
-
-**Portfolio layer (across projects):**
-```
-product:triage
-```
-
-Skills are independent. You don't have to run the full track. Enter at the phase you need — but each skill's Step 0 gate will refuse if its prerequisites are missing (overridable with `--skip-gate`).
+**Any time:** `product:next` · `product:checkin` weekly · `product:triage` across projects
 
 ---
 
 ## Scenario playbooks
 
-Tracks answer "what kind of product is this?" Playbooks answer "what situation am I in?" — [`docs/playbooks.md`](docs/playbooks.md) maps each situation to an exact skill sequence, the recipes behind every step, and the gates along the way.
+[`docs/playbooks.md`](docs/playbooks.md) — 19 situations, each an exact sequence that passes every gate:
 
-| Your situation sounds like… | Start with |
-|---|---|
-| "Nearly finished, a real customer is waiting — are all scenarios covered?" | `product:audit pro` → playbook 1 |
-| "I keep building but can't converge on the feature set or offering" | `product:audit lite` → playbook 2 |
-| "Someone handed me a clear, ready-made idea" | `product:discover lite` → playbook 3 |
-| "An existing product must be replaced with a modern implementation" | `product:audit pro` → playbook 4 |
-| "Too many projects and ideas" | `product:triage` → playbook 5 |
-| "Brand-new idea, nothing validated" | `product:discover` → playbook 6 |
-| "I shipped something" | `product:measure` → playbook 7 |
-| "Where was I?" | `product:next` → playbook 8 |
-
-Followed in order, no playbook ever needs `--skip-gate`.
+| Before building | While building | Launching & after |
+|---|---|---|
+| No idea yet · Judge an idea · Handed-over idea · New idea, full · Money questions · Fast MVP · Portfolio overload | Stack decision · Unfocused build · Build execution · Legacy replacement | Pre-launch tightening · Public launch · Close the loop · Nobody came · Fit or quit · Feedback flood · Stuck · Reorientation |
 
 ---
 
 ## Depth tiers
 
-Every skill runs in one of two depths:
-
 | | `lite` | `pro` |
 |---|---|---|
 | Questions | 3–5 essential | 8–15 full |
-| Optional sections | Skipped, marked `[deferred]` | Required |
-| Interview style | Conversational | Structured |
-| Artifacts | Essential sections only | All sections complete |
-| Time | ~5–10 min | ~20–40 min |
-| Use for | Personal projects, fast validation | GlassFlow-level, team-facing docs |
+| Optional sections | `[deferred]` | Required |
+| Time | ~5–15 min | ~20–40 min |
+| Use for | Fast validation, small projects | Decisions you'll build months on |
 
-**Invoke a tier:**
 ```
-product:shape lite
-product:shape pro
-product:shape          ← auto-detected from project state
+product:critique lite
+product:critique pro
+product:critique          ← picks a default from project state and says why
 ```
-
-**Auto-detection:**
-- `docs/product/product-model.md` exists → suggest `pro`
-- `docs/product/audit.md` exists → suggest `pro`
-- `docs/product/` empty or missing → suggest `lite`
-- Ambiguous → asks once at start
-
-**Tier escalation:** Start lite, go pro later. Running pro on a lite artifact enters update mode — fills in deferred sections, never overwrites what exists.
 
 ---
 
 ## Context input
 
-Pass existing documents to any skill at invocation:
-
 ```
-product:discover                                      ← checks docs/intake/ by default
-product:discover from docs/research/                 ← reads entire folder
-product:discover using docs/brief.md                 ← specific file
-product:discover using docs/brief.md, docs/notes.md  ← multiple files
+product:discover                                      ← reads docs/intake/ by default
+product:discover from docs/research/                 ← a folder
+product:discover using docs/brief.md, docs/notes.md  ← specific files
+product:critique "a paragraph describing the idea"    ← cold start, no files needed
 product:audit — also read docs/old-spec.md           ← natural language
 ```
 
-The skill reads what you point it at, extracts relevant context, pre-populates what it can, and interviews you only on what's missing or ambiguous.
-
-The `docs/intake/` folder is the default drop zone. Put any raw context there before running a skill. It's read-only from the skill's perspective — nothing writes to it.
-
 ---
 
-## Artifact conventions
+## Artifacts
 
-### Living documents (updated in place, no date prefix)
-```
-docs/product/product-model.md
-docs/product/glossary.md
-docs/product/information-architecture.md
-docs/product/assumptions.md
-docs/product/audit.md
-docs/product/journeys/[name].md
-docs/screens/[name].md
-```
+Full map with readers and writers: [`docs/conventions.md` §6](docs/conventions.md).
 
-### Point-in-time documents (date-prefixed, never modified)
 ```
-docs/specs/YYYY-MM-DD-[feature]-pitch.md
-docs/specs/YYYY-MM-DD-[feature]-build.md
-docs/specs/YYYY-MM-DD-[feature]-retro.md
+docs/product/     living: product-model, assumptions, audit, glossary, information-architecture,
+                  business-model, go-to-market, architecture, journeys/, journeys/*-telemetry
+docs/specs/       point-in-time: critique, experiment, pitch, build, plan, launch, retro, pmf
+docs/screens/     living screen specs
+docs/research/    interview kits and syntheses
+docs/checkins/    weekly check-ins
+docs/intake/      yours — read by skills, never written (interview material in intake/interviews/)
+docs/ideas/, docs/triage/   written in the folder where you run ideate/triage
 ```
 
-### Standard frontmatter
-```yaml
----
-type: product-model | journey | shaped-pitch | screen-spec | build-checklist | retro | audit | assumptions
-product: [product name]
-tier: lite | pro
-status: draft | complete | deferred
-created: YYYY-MM-DD
-updated: YYYY-MM-DD
-skill: product:[skill-name]
-related:
-  journey: docs/product/journeys/[name].md
-  pitch: docs/specs/YYYY-MM-DD-[feature]-pitch.md
----
-```
-
-`status: deferred` marks sections a lite run skipped. A pro run fills them in and updates the status.
+Standard frontmatter: `type`, `product`, `tier`, `status`, `created`, `updated`, `skill`, `related`, plus decision fields other skills read (`verdict`, `kill_date`, `conclude_by`, `readiness`, `next_review`, …) and `gate_override: true` when a gate was skipped.
 
 ---
 
 ## Frameworks this draws from
 
-This OS is not a single framework. It combines proven building blocks:
-
 | Area | Source |
 |---|---|
-| Customer discovery | The Mom Test — ask about behavior, not opinions |
-| Opportunity structuring | Continuous Discovery Habits (Teresa Torres) — outcomes → opportunities → solutions |
-| Feature scoping | Shape Up (Basecamp) — appetite, boundaries, rabbit holes |
-| Validated learning | Lean Startup — Build → Measure → Learn |
-| User intent | Jobs-to-be-Done — what is the user trying to accomplish |
-| Navigation | Information architecture principles |
-| Screen definition | Screen spec pattern (text-based Figma replacement) |
-| Delivery | Scrumban/Kanban — WIP limits, feedback loops |
+| Customer conversations | *The Mom Test* (Rob Fitzpatrick) — past behavior, not opinions |
+| Opportunity structuring | *Continuous Discovery Habits* (Teresa Torres) |
+| Validated learning | *The Lean Startup* (Eric Ries) — cheapest experiment first |
+| Red-teaming | Pre-mortem (Gary Klein); steelmanning |
+| Business model | Ramen profitability (Paul Graham); bottom-up market sizing; LTV/CAC unit economics |
+| Distribution | *Traction* Bullseye (Weinberg & Mares); "do things that don't scale" (Graham) |
+| Stack choices | *Choose Boring Technology* innovation tokens (Dan McKinley) |
+| Feature scoping | *Shape Up* (Ryan Singer) — appetite, no-gos, rabbit holes |
+| Build sequencing | Walking skeleton (Alistair Cockburn); vertical slices |
+| User intent | Jobs-to-be-Done |
+| Product-market fit | Sean Ellis 40% test; retention-curve flattening; segment-first PMF (Rahul Vohra) |
 
-The important principle: use them as ingredients, not religion. The cookbook approach means you extract what's useful from each framework and discard the ceremony.
+Ingredients, not religion.
 
 ---
 
 ## What this is not
 
-- A project management system. It doesn't track tickets or sprints.
-- A design system. It produces specs; you implement the design system separately.
-- A replacement for user research. It structures what you know; it can't generate evidence you don't have.
-- A one-size-fits-all process. Lite runs exist because not every idea deserves a 40-page PRD.
-- Something to follow step-by-step every time. Enter at the phase you need. Use what's useful.
+- **Not a replacement for talking to users.** It prepares the conversations and makes sense of them; it can't have them for you.
+- **Not legal, tax, or financial advice.** Those topics appear as checklists for a professional.
+- **Not a project management tool.** Plans have checkboxes; there are no tickets or sprints.
+- **Not a design system.** It writes specs; design skills implement them.
+- **Not a catalog.** Every skill has a stage and a route; you shouldn't have to browse.
+- **Not a pipeline you must finish.** A Kill verdict is the system working.
 
 ---
 
 ## Installation
 
-Product OS is installed as a **Claude Code plugin** — a local directory that Claude Code loads automatically in every session. There is no package manager, no npm install, no binary. You clone the repo once and point Claude Code at it.
+Product OS is a Claude Code plugin (`product`) served from a local marketplace (`product-dev-os-local`) defined in this repo's `.claude-plugin/`.
 
-**Prerequisite:** [Claude Code](https://claude.ai/code) installed and working.
+**Prerequisite:** [Claude Code](https://claude.ai/code). `jq` if you want the usage log.
 
-### Step 1: Clone the repo
-
-Clone it somewhere permanent on your machine. A good location is alongside other tools you keep globally:
+### 1. Clone
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/product-dev-os.git ~/tools/product-dev-os
+git clone https://github.com/vladamon/product-dev-os.git ~/tools/product-dev-os
 ```
 
-Or wherever you prefer — the path just needs to be stable.
+### 2. Add the marketplace and install the plugin
 
-### Step 2: Register it as a global plugin
-
-Open (or create) `~/.claude/settings.json` and add the repo path to the `plugins` array:
-
-```json
-{
-  "plugins": [
-    "/Users/YOUR_USERNAME/tools/product-dev-os"
-  ]
-}
+```bash
+claude plugin marketplace add ~/tools/product-dev-os
+claude plugin install product@product-dev-os-local
 ```
 
-Use the absolute path to where you cloned the repo. If `settings.json` doesn't exist yet, create it with that content.
+Or inside a Claude Code session: `/plugin` and follow the prompts.
 
-### Step 3: Verify
+### 3. Verify
 
-Open any project in Claude Code and type:
-
-```
-product:next
-```
-
-Claude should respond with a product status report (or a message that no artifacts exist yet). If it does, the plugin is loaded and all `product:*` skills are available.
-
-### That's it
-
-All 12 skills are now available in every repo you open — no per-project setup required. Artifacts always land in the current project's `docs/` folder, so the plugin stays global while the output stays local.
-
----
-
-### Local installation (project-scoped)
-
-If you want the skills available only in a specific project rather than globally, create a `.claude/settings.json` file in that project's root instead:
-
-```json
-{
-  "plugins": [
-    "/Users/YOUR_USERNAME/tools/product-dev-os"
-  ]
-}
-```
-
-Claude Code merges project-level and global settings, so both approaches can coexist.
-
----
+Open any project and run `product:next`. You should get a status report (or "No product artifacts found").
 
 ### Updating
 
-To get the latest recipes and skills:
+```bash
+cd ~/tools/product-dev-os && git pull
+claude plugin marketplace update product-dev-os-local
+```
+
+Then start a new session. Installed plugins run from a cache copy keyed by the git commit, so `git pull` alone does not change what Claude Code loads. (`plugin.json` intentionally has no `version` field — pinning one would freeze the cache until someone bumps it.)
+
+### Moving an existing install to another clone
+
+If `claude plugin marketplace list` shows `product-dev-os-local` pointing at an old path, or the plugin shows as disabled:
 
 ```bash
-cd ~/tools/product-dev-os
-git pull
+claude plugin marketplace remove product-dev-os-local
+claude plugin marketplace add /absolute/path/to/product-dev-os
+claude plugin install product@product-dev-os-local
+claude plugin enable product@product-dev-os-local
 ```
 
-No restart needed — Claude Code reads plugin files on each invocation.
+### Usage log (optional)
 
----
+The plugin's hook logs every `product:*` run so you can see which skills pull weight. Point it at the repo's log in `~/.claude/settings.json`:
 
-## First use
+```json
+{
+  "env": {
+    "PRODUCT_OS_USAGE_LOG": "/absolute/path/to/product-dev-os/docs/os-usage-log.md"
+  }
+}
+```
 
-**Existing product (recommended starting point):**
-```
-product:audit
-```
-Reads your codebase, interviews you on what works and what doesn't, produces `docs/product/audit.md` — a current-state analysis ready to feed into `product:model`.
+Without it, rows go to `~/.claude/product-os/usage-log.md`.
 
-**New product:**
-```
-product:discover
-```
-Runs idea brief → assumption mapping → discovery inputs. Produces a seed product model and a ranked assumption list.
+### Without installing
 
-**Not sure where to start:**
-```
-product:next
-```
-Reads all existing artifacts and tells you exactly what phase you're in and what to run next. Safe to run any time — read-only, never writes anything.
-
-**After shipping a feature, always close the loop:**
-```
-product:measure "feature name"   ← set up measurement before data disappears
-product:reflect "feature name"   ← evaluate the bet with evidence
-```
+For a one-off — say, a friend who wants their idea judged and doesn't use Claude Code — give any Claude conversation `recipes/20-idea-critique.md` plus sections 7–8 of `docs/conventions.md`, and ask it to follow the recipe on the idea. You lose the gates and artifacts; you keep the method.

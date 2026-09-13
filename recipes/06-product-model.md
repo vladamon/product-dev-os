@@ -1,6 +1,6 @@
 ---
 id: 06-product-model
-phase: definition
+phase: define
 tier-lite: true
 tier-pro: true
 produces: docs/product/product-model.md (core sections), docs/product/glossary.md

@@ -1,6 +1,6 @@
 ---
 id: 09-shaped-pitch
-phase: design
+phase: scope
 tier-lite: true
 tier-pro: true
 produces: docs/specs/YYYY-MM-DD-[feature]-pitch.md

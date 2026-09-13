@@ -1,5 +1,5 @@
 ---
-name: product:shape
+name: shape
 description: Use this skill when the user invokes `/product:shape [feature idea]` or asks to scope, plan, or define a feature before building it.
 ---
 # product:shape — Feature Scoping
@@ -42,22 +42,37 @@ Then STOP. Do not proceed to Step 1.
 
 **Check 2 — high-risk assumptions have been tested or explicitly waived:**
 
-If `docs/product/assumptions.md` exists and contains any assumption with `Risk: high` whose row does NOT have a recorded experiment verdict (`Verdict: validated | invalidated | inconclusive` or `Verdict: waived` with a reason):
+If `docs/product/assumptions.md` exists and has any *untested high-risk* row — Risk `high` and Verdict blank or `pending` (gate rule in `docs/conventions.md` §5; legacy `Risk: high` list lines count):
 ```
 ✗ Cannot run product:shape yet.
 
 Untested high-risk assumption(s):
-  - [verbatim assumption text]
-  - [verbatim assumption text]
+  - A[n] — [verbatim assumption text]
+  - A[n] — [verbatim assumption text]
 
 Run this first:
   product:experiment
 
-Or, to proceed at acknowledged risk, edit docs/product/assumptions.md and add
-`Verdict: waived — [your reason]` to each high-risk row. The reason will be
+Or, to proceed at acknowledged risk, set the row's Verdict column in
+docs/product/assumptions.md to `waived — [your reason]`. The reason will be
 copied into the pitch's Risks section.
 ```
 Then STOP.
+
+**Check 2b — money and reach (warning, not refusal):**
+
+On the new-product track (`assumptions.md` exists, no `audit.md`), if `docs/product/business-model.md` or `docs/product/go-to-market.md` is missing:
+```
+⚠ Shaping before [viability | distribution | both] is checked.
+
+"Nobody pays" and "nobody hears about it" kill more solo products than bad
+features. Consider first:
+  product:viability   — does the money math work?
+  product:gtm         — how do the first 10 customers find this?
+
+Proceed anyway? (y/n)
+```
+Record a "yes" in the pitch's Risks section: `Shaped without [business model | go-to-market].`
 
 **Check 3 — feature scope is named:**
 

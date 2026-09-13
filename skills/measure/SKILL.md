@@ -1,27 +1,40 @@
 ---
-name: product:measure
-description: Use this skill when the user invokes `/product:measure [feature]` or wants to set up measurement for a shipped or about-to-ship feature.
+name: measure
+description: Use this skill when the user invokes `/product:measure`, wants to set up measurement for a shipped or about-to-ship feature, or needs product-level activation and retention tracking before a launch or a product-market-fit review.
 ---
-# product:measure — Feature Instrumentation
+# product:measure — Instrumentation
 
-Use this skill when the user invokes `/product:measure [feature]` or wants to set up measurement for a shipped or about-to-ship feature.
+Use this skill when the user invokes `/product:measure [feature]` or `/product:measure product`, or wants to set up measurement before evidence is needed.
 
 ## Purpose
 
-Set up instrumentation to measure whether a shaped bet is paying off. Define success metrics, specify analytics events, establish baselines, and set targets. Run after `product:build`, before or immediately after ship — so that `product:reflect` has evidence to evaluate.
+Plan the instrumentation that later judgments depend on. Two modes:
+
+- **Feature mode** — `product:measure "[feature]"`. Is a shaped bet paying off? Success metric seeded from the pitch's done criteria, baseline, target, lifecycle events. Read by `product:reflect`.
+- **Product mode** — `product:measure product`. Is the product as a whole working? Activation moment, active-user definition, retention cohorts, acquisition sources, revenue events. Read by `product:launch` (launch threshold) and `product:pmf` (retention). Needs no pitch — it is seeded from the product promise.
+
+Run before or immediately after ship — evidence not planned before ship is rarely collected after.
 
 Read recipe `recipes/16-measure.md` for the authoritative process.
 
 ## Contract
-Requires: docs/specs/YYYY-MM-DD-[slug]-pitch.md (required: complete done criteria), docs/specs/YYYY-MM-DD-[slug]-build.md (recommended)
-Produces: docs/product/journeys/[slug]-telemetry.md
-Updates: docs/product/journeys/[slug]-telemetry.md (in update mode if the feature ships iterations)
+Requires:
+  feature mode — docs/specs/YYYY-MM-DD-[slug]-pitch.md (required: complete done criteria), docs/specs/YYYY-MM-DD-[slug]-build.md (recommended)
+  product mode — docs/product/product-model.md (required: Product Promise + Primary Users non-deferred); business-model.md, go-to-market.md (recommended)
+Produces:
+  feature mode — docs/product/journeys/[slug]-telemetry.md
+  product mode — docs/product/journeys/product-telemetry.md
+Updates: the same file in update mode when it exists
 
 ## Step 0: Verify prerequisites (gate)
 
-The pitch's done criteria are the seed for the primary metric. Without them, this skill is guessing.
+**Gate override:** `--skip-gate` proceeds past any refusal below; write `gate_override: true` in the telemetry frontmatter and `Gate skipped — [check]` under False Positive Signals (`docs/conventions.md` §3).
 
-**Check — pitch exists with done criteria:**
+Determine the mode first: the argument `product` (or "whole product", "activation", "retention") → product mode; anything else → feature mode.
+
+**Feature mode — pitch exists with done criteria:**
+
+The pitch's done criteria are the seed for the primary metric. Without them, this skill is guessing.
 
 If no pitch matches the feature:
 ```
@@ -32,9 +45,8 @@ No pitch found for "[feature]".
 Run this first:
   product:shape "[feature]"
 
-Why this matters:
-  Done criteria from the pitch become the primary metrics. Without a pitch,
-  metrics are invented in a vacuum and rarely match what the feature was supposed to do.
+Or, if you want product-level activation and retention (no pitch needed):
+  product:measure product
 ```
 Then STOP.
 
@@ -47,79 +59,113 @@ at least one specific, testable done criterion.
 ```
 Then STOP.
 
-If checks pass, proceed.
+**Product mode — product promise exists:**
 
-## Step 1: Identify the feature
+If `docs/product/product-model.md` is missing or Product Promise / Primary Users are `[deferred]`:
+```
+✗ Cannot run product:measure product yet.
 
-If no feature specified:
-- Read `docs/specs/` and find the most recent build file without a corresponding telemetry file
-- Ask: "Are we setting up measurement for '[feature name from latest build]'?"
+Missing requirements:
+  - docs/product/product-model.md [missing OR Product Promise / Primary Users deferred]
 
-If a feature name is passed: search `docs/specs/` for a matching pitch and build file.
+Run this first:
+  product:discover lite   (new product)  or  product:audit lite   (existing product)
 
-## Tier resolution
+Why this matters:
+  Activation is the moment a user first gets the value the product promises.
+  Without a written promise, "activated" gets defined as "signed up".
+```
+Then STOP.
+
+## Step 1: Identify the target
+
+**Feature mode.** If no feature specified: find the most recent build file without a corresponding telemetry file and ask "Are we setting up measurement for '[feature]'?" If a name is passed: find the matching pitch and build file.
+
+**Product mode.** If `product-telemetry.md` exists, enter update mode: "Product telemetry exists from [date]. I'll update definitions, baselines, and targets."
+
+## Step 2: Tier resolution
 1. User specified `lite` or `pro` in invocation → use it, no questions asked
-2. Build file found with an instrumentation plan section → default to `pro`, announce: "Defaulting to pro — build file has an instrumentation plan. Run lite? (y/n)"
-3. Only pitch found, no build file → default to `lite`, announce: "Defaulting to lite — no build file found. Run pro? (y/n)"
-4. Otherwise → ask: "Run **lite** (primary metric + baseline + target, ~5 min) or **pro** (full event plan + secondary metrics + review cadence, ~15 min)?"
+2. Feature mode, build file has an instrumentation plan → default to `pro`, announce: "Defaulting to pro — build file has an instrumentation plan. Run lite? (y/n)"
+3. Product mode, a `*-launch.md` exists or users are live → default to `pro`, announce: "Defaulting to pro — live users; cohorts and acquisition sources matter now. Run lite? (y/n)"
+4. Otherwise → ask: "Run **lite** (primary metric + baseline + target, ~5 min) or **pro** (full event plan, secondary metrics, cohorts, review cadence, ~15 min)?"
 
-## Step 2: Read context
+## Step 3: Read context
 
-**1. Shaped pitch:** `docs/specs/[date]-[feature]-pitch.md` — read done criteria (these become the success metrics)
-**2. Build checklist:** `docs/specs/[date]-[feature]-build.md` — read instrumentation plan section if present
-**3. Related journey:** `docs/product/journeys/` — find journeys this feature affects (for event naming)
+**Feature mode**
+1. Shaped pitch — done criteria (these become the success metrics)
+2. Build checklist — instrumentation plan section if present
+3. Related journey in `docs/product/journeys/` — for event naming
 
-## Step 3: Show context summary
+**Product mode**
+1. `product-model.md` — Product Promise (defines the activation moment), Core Objects (event names)
+2. `business-model.md` — revenue model (trial, subscription, upgrade events), ARPU and churn assumptions (targets)
+3. `go-to-market.md` — inner-ring channels (acquisition source values)
+4. Onboarding or primary journeys in `docs/product/journeys/`
+5. Codebase — detect an analytics SDK (PostHog, Plausible, GA, Amplitude, Mixpanel, Segment, etc.)
+
+## Step 4: Show context summary
 
 ```
-product:measure — setting up measurement for "[Feature Name]"
+product:measure — [feature "[Feature Name]" | product mode]
 
-Done criteria from pitch (these become success metrics):
-  [list each done criterion]
+[Feature] Done criteria from pitch (these become success metrics):
+  [list]
+[Product] Promise: "[product promise]" → candidate activation moment: [guess]
+          Revenue model: [from business-model or "none"]  Channels: [from go-to-market or "none"]
 
-Instrumentation plan from build:
-  [list planned events, or "none specified"]
+Instrumentation already planned: [events, or "none specified"]
+Analytics tool detected: [name | none — events will need an instrumentation layer]
 
-Related journey: [name if found, or "not found"]
-
-Will ask about: [primary metric, baseline, target, events]
+Will ask about: [list]
 
 Correct anything?
 ```
 
 Wait for confirmation.
 
-## Step 4: Conduct the interview
+## Step 5: Conduct the interview
 
-**Lite — 3 questions:**
+**Feature mode — lite (3 questions):**
 1. "Based on the done criteria, what is the single number that would tell you this feature is working?"
 2. "What is the baseline for that number right now — before the feature shipped (or an estimate if it hasn't)?"
 3. "What target would make you confident the bet paid off?"
 
-**Pro — additional questions (read `recipes/16-measure.md` for full set):**
-4. "What secondary metrics matter? (Numbers that could move even if the primary doesn't — leading indicators.)"
-5. "What would a false positive look like — the primary metric looks good but for the wrong reason?"
-6. "What events should fire when a user interacts with this feature? At minimum: entered, completed, abandoned, error."
-7. "When will you review these numbers for the first time? Day 1? Day 7? Day 30?"
+**Feature mode — pro adds (see `recipes/16-measure.md`):**
+4. "What secondary metrics matter? (Leading indicators that can move before the primary does.)"
+5. "What would a false positive look like — the primary metric looks good for the wrong reason?"
+6. "What events should fire? At minimum: entered, completed, abandoned, error."
+7. "When will you first review these numbers? Day 1? Day 7? Day 30?"
 
-**Event naming (pro only):**
-For each step in the related journey that this feature touches, confirm or define the analytics event:
+**Product mode — lite (4 questions):**
+1. "What is the moment a new user first gets the value your product promises? That's the activation event — not signup."
+2. "What counts as an *active* user — which action, and how often does the underlying problem naturally occur (daily, weekly, monthly)?"
+3. "What activation rate (activated ÷ signed up) and week-4 retention would tell you it's working? Baseline if you have one."
+4. "Which analytics tool will record these — or what's the simplest way to count them by hand at first?"
+
+**Product mode — pro adds:**
+5. "How will you know where each signup came from — UTM, referrer, or a 'how did you hear about us' question?"
+6. "Which revenue events matter — trial started, converted, upgraded, churned?"
+7. "What is your one north-star number for the next 3 months?"
+8. "What would a false positive look like — e.g. activations from your own test accounts or a launch-day spike?"
+9. "When will you review cohorts — weekly for the first 8 weeks?"
+
+**Event naming (pro, both modes):** for each journey step touched, confirm or define:
 ```
-Journey step: "User submits the form"
-→ Proposed event: [feature]_form_submitted
-   Properties: { user_id, duration_ms, [domain-specific fields] }
+Journey step: "User creates their first invoice"
+→ Proposed event: invoice_created   Properties: { user_id, is_first, source }
    Confirm or rename?
 ```
 
-## Step 5: Produce the artifact
+## Step 6: Produce the artifact
 
-Check if `docs/product/journeys/[feature-slug]-telemetry.md` already exists. If so, enter update mode: "A telemetry doc exists from [date]. I'll update baselines and add new events."
+Update mode if the file exists: update baselines and add events; never delete historical baselines — append a dated note.
 
-Write `docs/product/journeys/[feature-slug]-telemetry.md`:
+**Feature mode** — `docs/product/journeys/[feature-slug]-telemetry.md`:
 
 ```
 ---
 type: telemetry
+scope: feature
 product: [Product Name]
 feature: [Feature Name]
 tier: [lite|pro]
@@ -135,56 +181,112 @@ related:
 # Measurement: [Feature Name]
 
 ## Primary Metric
-
 | Metric | Baseline | Target | Current |
 |--------|----------|--------|---------|
 | [name] | [value] | [value] | [fill after ship] |
 
 ## Secondary Metrics
-[pro: table of secondary metrics; lite: mark as [deferred]]
+[pro: table; lite: [deferred]]
 
 ## Analytics Events
-[pro: table of events + properties; lite: mark as [deferred]]
-
+[pro: table; lite: [deferred]]
 | Event | When fired | Properties |
 |-------|-----------|-----------|
-| [event_name] | [trigger] | [key properties] |
 
 ## False Positive Signals
-[pro: what looks good but isn't; lite: mark as [deferred]]
+[pro; lite: [deferred]]
 
 ## Review Cadence
-[When to check: day 1, day 7, day 30, and what question to ask at each checkpoint]
+[day 1 / day 7 / day 30 and the question asked at each]
 ```
 
-## Step 6: Summarize
+**Product mode** — `docs/product/journeys/product-telemetry.md`:
 
 ```
-Measurement setup complete → docs/product/journeys/[slug]-telemetry.md
+---
+type: telemetry
+scope: product
+product: [Product Name]
+tier: [lite|pro]
+status: active
+created: [date]
+updated: [date]
+skill: product:measure
+related:
+  product_model: docs/product/product-model.md
+  business_model: docs/product/business-model.md
+  go_to_market: docs/product/go-to-market.md
+---
 
-Primary metric: [metric name]
-Baseline: [value] → Target: [value]
+# Product Measurement: [Product Name]
+
+## Activation
+**Activation event:** [event] — [the value moment, in the product promise's words]
+| Metric | Baseline | Target | Current |
+|--------|----------|--------|---------|
+| Activation rate (activated ÷ signups) | | | |
+| Time to activation (median) | | | |
+
+## Active User Definition
+[Action] at least [N times] per [natural frequency of the problem]
+
+## Retention
+Weekly signup cohorts. Report % still active at W1 / W4 / W8. Target W4: [value]
+| Cohort (week of) | Signups | W1 | W4 | W8 |
+|---|---|---|---|---|
+
+## North Star
+[pro: one number for the next 3 months; lite: [deferred]]
+
+## Acquisition Sources
+[pro: how source is captured + source values from go-to-market; lite: [deferred]]
+
+## Revenue Events
+[pro: trial_started, subscription_activated, upgraded, churned …; lite: [deferred]]
+
+## Analytics Events
+| Event | When fired | Properties |
+|-------|-----------|-----------|
+
+## False Positive Signals
+[pro; lite: [deferred]]
+
+## Review Cadence
+[weekly cohort review for 8 weeks, then monthly; first product:pmf after 4–8 weeks of usage]
+```
+
+## Step 7: Summarize
+
+```
+Measurement setup complete → docs/product/journeys/[slug | product]-telemetry.md
+
+[Feature] Primary metric: [name]  Baseline: [value] → Target: [value]
+[Product] Activation: [event]  Active = [definition]  W4 retention target: [value]
 Events defined: [N] (pro) / [deferred] (lite)
+Analytics tool: [name | none — add an instrumentation layer before launch]
 
 Recommended next step:
-  After sufficient data has collected:
-  product:reflect "[feature name]" — to evaluate against these metrics
-
-  Pass this file as context:
-  product:reflect using docs/product/journeys/[slug]-telemetry.md
+  [Feature] After data has collected:  product:reflect "[feature]"
+  [Product, pre-launch]                product:launch
+  [Product, users live 4–8 weeks]      product:pmf
 ```
 
 ## Fallback questions (if recipe unavailable)
-1. "What is the one number that would tell you this feature is working?"
-2. "What is the current baseline for that number (before the feature shipped)?"
+1. "What is the one number that would tell you this is working?"
+2. "What is the current baseline for that number?"
 3. "What target would make you confident the bet paid off?"
-4. "What events should fire when a user interacts with this feature? Cover: entered, completed, abandoned, error."
+4. "What events should fire? Cover: entered, completed, abandoned, error."
 5. "When will you review these numbers for the first time?"
+
+## Artifact naming
+Living documents, updated in place. One telemetry file per feature slug; exactly one `product-telemetry.md` per product.
 
 ## Rules
 
-- A primary metric is mandatory. "We'll figure it out later" is not acceptable — the shaped pitch has done criteria, and at least one maps to a measurable number.
+- A primary metric (feature) or activation event (product) is mandatory. "We'll figure it out later" is not acceptable.
 - Baseline must be established before or at ship. A target without a baseline is not measurable.
-- Events must cover the minimum lifecycle: entered, completed, abandoned, error.
-- If no analytics infrastructure exists in the project, flag it explicitly: "No analytics tool detected in the codebase — these events will need an instrumentation layer before data can be collected."
-- Never skip this skill because "we'll measure later." Evidence not planned before ship is rarely collected after.
+- Feature events cover the minimum lifecycle: entered, completed, abandoned, error.
+- Activation is a value moment, never signup or login.
+- The active-user definition matches the natural frequency of the problem — a monthly-invoicing tool is not judged on daily actives.
+- If no analytics infrastructure exists, flag it explicitly: "No analytics tool detected — these events need an instrumentation layer before data can be collected."
+- Never skip this skill because "we'll measure later."

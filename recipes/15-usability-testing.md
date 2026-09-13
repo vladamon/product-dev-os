@@ -1,6 +1,6 @@
 ---
 id: 15-usability-testing
-phase: delivery
+phase: launch
 tier-lite: false
 tier-pro: true
 produces: [no artifact — manual process]

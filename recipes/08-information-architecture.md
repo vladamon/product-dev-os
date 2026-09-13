@@ -1,6 +1,6 @@
 ---
 id: 08-information-architecture
-phase: definition
+phase: define
 tier-lite: false
 tier-pro: true
 produces: docs/product/information-architecture.md

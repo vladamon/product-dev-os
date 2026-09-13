@@ -1,6 +1,6 @@
 ---
 id: 07-journey-map
-phase: definition
+phase: define
 tier-lite: true
 tier-pro: true
 produces: docs/product/journeys/[name].md

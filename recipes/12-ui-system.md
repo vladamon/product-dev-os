@@ -1,6 +1,6 @@
 ---
 id: 12-ui-system
-phase: design
+phase: scope
 tier-lite: false
 tier-pro: true
 produces: docs/design/ui-system.md

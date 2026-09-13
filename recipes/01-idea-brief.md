@@ -1,6 +1,6 @@
 ---
 id: 01-idea-brief
-phase: discovery
+phase: understand
 tier-lite: true
 tier-pro: true
 produces: docs/product/product-model.md (seed)
@@ -37,7 +37,7 @@ Ask one at a time:
 Ask lite questions 1–5, then:
 
 6. **When does the user feel this pain?** What is the specific trigger moment?
-7. **What alternatives exist?** Name specific products, not categories.
+7. **What alternatives exist?** Name specific products, not categories. Capture what the founder already knows — `product:critique` researches the landscape properly afterwards.
 8. **What is intentionally out of scope?** What will this product never try to do?
 
 ## Output structure

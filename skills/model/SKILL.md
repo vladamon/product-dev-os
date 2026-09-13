@@ -1,6 +1,6 @@
 ---
-name: product:model
-description: Use this skill when the user invokes `/product:model` or asks to formalize the product model, objects, glossary, or information architecture.
+name: model
+description: Use this skill when the user invokes `/product:model` or asks to formalize the product model, objects, glossary, positioning, or information architecture.
 ---
 # product:model — Product Definition
 
@@ -20,6 +20,8 @@ Updates: docs/product/product-model.md (in update mode if file exists), docs/pro
 ## Step 0: Verify prerequisites (gate)
 
 The model has to be grounded in something — either fresh discovery or an audit of what exists. Modeling from a blank slate produces fiction.
+
+**Gate override:** `--skip-gate` proceeds; write `gate_override: true` in the product-model frontmatter and `Gate skipped — no assumptions.md or audit.md` under Non-Goals (`docs/conventions.md` §3).
 
 **Check — at least one entry point document exists:**
 
@@ -44,6 +46,8 @@ If only one entry point doc exists, note which track is active:
 - `audit.md` only → revamp track
 - Both → revamp track (audit takes precedence; assumptions is supplementary)
 
+**Warning — untested high-risk assumptions (not a refusal):** if `assumptions.md` has rows with Risk `high` and Verdict blank or `pending`, say: "⚠ [N] high-risk assumptions are untested (A[n], …). Modeling now is fine, but product:shape will refuse until they're tested or waived."
+
 ## Step 1: Tier resolution
 1. User specified `lite` or `pro` in invocation → use it, no questions asked
 2. `docs/product/audit.md` exists → default to `pro`, announce: "Defaulting to pro — audit found. Run lite? (y/n)"
@@ -60,10 +64,15 @@ If `docs/product/product-model.md` exists:
 
 ## Step 3: Read context
 
-**1. User-specified files** (from `--from`, `--using`, or natural mention)
+**1. User-specified files** (from `from`, `using`, or natural mention)
 **2. `docs/intake/`** — if exists and no files specified
 **3. Existing product docs:** `docs/product/audit.md`, `docs/product/assumptions.md`
-**4. TypeScript types:** look for `*.types.ts`, `types/`, `interfaces/` — extract domain object candidates
+**4. Validation artifacts (feed positioning and opportunities):**
+   - Latest `docs/specs/*-critique.md` — competitive landscape and alternatives → pre-populate **Main alternative** and **Differentiation**; fatal/serious lenses → candidate **Non-Goals**
+   - `docs/research/*-synthesis.md` — patterns → pre-populate **Opportunities** (recipe 04) with evidence
+   - `docs/product/go-to-market.md` — beachhead ICP → **Primary user** must match it; flag a mismatch
+   - `docs/product/business-model.md` — who pays vs who uses → **User Roles**
+**5. TypeScript types:** look for `*.types.ts`, `types/`, `interfaces/` — extract domain object candidates
 
 ## Step 4: Show context summary
 
@@ -72,6 +81,11 @@ product:model — reading project...
 
 Found:
   [list existing docs with status]
+
+Pre-populating from validation work:
+  Main alternative: [from critique, or "none"]
+  Primary user: [from go-to-market beachhead, or "none"]
+  Opportunities with evidence: [N from synthesis, or "none"]
 
 Domain objects detected from codebase:
   [list TypeScript types/interfaces found, if any]
@@ -87,7 +101,7 @@ Wait for confirmation.
 
 Read `recipes/06-product-model.md` for the exact question set. For pro, also read `recipes/04-opportunity-map.md`, `recipes/05-positioning.md`, and `recipes/08-information-architecture.md`.
 
-Ask one question at a time. Wait for complete answers.
+Ask one question at a time. Wait for complete answers. For pre-populated answers, show the source and ask for confirmation instead of asking from scratch.
 
 **Core object question (always ask, even in update mode if objects are sparse):**
 "What are the main things this product creates, manages, or tracks? List them all — we'll define each one."
@@ -110,12 +124,15 @@ For pro: fill in all sections.
 
 ## Step 7: Conflict detection
 
-After writing, compare domain objects found in the codebase (Step 3) against the documented model. Flag any discrepancies:
+After writing, compare domain objects found in the codebase (Step 3) against the documented model, and positioning against validation artifacts. Flag any discrepancies:
 
 ```
 ⚠ Discrepancy: TypeScript interface `DeduplicationRule` found in codebase
   but not documented in the product model.
   Add it? (y / n / defer)
+
+⚠ Discrepancy: Primary user "small agencies" differs from go-to-market beachhead
+  "solo freelance designers". Align which? (model / go-to-market / defer)
 ```
 
 ## Step 8: Summarize
@@ -129,8 +146,10 @@ Produced:
   docs/product/information-architecture.md — [if written]
 
 Recommended next step:
+  product:stack — if no codebase exists yet: choose stack, managed services, hosting
+
   product:journey "[primary journey name]" — to map the most important user flow
-  
+
   Or if you need to scope a specific improvement:
   product:shape "[feature idea]"
 ```
@@ -147,10 +166,11 @@ If at any point the model reveals a fundamental mismatch ("that object doesn't e
 1. Stop the interview immediately
 2. Record what was defined so far in `docs/product/product-model.md` with `status: draft` (partial)
 3. Note the conflict explicitly in the file: `<!-- PIVOT: [what was wrong] — restart from product:audit or product:discover -->`
-4. Say: "Model paused. Conflict found: [what's wrong]. Recommended: run product:audit to reconstruct from what actually exists, then re-run product:model."
+4. Say: "Model paused. Conflict found: [what's wrong]. Recommended: run product:audit to reconstruct from what actually exists (or product:discover for a new product), then re-run product:model."
 
 ## Rules
 
 - The glossary must have one entry per core object. Never leave an object unnamed.
 - Object states must be complete — if a state exists in the codebase that isn't in the model, flag it.
 - Never create terminology in the product model that contradicts the glossary.
+- Positioning claims (alternative, differentiation) must not contradict the critique's research without saying why.

@@ -1,6 +1,6 @@
 ---
 id: 16-measure
-phase: learning
+phase: launch
 tier-lite: false
 tier-pro: true
 produces: docs/product/journeys/[slug]-telemetry.md (via product:measure); docs/specs/YYYY-MM-DD-[feature]-retro.md (evidence section, via product:reflect)
@@ -28,18 +28,18 @@ For every feature, measure at minimum:
 | Error frequency | How often do users hit validation errors or failures? |
 | Return usage | Do users use the feature more than once? |
 
-For pipeline products specifically:
+Example — the journey every product has, signup to first value (rename `[object]` / `[core_action]` to your product model's terms):
 
 | Event | Why it matters |
 |-------|---------------|
-| wizard_started | Feature discovery |
-| connection_selected | First meaningful step completion |
-| validation_failed | Pain point identification |
-| validation_passed | Journey progress |
-| config_reviewed | Pre-deploy engagement |
-| pipeline_deployed | Journey completion |
-| pipeline_creation_abandoned | Drop-off detection |
-| time_to_first_successful_deployment | Core success metric |
+| signup_completed | Top of the activation funnel |
+| onboarding_started | Did they begin setup at all? |
+| first_[object]_created | First meaningful step completion |
+| [core_action]_failed | Pain point identification |
+| [core_action]_succeeded | Journey completion — the "aha" moment |
+| onboarding_abandoned | Drop-off detection (with last step reached) |
+| upgrade_started / subscription_activated | Willingness to pay, observed |
+| time_to_first_value | Core activation metric |
 
 ## What "actionable metrics" means
 

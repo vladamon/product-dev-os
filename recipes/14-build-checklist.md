@@ -1,6 +1,6 @@
 ---
 id: 14-build-checklist
-phase: delivery
+phase: build
 tier-lite: true
 tier-pro: true
 produces: docs/specs/YYYY-MM-DD-[feature]-build.md
@@ -29,6 +29,7 @@ Use this after shaping a feature and writing screen specs, before writing code. 
 - [ ] Object relationships are reflected in the data layer plan
 
 ### Architecture readiness (pro only)
+- [ ] Consistent with `docs/product/architecture.md` — bought capabilities aren't rebuilt, nothing from the not-now list is in scope (if the file exists)
 - [ ] Domain module structure is planned
 - [ ] New API endpoints and data transformations are identified
 - [ ] Existing components to reuse are identified

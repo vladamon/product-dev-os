@@ -1,0 +1,16 @@
+{
+  "description": "Logs every product:* skill invocation to the Product OS usage log (path from PRODUCT_OS_USAGE_LOG)",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Skill",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/log-skill-usage.sh\""
+          }
+        ]
+      }
+    ]
+  }
+}

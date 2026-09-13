@@ -1,6 +1,6 @@
 ---
 id: 03-discovery
-phase: discovery
+phase: understand
 tier-lite: false
 tier-pro: true
 produces: docs/product/assumptions.md (updated with evidence)
@@ -15,7 +15,16 @@ Use this when you have real or potential users to talk to, and you want to valid
 
 This recipe is based on The Mom Test principle: do not ask people if your idea is good. Ask about their actual past behavior, current problems, and existing workarounds. Opinions about future hypotheticals are worthless. Past behavior is evidence.
 
-**Lite tier:** This recipe is pro-only. For lite projects, skip to Opportunity Map (recipe 04) using whatever evidence you have.
+**Lite tier:** `product:discover lite` runs only the two-question evidence check below and records the evidence level. Pro reviews every conversation already held against the exit condition.
+
+**Running the conversations:** `product:interview prep` produces a recruiting plan, outreach message, and script from this recipe's question types; `product:interview synthesize` turns the notes into evidence on the assumption map.
+
+### Evidence check (both tiers)
+
+1. "Have you talked to anyone who has this problem? What did they do the last time it happened — not what they said they would do?"
+2. "Is anyone paying today — money, hours, a hire, a hacked-together tool — to deal with this?"
+
+Evidence level: **none** (no conversations) · **opinion** (compliments, "I'd use it") · **behavioral** (past behavior, workarounds, spend).
 
 ## Inputs
 

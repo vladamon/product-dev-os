@@ -1,6 +1,6 @@
 ---
 id: 18-triage
-phase: portfolio
+phase: choose
 tier-lite: true
 tier-pro: true
 produces: docs/triage/YYYY-MM-DD-triage.md (in the directory where invoked)
@@ -26,7 +26,7 @@ For each project, score 1–5 on each dimension. Higher is better unless noted.
 
 | Dimension | Question |
 |---|---|
-| Money potential | If this works, what's the realistic 12-month revenue or comparable value? |
+| Money potential | If this works, what's the realistic 12-month revenue or comparable value? (Pre-fill from `docs/product/business-model.md` verdict and target when it exists.) |
 | Learning value | What skill, audience, or insight does this give me that compounds elsewhere? |
 | Urgency | Is there a real external deadline, opportunity window, or competitive pressure? |
 | Strategic fit | Does this reinforce my current positioning / long-term direction? |

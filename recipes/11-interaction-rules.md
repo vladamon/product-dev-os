@@ -1,6 +1,6 @@
 ---
 id: 11-interaction-rules
-phase: design
+phase: scope
 tier-lite: false
 tier-pro: true
 produces: docs/product/interaction-rules.md

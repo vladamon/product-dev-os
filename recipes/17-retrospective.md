@@ -1,6 +1,6 @@
 ---
 id: 17-retrospective
-phase: learning
+phase: learn
 tier-lite: true
 tier-pro: true
 produces: docs/specs/YYYY-MM-DD-[feature]-retro.md

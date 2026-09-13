@@ -1,5 +1,5 @@
 ---
-name: product:audit
+name: audit
 description: Use this skill when the user invokes `/product:audit` or asks to analyze or understand an existing product, codebase, or MVP.
 ---
 # product:audit — Existing Product Entry Point

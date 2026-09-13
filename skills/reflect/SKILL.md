@@ -1,5 +1,5 @@
 ---
-name: product:reflect
+name: reflect
 description: Use this skill when the user invokes `/product:reflect` or asks to do a retrospective after shipping a feature.
 ---
 # product:reflect — Retrospective
@@ -18,6 +18,10 @@ Produces: docs/specs/YYYY-MM-DD-[slug]-retro.md
 Updates: nothing (new date-prefixed file per run)
 
 ## Step 0: Verify prerequisites (gate)
+
+**Gate override:** `--skip-gate` proceeds past any refusal below; write `gate_override: true` in the retro frontmatter and `Gate skipped — [check]` under Problems Found (`docs/conventions.md` §3).
+
+**Scope:** this skill judges one shipped *feature*. "Is the whole product working — persevere, pivot, or quit?" is `product:pmf`.
 
 A retro without a pitch is a story. The pitch is the bet; the retro evaluates the bet.
 

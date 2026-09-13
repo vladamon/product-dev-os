@@ -1,6 +1,6 @@
 ---
 id: 10-screen-spec
-phase: design
+phase: scope
 tier-lite: true
 tier-pro: true
 produces: docs/screens/[screen-name].md

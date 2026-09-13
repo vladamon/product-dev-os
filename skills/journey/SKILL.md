@@ -1,5 +1,5 @@
 ---
-name: product:journey
+name: journey
 description: Use this skill when the user invokes `/product:journey [journey name]` or asks to map a specific user flow.
 ---
 # product:journey — Journey Mapping
@@ -18,6 +18,8 @@ Produces: docs/product/journeys/[kebab-case-name].md
 Updates: docs/product/journeys/[kebab-case-name].md (in update mode if journey already exists)
 
 ## Step 0: Verify prerequisites (gate)
+
+**Gate override:** `--skip-gate` proceeds past any refusal below; write `gate_override: true` in the journey frontmatter and `Gate skipped — [check]` under its Failure States section (`docs/conventions.md` §3).
 
 Journeys describe how users move objects through states. Without an object model, "the user creates a thing then it does something" is the kind of vague journey that survives until implementation breaks it.
 

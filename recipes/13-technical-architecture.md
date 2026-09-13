@@ -1,6 +1,6 @@
 ---
 id: 13-technical-architecture
-phase: delivery
+phase: build
 tier-lite: false
 tier-pro: true
 produces: docs/specs/YYYY-MM-DD-[feature]-build.md (architecture section)
@@ -11,7 +11,9 @@ skill: product:build
 
 ## When to use
 
-Use this when planning the frontend architecture for a new feature. The architecture should reflect the product model — if the product model says "PipelineDraft" is a central object, the code should have a strong PipelineDraft concept too.
+Use this when planning the frontend architecture for a **single feature** inside a codebase. Project-level decisions — stack, managed services, hosting, data model, cost — belong to `product:stack` (recipe 24) and live in `docs/product/architecture.md`; when that file exists, this recipe follows it. The folder pattern below is an example from a React/TypeScript codebase; existing codebase patterns always win.
+
+The architecture should reflect the product model — if the product model says "PipelineDraft" is a central object, the code should have a strong PipelineDraft concept too.
 
 Architecture that diverges from the product model creates a maintenance tax: every change requires translating between what the product means and what the code calls it.
 

@@ -1,6 +1,6 @@
 ---
 id: 00-audit
-phase: discovery
+phase: understand
 tier-lite: true
 tier-pro: true
 produces: docs/product/audit.md

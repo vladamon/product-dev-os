@@ -1,0 +1,15 @@
+{
+  "name": "product-dev-os-local",
+  "description": "Product OS — a solo-founder companion plugin for Claude Code, from idea to product-market fit",
+  "owner": {
+    "name": "vladamon",
+    "url": "https://github.com/vladamon/product-dev-os"
+  },
+  "plugins": [
+    {
+      "name": "product",
+      "source": "./",
+      "description": "Product OS — solo-founder companion from idea to product-market fit"
+    }
+  ]
+}

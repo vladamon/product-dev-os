@@ -1,123 +1,163 @@
 ---
-name: product:next
-description: Use this skill when the user invokes `/product:next` or asks where they are in the product development process.
+name: next
+description: Use this skill when the user invokes `/product:next`, asks where they are or what to do next in a project, returns after a break, or describes their situation as a founder ("launched and nobody came", "not sure what to build", "stuck") and needs routing.
 ---
 # product:next — Navigator
 
-Use this skill when the user invokes `/product:next` or asks where they are in the product development process.
+Use this skill when the user invokes `/product:next`, asks where they are in the product journey, or describes a situation and wants to know which skills to run.
 
 ## Purpose
 
-Orientation. Read the current project's docs structure and produce a status snapshot: what exists, what's missing, what's deferred, and what to do next. Do not ask any questions. Do not produce any artifacts. This skill is read-only.
+Orientation. Two modes, both read-only:
+- **Status mode** (no argument) — read the project's `docs/` tree, place it on the companion map (`docs/conventions.md` §1), surface warnings, and name the next skill.
+- **Situation mode** (argument is a free-text situation, e.g. `product:next "launched two weeks ago, 3 signups"`) — match the situation to a playbook in the plugin's `docs/playbooks.md` and give the exact sequence, adjusted for the artifacts that already exist.
+
+Do not ask questions. Do not produce artifacts.
 
 ## Step 1: Read all product artifacts
 
-Look for these files in the current project:
+Use the artifact map in `docs/conventions.md` §6. In the current project, look for:
 
-**Living documents (check existence and status frontmatter):**
-- `docs/product/product-model.md`
-- `docs/product/glossary.md`
-- `docs/product/information-architecture.md`
-- `docs/product/assumptions.md`
-- `docs/product/audit.md`
-- `docs/product/journeys/` — list all files
+**Living documents** (existence + `status` frontmatter + `[deferred]` markers):
+- `docs/product/product-model.md`, `assumptions.md`, `audit.md`, `glossary.md`, `information-architecture.md`
+- `docs/product/business-model.md`, `go-to-market.md`, `architecture.md`
+- `docs/product/journeys/` — journeys and `*-telemetry.md`
+- `docs/screens/`
 
-**Point-in-time documents (check existence and date):**
-- `docs/specs/` — list all files, group by feature (by shared date prefix)
+**Point-in-time documents** (existence, date, frontmatter `status` / `verdict` / `decision`):
+- `docs/specs/` — group by slug: `critique`, `experiment`, `pitch`, `build`, `plan`, `launch`, `retro`, and `*-pmf.md`
+- `docs/research/` — interview kits and syntheses
+- `docs/checkins/` — latest check-in date and its commitments
 
-**Screen specs:**
-- `docs/screens/` — list all files
+**Outside the project:** `docs/ideas/` and `docs/triage/` in the cwd or its parent.
 
-**Intake:**
-- `docs/intake/` — note if files exist (context ready to use)
+**Intake:** `docs/intake/` — note files ready to use (and `docs/intake/interviews/` separately).
 
-## Step 2: Determine the phase
+## Step 2: Place the project on the companion map
 
-Based on what exists, classify the project:
+Report the **furthest stage reached** and any **gaps behind it**.
 
-| Phase | Signal |
+| Stage | Signal |
 |-------|--------|
-| Pre-discovery | No docs/product/ directory or all files missing |
-| Discovery in progress | assumptions.md exists but no product-model.md |
-| Assumptions pending test | assumptions.md has high-risk rows without an experiment verdict |
-| Experiment in flight | docs/specs/*-experiment.md exists with verdict: pending |
-| Audit complete | audit.md exists but no full product-model.md |
-| Model defined | product-model.md exists (check status: complete vs. deferred) |
-| Journey mapped | journeys/ has files |
-| Feature shaped | docs/specs/ has a pitch file |
-| Feature specced | docs/screens/ has files matching a shaped feature |
-| Build ready | docs/specs/ has a build file matching a pitch |
-| Post-ship | docs/specs/ has a retro file |
+| 0 Choose | No project docs; ideation or triage file nearby |
+| 1 Understand | `assumptions.md` or `audit.md` exists |
+| 2 Challenge | a `*-critique.md` exists |
+| 3 Money & reach | `business-model.md` and/or `go-to-market.md` exist |
+| 4 Test | a `*-experiment.md` exists (note `verdict`) |
+| 5 Define | `product-model.md` without `[deferred]` Core Objects; journeys exist |
+| 6 Architect | `architecture.md` exists |
+| 7 Scope | a pitch exists; screen specs match it |
+| 8 Build | a build file matches a pitch; a plan exists (note ticked / total tasks) |
+| 9 Launch | a `*-launch.md` exists (note whether Results are recorded); telemetry exists |
+| 10 Learn | a retro or `*-pmf.md` exists (note decision) |
 
-## Step 2b: Check for drift, orphans, and blocking deferrals
+Track: **new product** if `assumptions.md` exists without `audit.md`; **revamp** if `audit.md` exists.
 
-After classifying the phase, perform these checks:
+## Step 2b: Checks
 
-**Drift check** — compare file dates:
-For each pitch file in `docs/specs/`, check if the pitch is significantly older than `docs/product/product-model.md`. If a pitch predates the product model by more than 30 days, flag:
+Run every check; report findings as warnings.
+
+**Overdue decisions (highest priority)** — read the frontmatter decision fields (`docs/conventions.md` §6):
+- Newest critique with `kill_date` in the past → `⚠ Kill criterion due: [kill_criterion] ([kill_date]) — decide now`
+- Experiment with `verdict: pending` and `conclude_by` in the past → `⚠ Experiment [slug] overran its budget — product:experiment record [slug] (inconclusive is a valid verdict)`
+- Launch with `verdict: pending` and `launch_date` more than 14 days ago → `⚠ Launch [slug] never recorded — product:launch record [slug]`
+- Newest pmf with `next_review` in the past → `⚠ PMF review due — product:pmf`
+- Newest check-in with `missed_streak` ≥ 3 → `⚠ 3+ missed weeks — product:triage`
+
+**Untested high-risk assumptions** (gate rule, `docs/conventions.md` §5): rows with Risk `high` and Verdict blank or `pending`. Legacy list format counts. List each ID and text:
+`⚠ Blocking: [N] high-risk assumption(s) untested — product:shape will refuse; run product:experiment`
+
+**Gate overrides:** every artifact with `gate_override: true` → `⚠ Gate skipped in [file] — upstream work may be missing`
+
+**Drift:** a pitch predating the latest `product-model.md` update by more than 30 days → `⚠ Drift: [slug]-pitch.md predates product-model.md — review before building`
+
+**Orphans:** build without pitch · plan without build · launch without build · retro without build.
+
+**Blocking deferrals:** `product-model.md` has `[deferred]` Core Objects or Lifecycle States while the next step is shape/spec → `⚠ Blocking: run product:model pro first`
+
+**Money & reach gap (new-product track):** a pitch exists but `business-model.md` or `go-to-market.md` is missing → `⚠ Building before viability/distribution is checked — run product:viability / product:gtm`
+
+**Launch without measurement:** a launch file exists but no telemetry file → `⚠ Launch can't be judged — run product:measure`
+
+**Post-launch without fit review:** launch Results recorded more than 28 days ago and no pmf file since → `⚠ Run product:pmf — four weeks of usage is enough for a first read`
+
+**Check-in staleness:** an active plan or recorded launch exists and the latest check-in is older than 7 days (or none exists) → `⚠ No check-in in [N] days — run product:checkin`
+
+**Multi-feature state:** if several pitches lack retros, list each:
 ```
-⚠ Drift: [slug]-pitch.md ([date]) predates product-model.md update ([model date])
-  → Review pitch for consistency with current model before building
+Active features:
+  [date] [slug] — pitch ✓, build [✓/○], plan [x/y tasks], launch [✓/○], retro [✓/○]
 ```
 
-**Orphan check** — look for mismatched document sets:
-- A `*-build.md` with no matching `*-pitch.md` for the same slug:
-  `⚠ Orphan: [date]-[slug]-build.md — no matching pitch found`
-- A `*-retro.md` with no matching `*-build.md`:
-  `⚠ Orphan: [date]-[slug]-retro.md — no matching build file found`
-
-**Blocking deferrals** — check if deferred sections in living docs block the next skill:
-- If `docs/product/product-model.md` contains `[deferred]` lifecycle states, and the recommended next step is `product:shape` or `product:spec`:
-  `⚠ Blocking: product-model.md has deferred lifecycle states — product:shape will have incomplete context; consider running product:model pro first`
-
-**Untested high-risk assumptions** — check the experiment gate before shape:
-- Read `docs/product/assumptions.md` if present. For each row with `Risk: high`, check whether `Verdict:` is present (validated / invalidated / inconclusive / waived). If any high-risk row has no verdict:
-  `⚠ Blocking: [N] high-risk assumption(s) untested — product:shape will refuse; run product:experiment`
-- Also list each untested assumption text so the user knows what's pending.
-
-**Multi-feature state** — if multiple pitches exist without retros, list each:
-```
-Active features (shaped but not yet reflected):
-  [date] [slug] — pitch ✓, build [✓/○], retro [✓/○]
-  [date] [slug] — pitch ✓, build [✓/○], retro [✓/○]
-```
-
-## Step 3: Output the status report
-
-Format:
+## Step 3: Output — status mode
 
 ```
 product:next — [Project Name if detectable, otherwise "this project"]
 
-Phase: [Current phase]
+Track: [new product | revamp]
+Stage: [N — name]   Gaps behind: [e.g. "no critique", "no go-to-market", or "none"]
 
 What exists:
-  ✓ [artifact] — [status: complete / draft / deferred]
-  ✓ [artifact] — [status]
+  ✓ [artifact] — [status / verdict / decision]
   ○ [artifact] — missing
 
 What's deferred:
-  [list any artifacts with status: deferred and which sections need completing]
+  [artifacts with [deferred] sections and which sections]
 
 Warnings:
-  [drift / orphan / blocking deferral findings from Step 2b, or "none"]
+  [findings from Step 2b, overdue decisions first, or "none"]
 
 Active features:
-  [multi-feature state table if multiple pitches in flight, otherwise omit]
+  [table if several, otherwise omit]
 
 Intake:
-  [X files in docs/intake/ ready to use] / [no intake files found]
+  [N files in docs/intake/ — useful for product:<skill>] / [none]
 
 Recommended next step:
-  [Specific skill to run and why]
+  [one specific invocation and why]
+```
 
-  Example: Run `product:model pro` — product-model.md exists but 3 sections
-  are deferred from a previous lite run (lifecycle states, positioning, non-goals).
+**Choosing the recommendation — first match wins:**
+1. An overdue decision → the skill that records it (`product:experiment record`, `product:pmf`, `product:triage`)
+2. No artifacts at all → `product:discover` (new) or `product:audit` (existing codebase); no idea yet → `product:ideate`
+3. Assumptions exist, no critique → `product:critique`
+4. Evidence level none/opinion and no synthesis → `product:interview prep`
+5. Untested high-risk assumptions → `product:experiment`
+6. New-product track missing business model or go-to-market → `product:viability` / `product:gtm`
+7. Model missing or deferred → `product:model`
+8. No architecture and no code yet → `product:stack`
+9. No pitch → `product:shape "[top opportunity]"`
+10. Pitch without specs/build → `product:spec` / `product:build`
+11. Build ready, no plan → `product:plan`
+12. Plan complete, no launch → `product:launch`
+13. Launch without telemetry → `product:measure`
+14. Launch recorded ≥4 weeks, no pmf → `product:pmf`
+15. Shipped feature without retro → `product:reflect`
+16. Otherwise → `product:checkin`
+
+## Step 3b: Output — situation mode
+
+Match the situation to the routing table in the plugin's `docs/playbooks.md`. If two playbooks fit, show both with one line on how to choose.
+
+```
+product:next — situation: "[user's words]"
+
+Closest playbook: [N. Name]
+Why: [one line]
+
+Sequence (adjusted for what exists here):
+  ✓ [skill] — already done ([artifact])
+  → [skill] — start here
+  ○ [skill] — then
+  ○ [skill] — then
+
+Stop condition: [when this playbook is done]
 ```
 
 ## Rules
 
 - Never ask questions. Read and report only.
 - Never produce artifacts. This skill is read-only.
-- If no docs exist at all: "No product artifacts found. If this is a new product, run `product:discover`. If this is an existing product you want to audit, run `product:audit`."
-- If intake files exist: always mention them and which skill would benefit from them.
+- If no docs exist at all: "No product artifacts found. No idea yet → `product:ideate`. New idea → `product:discover`. Existing codebase → `product:audit`."
+- If intake files exist, always mention them and which skill would use them.
+- Overdue decisions are always reported first — they outrank the next stage.

@@ -1,5 +1,5 @@
 ---
-name: product:build
+name: build
 description: Use this skill when the user invokes `/product:build` or asks to verify a feature is ready to build.
 ---
 # product:build — Build Readiness
@@ -8,18 +8,21 @@ Use this skill when the user invokes `/product:build` or asks to verify a featur
 
 ## Purpose
 
-Verify that a shaped feature has everything needed to start building. Run the build checklist. Optionally produce an architecture skeleton. Produces `docs/specs/YYYY-MM-DD-[feature]-build.md`.
+Verify that a shaped feature has everything needed to start building. Run the build checklist. Optionally produce an architecture skeleton. Produces `docs/specs/YYYY-MM-DD-[feature]-build.md`, which `product:plan` turns into ordered tasks.
 
 Read recipes `recipes/14-build-checklist.md` and `recipes/13-technical-architecture.md` for the authoritative process.
 
 ## Contract
 Requires: docs/specs/YYYY-MM-DD-[slug]-pitch.md (required: complete done criteria + no-gos), docs/screens/ with at least one screen spec for this feature (required for non-trivial features), docs/product/product-model.md (required for pro tier)
+Recommended: docs/product/architecture.md (project-level stack and capability decisions from product:stack)
 Produces: docs/specs/YYYY-MM-DD-[slug]-build.md
 Updates: nothing (new date-prefixed file per run)
 
 ## Step 0: Verify prerequisites (gate)
 
 This skill says "ready to build." That claim must be defensible. The gate enforces every input that has to exist before you write production code.
+
+**Gate override:** `--skip-gate` proceeds past any refusal below; write `gate_override: true` in the build file frontmatter and `Gate skipped — [check]` as the first blocker in its readiness section (`docs/conventions.md` §3).
 
 **Check 1 — pitch exists and is complete:**
 
@@ -110,7 +113,8 @@ If a feature name is passed: search `docs/specs/` for a matching pitch file.
 **1. Shaped pitch:** `docs/specs/[date]-[feature]-pitch.md` — read fully
 **2. Screen specs:** `docs/screens/` — find screens related to this feature (match by feature name)
 **3. Product model:** `docs/product/product-model.md`
-**4. Codebase structure** (for pro architecture section):
+**4. Architecture:** `docs/product/architecture.md` if present — capabilities (build vs buy), architecture shape, data model sketch, not-now list
+**5. Codebase structure** (for pro architecture section):
    - Run: `find . -type d -not -path '*/node_modules/*' -not -path '*/.git/*' | head -40`
    - Look for existing feature/domain folder patterns
 
@@ -123,6 +127,7 @@ Found:
   Pitch: [date]-[feature]-pitch.md ✓
   Screen specs: [list matching screens or "none found"]
   Product model: [found/not found]
+  Architecture: [found — shape + key capabilities / not found]
 
 Done criteria from pitch:
   [list done criteria]
@@ -138,6 +143,12 @@ Work through `recipes/14-build-checklist.md` systematically.
 
 For each item, check it against what you found in Step 3. For items that can be verified by reading existing files (e.g., "all screens have loading states specced"), do so automatically. Only ask the user about items that require judgment or information not in the docs.
 
+If `architecture.md` exists, also flag scope that contradicts it — a capability marked "buy" being built, or anything on the not-now list:
+```
+✗ Pitch includes "custom auth flow" — architecture.md says auth is bought (Clerk).
+  Change the pitch, update architecture via product:stack, or proceed? (pitch / stack / proceed)
+```
+
 Flag any failures:
 ```
 ✗ Screen spec for "pipeline-builder-wizard" is missing the error state.
@@ -146,9 +157,9 @@ Flag any failures:
 
 ## Step 6: Architecture skeleton (pro only)
 
-Read `recipes/13-technical-architecture.md`.
+Read `recipes/13-technical-architecture.md` (feature-level). Precedence for structure: `docs/product/architecture.md` → existing codebase patterns → the recipe's example pattern. In arche-ui-seeded repos, follow arche-ui docs 09/15 (see the stack profiles section of the plugin's `docs/playbooks.md`).
 
-Based on the pitch + codebase structure, propose a file structure:
+Based on the pitch + architecture + codebase structure, propose a file structure:
 
 ```
 Proposed structure for [Feature Name]:
@@ -186,12 +197,15 @@ Event                    | When it fires              | Properties
 
 Write `docs/specs/[today's date]-[feature-slug]-build.md` using `templates/build-checklist.md`.
 
+Set frontmatter `readiness: ready` only when no blockers remain; otherwise `readiness: blocked` and list each blocker under **Readiness → Blockers** with what unblocks it. `product:plan` gates on this field; `status` stays `draft` until the checklist is complete.
+
 The Execution Brief section must be self-contained: inline the pitch's problem,
 appetite, in-scope list, no-gos, and done criteria **verbatim**; list each screen
 with its spec file and required states; copy the glossary terms (term + definition)
-the feature's copy must use. An execution agent must be able to build the feature
-from this file plus the referenced screen specs alone — without opening the pitch,
-product model, or glossary.
+the feature's copy must use; list the architecture decisions the feature must respect
+(capabilities bought, not-now items). An execution agent must be able to build the
+feature from this file plus the referenced screen specs alone — without opening the
+pitch, product model, glossary, or architecture file.
 
 ## Step 9: Summarize
 
@@ -207,18 +221,12 @@ Blockers to fix: [list if any]
 
 [If ready]:
 ```
-Implementation handoff:
-  The Execution Brief in the build file is self-contained. Hand the execution
-  agent exactly two things:
-    - docs/specs/[date]-[slug]-build.md  (scope, done criteria, no-gos, terminology)
-    - docs/screens/[matching screens]     (full screen specs)
+Recommended next step:
+  product:plan "[feature]" — break the build into ordered tasks of ≤2 sessions,
+                              walking skeleton first, with agent handoff blocks
 
-  If using superpowers: invoke `writing-plans` and pass those files.
-
-  The architecture skeleton above maps directly to a task decomposition —
-  "New files" → create tasks, "Modified files" → modify tasks.
-
-  Or run `product:measure "[feature]"` first if instrumentation is not yet set up.
+  If instrumentation is not set up yet:
+  product:measure "[feature]"
 ```
 
 ## Artifact naming
@@ -229,3 +237,4 @@ Point-in-time artifact — never overwritten. If `docs/specs/` already contains 
 - Do not mark a feature as "ready to build" if any screen spec is missing required states.
 - Architecture proposals are suggestions — the implementer adapts them to the actual codebase.
 - Instrumentation events should cover: start, key steps, completion, abandonment, and errors.
+- Scope that contradicts `architecture.md` is a blocker until the pitch or the architecture changes.

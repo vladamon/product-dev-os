@@ -1,6 +1,6 @@
 ---
 id: 05-positioning
-phase: definition
+phase: define
 tier-lite: false
 tier-pro: true
 produces: docs/product/product-model.md (positioning section)
@@ -22,6 +22,8 @@ Positioning prevents product sprawl.
 - Idea brief (recipe 01)
 - Assumption map (recipe 02)
 - Discovery findings if available (recipe 03)
+- Critique (`docs/specs/*-critique.md`) — researched alternatives pre-populate "Main alternative" and "Differentiation"
+- Go-to-market (`docs/product/go-to-market.md`) — "Primary user" must match the beachhead ICP, or the mismatch is resolved explicitly
 
 ## Interview Questions
 

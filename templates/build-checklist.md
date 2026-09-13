@@ -4,19 +4,29 @@ product: PRODUCT_NAME
 feature: FEATURE_NAME
 tier: TIER
 status: draft
+readiness: blocked
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 skill: product:build
 related:
   pitch: docs/specs/YYYY-MM-DD-FEATURE-pitch.md
+  architecture: docs/product/architecture.md
 ---
 
 # Build Checklist: FEATURE_NAME
 
+## Readiness
+
+**Readiness:** [ready | blocked] — `ready` only when the list below is empty. `product:plan` reads the frontmatter field.
+
+### Blockers
+
+- [none — or: blocker — what unblocks it — which skill or edit fixes it]
+
 ## Execution Brief
 
 Self-contained handoff for the implementing agent. Scope below is inlined from
-the pitch, glossary, and screen specs — do not re-derive scope from other documents.
+the pitch, glossary, screen specs, and architecture — do not re-derive scope from other documents.
 
 **Problem:** [one sentence, from pitch]
 **Appetite:** [max time budget, from pitch — descope rather than overrun]
@@ -40,6 +50,10 @@ the pitch, glossary, and screen specs — do not re-derive scope from other docu
 | Term | Definition |
 |------|------------|
 | | |
+
+**Architecture constraints** (from `docs/product/architecture.md`, if present):
+- Bought, not built: [capability → vendor]
+- Not now: [items from the not-now list this feature must not introduce]
 
 ## Domain Model
 
@@ -69,6 +83,7 @@ the pitch, glossary, and screen specs — do not re-derive scope from other docu
 [Describe folder/file structure for this feature]
 ```
 
+- [ ] Consistent with `docs/product/architecture.md` (if present)
 - [ ] Feature structure follows existing codebase patterns
 - [ ] Domain logic is separated from UI components
 - [ ] No circular dependencies introduced

@@ -1,20 +1,27 @@
 #!/usr/bin/env bash
-# Logs product:* skill invocations to docs/os-usage-log.md for later reflection.
+# Logs product:* skill invocations to a usage log for later reflection.
 #
-# Wired as a PostToolUse hook on the Skill tool. Reads the hook JSON payload from
-# stdin and appends one markdown table row per product:* skill invocation, across
-# whatever project Claude Code is running in.
+# Wired as a PostToolUse hook on the Skill tool via hooks/hooks.json (ships with
+# the plugin). Reads the hook JSON payload from stdin and appends one markdown
+# table row per product:* skill invocation, across whatever project Claude Code
+# is running in.
 #
 # Why only product:* skills (not every tool): the decision this feeds is "which
 # Product OS skills pull weight." Logging every Read/Bash/Edit would bury that
 # signal. To broaden later, relax the `case "$skill"` guard below.
+#
+# Log location: set PRODUCT_OS_USAGE_LOG (e.g. in ~/.claude/settings.json "env")
+# to your clone's docs/os-usage-log.md. Never derive it from this script's path —
+# installed plugins run from a cache copy, so a relative path would log into the
+# cache instead of your repo.
 
 set -euo pipefail
 
-LOG_FILE="/Users/vladimir.cutkovic/Documents/code/github-vladamon.com/product-dev-os/docs/os-usage-log.md"
+LOG_FILE="${PRODUCT_OS_USAGE_LOG:-$HOME/.claude/product-os/usage-log.md}"
 
 # jq is required; if missing, fail silent so we never block a tool call.
 command -v jq >/dev/null 2>&1 || exit 0
+mkdir -p "$(dirname "$LOG_FILE")" 2>/dev/null || exit 0
 
 input="$(cat)"
 
@@ -50,6 +57,6 @@ printf '| %s | %s | %s | %s | | |\n' "$ts" "$project" "$skill" "$args" >> "$LOG_
 # ponytail: counts the row just written too, hence -gt 1
 unscored="$(grep -c ' | | |$' "$LOG_FILE" || true)"
 if [ "${unscored:-0}" -gt 1 ]; then
-  printf '{"systemMessage":"os-usage-log.md has %s unscored run(s) — fill the Load-bearing? column so the freeze review has evidence."}' "$((unscored - 1))"
+  printf '{"systemMessage":"Product OS usage log has %s unscored run(s) — fill the Load-bearing? column so the skill review has evidence."}' "$((unscored - 1))"
 fi
 exit 0
