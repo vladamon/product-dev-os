@@ -92,7 +92,7 @@ If a feature name is passed: search for matching pitch and build files.
 
 ## Step 3: Read context
 
-**1. User-specified files** (metrics exports, user feedback docs, analytics — from `--from`, `--using`, or `docs/intake/`)
+**1. User-specified files** (metrics exports, user feedback docs, analytics — `from`, `using`, or `docs/intake/`)
 **2. Shaped pitch:** `docs/specs/[date]-[feature]-pitch.md` — read the done criteria and expected outcomes
 **3. Build checklist:** `docs/specs/[date]-[feature]-build.md`
 

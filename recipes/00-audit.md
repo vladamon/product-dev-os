@@ -23,7 +23,7 @@ Use it when:
 
 - The codebase (read file tree, routes, components, type definitions)
 - Any existing docs (`docs/product/`, `docs/specs/`, `docs/screens/`)
-- Optional: user-specified context files (`docs/intake/`, passed via `--from`/`--using`)
+- Optional: user-specified context files (`docs/intake/`, passed via `from`/`using`)
 
 No formal inputs required — the skill extracts what it can from what exists.
 

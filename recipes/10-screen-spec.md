@@ -27,7 +27,7 @@ The screen spec does NOT replace visual design judgment. It defines what must ex
 2. **What is the primary user question?** The single most important thing a user needs to know or do on this screen.
 3. **What does the layout look like?** Describe the structure: header, main content, side panel if any.
 4. **What are the main actions?** List in priority order.
-5. **What states does this screen need to handle?** At minimum: loading, empty, and main state.
+5. **What states does this screen need to handle?** At minimum: loading, empty, error, and main state.
 
 Produce: Purpose + primary question + layout + main actions + core states.
 

@@ -98,7 +98,7 @@ Derive a kebab-case slug from the feature name for the filename: `connection-lib
 
 ## Step 3: Read context
 
-**1. User-specified files** (from `--from`, `--using`, or natural mention)
+**1. User-specified files** (`from`, `using`, or natural mention)
 **2. `docs/intake/`** — if exists and no files specified
 **3. Product model:** `docs/product/product-model.md`
 **4. Related journeys:** `docs/product/journeys/` — look for journeys this feature touches

@@ -19,7 +19,7 @@ Gated skills run a Step 0 prerequisite check and refuse with a specific "run X f
 | 1 Understand | `product:discover` | New idea — brief, canonical assumption map, evidence level |
 | 1 Understand | `product:audit` | Existing product — reconstruct current state before a revamp |
 | 1 Understand | `product:interview` | `prep`: Mom Test kit + recruiting · `synthesize`: turn notes, tickets, requests into evidence |
-| 2 Challenge | `product:critique` | "Is this idea any good?" — landscape research, 11 lenses, pre-mortem, Pursue/Sharpen/Park/Kill |
+| 2 Challenge | `product:critique` | "Is this idea any good?" — landscape research, 7 lenses (lite) / 11 (pro), pre-mortem, Pursue/Sharpen/Park/Kill |
 | 3 Money & reach | `product:viability` | Pricing, ramen math, unit economics, funding path — "does the math work?" |
 | 3 Money & reach | `product:gtm` | Beachhead ICP, watering holes, channel bullseye, first-10-customers plan, messaging |
 | 4 Test | `product:experiment` | Cheapest test for the riskiest assumption (6 methods incl. pre-sale); `record` the verdict |
@@ -29,7 +29,7 @@ Gated skills run a Step 0 prerequisite check and refuse with a specific "run X f
 | 7 Scope | `product:shape` | Bounded feature slice: appetite, no-gos, done criteria |
 | 7 Scope | `product:spec` | One screen's specification with all states |
 | 8 Build | `product:build` | Build readiness + self-contained execution brief (`readiness: ready\|blocked`) |
-| 8 Build | `product:plan` | Ordered tasks ≤2 sessions, walking skeleton first, agent handoff blocks |
+| 8 Build | `product:plan` | Ordered tasks ≤2 sessions, walking skeleton first, agent handoff blocks; `progress` tracks appetite burn |
 | 9 Launch | `product:launch` | Readiness (blockers vs nice), threshold, channel sequence, runbook; `record` results |
 | 9 Launch | `product:measure` | Feature metrics, or `product` mode: activation + retention for the whole product |
 | 10 Learn | `product:reflect` | Retro on one shipped feature: continue / improve / simplify / pivot / kill |
@@ -51,23 +51,25 @@ docs/            ← conventions.md (contract), playbooks.md (situations), notes
 
 **Judge an idea (yours or someone else's) — stop before building:**
 ```
-product:discover lite → product:critique → product:interview prep → [talk to 5 people] → product:interview synthesize → product:viability → product:experiment
+product:discover lite → product:critique → product:interview prep → [talk to 5 people] → product:interview synthesize → product:viability → product:experiment → [run it] → product:experiment record
 ```
 
 **New product, full:**
 ```
-(product:ideate) → product:discover → product:critique → product:interview → product:viability → product:gtm → product:experiment → product:model → product:stack → product:journey → product:shape → product:spec → product:build → product:plan → [build] → product:measure product → product:launch → product:reflect / product:pmf
+(product:ideate) → product:discover → product:critique → product:interview prep → [talk to 5 people] → product:interview synthesize → product:viability → product:gtm → product:experiment → [run it] → product:experiment record → product:model → product:stack → product:journey → product:shape → product:spec → product:build → product:plan → [build] → product:measure product → product:launch → [ship] → product:launch record → product:reflect / product:pmf
 ```
 
 **Fast MVP:**
 ```
-product:discover lite → product:critique lite → product:experiment → product:model lite → product:shape lite → product:build lite → product:plan lite → product:launch lite → product:pmf
+product:discover lite → product:critique lite → product:experiment lite → [run it, ≤3 days] → product:experiment record → product:model lite → product:shape lite → product:spec lite → product:build lite → product:plan lite → [build] → product:launch lite → [ship] → product:launch record → product:pmf lite
 ```
 
 **Existing product / revamp:**
 ```
-product:audit → product:model → (product:stack) → (product:experiment) → product:shape → product:spec → product:build → product:plan → product:launch → product:measure → product:reflect / product:pmf
+product:audit → product:model → (product:stack) → (product:experiment → [run it] → product:experiment record) → product:shape → product:spec → product:build → product:plan → [build] → product:measure → product:launch → [ship] → product:launch record → product:reflect / product:pmf
 ```
+
+Every track passes the gates in order. A high-risk assumption not worth testing can be waived instead (`Verdict: waived — <reason>`); `spec` is skippable when the pitch says "No new screens". Gate notes per sequence: `docs/playbooks.md`.
 
 **Always:** `product:next` · `product:checkin` (weekly) · `product:triage` (portfolio)
 
@@ -78,10 +80,10 @@ When the user describes a **situation** rather than naming a skill ("my friend h
 ## Depth Tiers
 
 Every skill supports two depth tiers:
-- `lite` — 3–5 questions, compact artifact, optional sections deferred (~5–15 min)
-- `pro` — full interview, all sections required (~20–40 min)
+- `lite` — 3–5 questions (critique: 8 short steps), compact artifact, optional sections deferred (~5–15 min)
+- `pro` — the full question set (5–14 depending on the skill), all sections required (~15–40 min)
 
-Invoke with: `product:shape lite` or `product:shape pro`. Without a tier, the skill picks a default from project state and announces it.
+Invoke with: `product:shape lite` or `product:shape pro`. Without a tier, the skill picks a default from project state and announces it — or asks when project state doesn't decide.
 
 ## Protocols
 

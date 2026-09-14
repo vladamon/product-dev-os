@@ -26,7 +26,7 @@ If the idea count is unknown, ask once: "Do you already have 3 or more ideas you
 
 ## Step 2: Read context
 
-**1. User-specified ideas or files** (inline list, `--from`, `--using`, or natural mention)
+**1. User-specified ideas or files** (inline list, `from`, `using`, or natural mention)
 **2. `docs/intake/`** in the cwd — notes, pain journals, lists of ideas
 **3. Prior ideation runs:** `docs/ideas/*-ideation.md` — previous picks and ideas already cut. Do not re-score a cut idea unless the founder states what changed.
 **4. Portfolio signal:** latest `docs/triage/*-triage.md` in the cwd; count subdirectories that look like projects (`.git/`, `package.json`, `pyproject.toml`, …) and how many had a commit in the last 30 days.

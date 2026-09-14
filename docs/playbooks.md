@@ -113,7 +113,7 @@ Every sequence respects the Step 0 gates: followed in order, no playbook needs `
 | 1 | `product:audit pro` (on the legacy codebase) | Requirements baseline: screens, objects, terminology, known problems | 00 |
 | 2 | `product:model pro` | Target state. Explicitly reconcile: keep / rename / drop each legacy object | 04, 05, 06, 08 |
 | 3 | `product:stack pro` | The modern implementation's stack, managed services, data model mapping, and not-now list | 24 |
-| 4 | `product:experiment` — only if the replacement introduces a high-risk assumption (new workflow, new pricing, platform change) | The rewrite itself isn't the risk; the *changes riding along with it* are | 03b |
+| 4 | `product:experiment` — only if the replacement introduces a high-risk assumption (new workflow, new pricing, platform change) | The rewrite itself isn't the risk; the *changes riding along with it* are. No `assumptions.md` yet? The skill seeds one from the assumption you name. Finish with `product:experiment record` | 03b |
 | 5 | `product:journey "<flow>"` — for flows that change | Unchanged flows don't need remapping | 07 |
 | 6 | `product:shape "<migration slice>"` — never shape "the rewrite" as one pitch | An appetite per slice is the guard against the classic rewrite death march | 09 |
 | 7 | `product:spec` → `product:build` → `product:plan` → ship the slice → `product:measure` → `product:reflect`, then repeat from step 6 | | 10, 11, 13, 14, 16, 17, 25 |
@@ -414,7 +414,7 @@ skills and run `review-changes` on the diff before handing back.
 | 2 | `product:critique` | 20 | none (warm mode if `assumptions.md` exists) | `docs/specs/…-critique.md`; critic rows in `assumptions.md` |
 | 3 | `product:viability` | 22 | `assumptions.md` or `audit.md` + Product Promise/Primary Users | `docs/product/business-model.md`; viability rows |
 | 3 | `product:gtm` | 23 | Product Promise + Primary Users non-deferred | `docs/product/go-to-market.md`; distribution rows |
-| 4 | `product:experiment` | 03b | ≥1 untested high-risk row | `docs/specs/…-experiment.md`; Test/Verdict in `assumptions.md` |
+| 4 | `product:experiment` | 03b | ≥1 untested high-risk row (audited product with no map: seeds one) | `docs/specs/…-experiment.md`; Test/Verdict in `assumptions.md` |
 | 5 | `product:model` | 04, 05, 06, 08 | `assumptions.md` or `audit.md` exists | `product-model.md`, `glossary.md`, `information-architecture.md` |
 | 5 | `product:journey` | 07 | product model with core objects non-deferred | `docs/product/journeys/<name>.md` |
 | 6 | `product:stack` | 24 | Core Objects non-deferred, or `audit.md` | `docs/product/architecture.md` |

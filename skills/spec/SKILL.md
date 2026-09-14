@@ -94,7 +94,7 @@ If `docs/screens/[screen-name].md` already exists:
 
 ## Step 4: Read context
 
-**1. User-specified files** (from `--from`, `--using`, or natural mention)
+**1. User-specified files** (`from`, `using`, or natural mention)
 **2. Related journey:** `docs/product/journeys/` — find the journey this screen is part of
 **3. Related pitch:** `docs/specs/` — find the pitched feature this screen belongs to
 **4. Existing screens:** `docs/screens/` — read 2–3 nearby screens for terminology and pattern consistency
@@ -148,7 +148,7 @@ Missing states are the most common cause of incomplete screen specs.
 
 Write `docs/screens/[kebab-case-name].md` using `templates/screen-spec.md`.
 
-For lite: fill in Purpose, Primary User Question, Layout, Primary Action, and core states (loading, empty, main).
+For lite: fill in Purpose, Primary User Question, Layout, Primary Action, and core states (loading, empty, error, main).
 For pro: fill in all sections.
 
 ## Step 8: Consistency check

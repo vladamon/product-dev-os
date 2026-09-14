@@ -64,7 +64,7 @@ If `docs/product/product-model.md` exists:
 
 ## Step 3: Read context
 
-**1. User-specified files** (from `from`, `using`, or natural mention)
+**1. User-specified files** (`from`, `using`, or natural mention)
 **2. `docs/intake/`** — if exists and no files specified
 **3. Existing product docs:** `docs/product/audit.md`, `docs/product/assumptions.md`
 **4. Validation artifacts (feed positioning and opportunities):**

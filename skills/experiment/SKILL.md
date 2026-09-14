@@ -13,26 +13,31 @@ Test the riskiest assumption with the cheapest viable experiment before committi
 Read recipe `recipes/03b-experiment.md` for the authoritative process. The assumption map format is `docs/conventions.md` §5.
 
 ## Contract
-Requires: docs/product/assumptions.md with at least one untested high-risk row (Risk `high`, Verdict blank or `pending`)
+Requires: docs/product/assumptions.md with at least one untested high-risk row (Risk `high`, Verdict blank or `pending`) — or, for an existing product without an assumption map, docs/product/audit.md (the map is seeded in Step 0)
 Produces: docs/specs/YYYY-MM-DD-[assumption-slug]-experiment.md
-Updates: docs/product/assumptions.md — Test and Verdict columns of the tested row (on design, and again on `record`)
+Updates: docs/product/assumptions.md — Test and Verdict columns of the tested row (on design, and again on `record`); creates the file when seeding from an audit
 
 ## Step 0: Verify prerequisites (gate)
 
-1. If `docs/product/assumptions.md` does not exist:
+1. If neither `docs/product/assumptions.md` nor `docs/product/audit.md` exists:
    ```
    ✗ Cannot run product:experiment yet.
 
    Missing requirements:
-     - docs/product/assumptions.md is missing
+     - docs/product/assumptions.md is missing (and no audit.md to seed it from)
 
    Run this first:
      product:discover   (new product)
-     product:audit      (existing product)
+     product:audit      (existing product — then re-run product:experiment)
    ```
    Then STOP.
 
-2. Find untested high-risk rows per the gate rule (legacy `Risk: high` list lines count). If none:
+2. If `docs/product/assumptions.md` is missing but `docs/product/audit.md` exists — an existing product; `product:audit` writes no assumption map — seed one:
+   - Ask: "Which assumption does this experiment test? State it so it can be proven false." Then ask its Type and Risk (values in `docs/conventions.md` §5).
+   - If the founder rates it below `high`: "A [medium|low]-risk assumption doesn't block product:shape. Test it anyway? (y/n)" On no, STOP without writing. On yes, test this row and skip check 3.
+   - Show the file before writing: canonical format (§5), frontmatter `skill: product:experiment`, `tier: lite`, `status: draft`; one row `A1` with Source `founder`, Evidence `none yet`, Verdict `pending`; A1 listed as riskiest #1. Write on confirmation.
+
+3. Find untested high-risk rows per the gate rule (legacy `Risk: high` list lines count). If none:
    ```
    ✗ Cannot run product:experiment yet.
 
@@ -43,7 +48,7 @@ Updates: docs/product/assumptions.md — Test and Verdict columns of the tested 
    ```
    Then STOP.
 
-3. If several qualify, list them by ID and ask: "Which one are we testing? Pick the one whose invalidation would kill the most downstream work."
+4. If several qualify, list them by ID and ask: "Which one are we testing? Pick the one whose invalidation would kill the most downstream work."
 
 **Gate override:** `--skip-gate` proceeds; write `gate_override: true` in the experiment frontmatter and `Gate skipped — [check]` in its Setup section.
 
@@ -57,7 +62,7 @@ Updates: docs/product/assumptions.md — Test and Verdict columns of the tested 
 1. **`docs/product/assumptions.md`** — the target row verbatim (ID, text, type, evidence so far)
 2. **Prior experiments** — `docs/specs/*-experiment.md` for related assumptions, to avoid duplicates
 3. **Related work** — the latest critique (its "cheapest test"), interview syntheses (evidence), `go-to-market.md` (channels for smoke tests), `business-model.md` (price for pre-sales)
-4. **User-specified files** (from `from`, `using`, or natural mention)
+4. **User-specified files** (`from`, `using`, or natural mention)
 
 ## Step 3: Show context summary
 

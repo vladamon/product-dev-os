@@ -72,7 +72,7 @@ What changed? Proceed anyway? (y/n)
 
 ## Step 2: Read context
 
-**1. User-specified files** (analytics exports, billing exports, survey results — from `--from`, `--using`, or natural mention)
+**1. User-specified files** (analytics exports, billing exports, survey results — `from`, `using`, or natural mention)
 **2. `docs/intake/`** — if it exists and no files were specified
 **3. Launch files:** `docs/specs/*-launch.md` — thresholds, results, verdicts, best channels
 **4. Telemetry:** `docs/product/journeys/product-telemetry.md` first — activation event, active-user definition, retention cohorts; then feature `*-telemetry.md` files. If product telemetry is missing: `⚠ No product telemetry — retention will come from exports or manual counts. Run product:measure product before the next review.`

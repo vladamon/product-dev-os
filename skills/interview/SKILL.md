@@ -71,7 +71,7 @@ Then STOP.
 
 ## Step 2: Read context
 
-**1. User-specified files** (from `--from`, `--using`, or natural mention)
+**1. User-specified files** (`from`, `using`, or natural mention)
 **2. `docs/intake/interviews/`** — all files (synthesize). Read-only: never move, rename, or annotate them.
 **3. `docs/product/assumptions.md`** — full map; note high-risk rows with `Verdict` blank/pending
 **4. `docs/product/product-model.md`** — Primary Users (screening criteria)

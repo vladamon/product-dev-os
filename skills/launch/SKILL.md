@@ -84,7 +84,7 @@ Or plan a new launch anyway? (record / new)
 
 ## Step 2: Read context
 
-**1. User-specified files** (from `--from`, `--using`, or natural mention)
+**1. User-specified files** (`from`, `using`, or natural mention)
 **2. `docs/intake/`** — if it exists and no files were specified
 **3. Build files + pitches:** done criteria, no-gos; `*-plan.md` unticked tasks = scope not yet built
 **4. `docs/product/go-to-market.md`:** beachhead ICP, watering holes, one-liner, messaging, time budget

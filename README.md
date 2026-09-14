@@ -108,7 +108,7 @@ Process lives in `recipes/`, not in skill files. Refine the recipe; the skill im
 
 ### One assumption map, shared
 
-`docs/product/assumptions.md` has one canonical table (ID, type, risk, source, evidence, test, verdict). Discover, critique, interview, viability, gtm, stack, and experiment all write to it; `shape` refuses to run while high-risk rows are untested or unwaived. Interviews add evidence; only experiments (or an explicit written waiver) set verdicts.
+`docs/product/assumptions.md` has one canonical table (ID, type, risk, source, evidence, test, verdict). Discover creates it (or experiment, for an audited product that has none); critique, interview, viability, gtm, stack, and experiment write to it; `shape` refuses to run while high-risk rows are untested or unwaived. Interviews add evidence; only experiments (or an explicit written waiver) set verdicts.
 
 ### Gates that refuse — and log when overridden
 
@@ -134,73 +134,75 @@ Drop briefs, notes, transcripts, tickets, exports there (interview material in `
 
 ## The 22 skills
 
+Where a skill has more than one mode, every mode is shown. "Pro adds" marks what a `lite` run leaves `[deferred]`.
+
 ### Always
 
 **`product:next`** — Status: stage, gaps behind it, overdue decisions (kill dates, overrun experiments, unrecorded launches, due PMF reviews), and the next command. Situation mode: `product:next "<situation>"` → playbook. Read-only.
 
-**`product:checkin`** — Weekly, ~10 min. Last week's commitments vs evidence, the one number, time split, energy, pattern detection across 4 weeks (building instead of selling, polishing without users, new-idea itch, burnout), kill-criteria check, ≤3 commitments for next week. → `docs/checkins/YYYY-MM-DD-checkin.md`
+**`product:checkin`** — Weekly, ~10 min. Last week's commitments vs evidence, the one number, energy, and ≤3 verifiable commitments for next week (at least one user-facing once an MVP exists). Escalations are stated, not suggested: 3 missed weeks → `product:triage`; low energy two weeks running → cut scope or take a break. Pro adds the time split, the kill-criteria check, and pattern detection over the last 4 check-ins (building instead of selling, polishing without users, new-idea itch, appetite overrun, repeat miss, low energy). → `docs/checkins/YYYY-MM-DD-checkin.md`
 
 ### 0 · Choose
 
-**`product:ideate`** — Founder inventory (skills, access, audiences, constraints) → idea sources → kill filters (can you reach 20 users? do they already pay? fits your hours?) → scoring → exactly one pick and the first 5 people to talk to. → `docs/ideas/YYYY-MM-DD-ideation.md` (cwd)
+**`product:ideate`** — Your constraints (hours, runway, what you refuse to do) → candidates → four kill filters (20 reachable users without ads · the problem already costs them time or money · a first version fits ≤6 weeks of your real hours · you'd still work on it after 12 months of slow growth) → scoring → exactly one pick, a runner-up, and the first 5 people to talk to. Zero survivors → a 2-week pain journal; the filters never get lowered. Pro adds a founder inventory (skills, access, audiences) and sourcing lenses. → `docs/ideas/YYYY-MM-DD-ideation.md` (cwd)
 
-**`product:triage`** — Scores every project in a folder on six dimensions, forces one focus, an explicit do-not-touch list, and kill candidates (including projects whose own critique or PMF review said Kill). → `docs/triage/YYYY-MM-DD-triage.md` (cwd)
+**`product:triage`** — Run it from the folder that holds your projects (from inside a project it scans the parent; or pass paths). Needs ≥2 projects; ideation files count as ideas without a repo. Scores each on six dimensions (lite asks 4 questions per project), forces one focus, at most one secondary, an explicit do-not-touch list, and kill candidates — dormant with no next milestone, or a Kill/Park verdict already on file. → `docs/triage/YYYY-MM-DD-triage.md` (cwd)
 
 ### 1 · Understand
 
 **`product:discover`** — Idea brief → canonical assumption map (must cover desirability, viability, distribution) with independent AI risk rating → evidence check (none / opinion / behavioral). → `docs/product/product-model.md` (seed), `docs/product/assumptions.md`
 
-**`product:audit`** — Reads the codebase (routes, components, types, nav) and interviews you → screen inventory, extracted object model, terminology and state gaps, prioritized problems. → `docs/product/audit.md`
+**`product:audit`** — Reads the codebase (routes, components, types, nav) and interviews you → screen inventory and prioritized problems. Pro adds the extracted object model and terminology and state gaps. A re-run updates the existing audit. → `docs/product/audit.md`
 
 **`product:interview`** — `prep`: who qualifies, where to find them, a non-pitching outreach message, a Mom Test script mapped to assumption IDs, what would change your mind. `synthesize`: reads notes, transcripts, tickets, and feature requests; separates behavior from compliments; clusters patterns across ≥2 sources; updates evidence. → `docs/research/…-interview-kit.md`, `…-synthesis.md`
 
 ### 2 · Challenge
 
-**`product:critique`** — The red team. Restates the idea as a falsifiable sentence, researches competitors, substitutes, and prior failures, scores 7–11 lenses (problem reality, why now, why you, willingness to pay, distribution, commoditization, unit economics…), runs a pre-mortem and a steelman, re-rates your risks, and ends with **Pursue / Sharpen / Park / Kill**, the riskiest assumption, the cheapest test, and a dated kill criterion. Works cold on a paragraph or warm on discovery artifacts. → `docs/specs/…-critique.md`
+**`product:critique`** — The red team. Restates the idea as a falsifiable sentence, researches competitors, substitutes, and prior failures, runs a pre-mortem, and scores lenses — 7 in lite (problem reality, user specificity, why now, why you, alternatives, willingness to pay, distribution), 11 in pro (adds build scope, commoditization, trust/data, unit economics) plus a steelman. Ends with **Pursue / Sharpen / Park / Kill**, the riskiest assumption, the cheapest test, and a dated kill criterion. Cold on a paragraph, it writes only the critique; warm on discovery artifacts, it adds high-risk rows to the assumption map (and in pro re-rates your risks). → `docs/specs/…-critique.md`
 
 ### 3 · Money & reach
 
-**`product:viability`** — Founder income goal → revenue model → price anchored to value and alternatives → ramen math (customers needed, churn, leads) → bottom-up market → unit economics incl. per-user AI cost → runway → funding path → **Math works / works only if… / doesn't work**. → `docs/product/business-model.md`
+**`product:viability`** — Founder income goal → who pays → price anchored to value and alternatives → ramen math (customers needed, churn replacement, trials per month) → **Math works / works only if… / doesn't work**, with the lever that would change a "doesn't work". Adds price, willingness-to-pay, and churn rows to the assumption map. Pro adds bottom-up market sizing, unit economics incl. per-user AI cost, runway, and funding path. → `docs/product/business-model.md`
 
-**`product:gtm`** — Narrow beachhead ICP → named watering holes → channel bullseye → first-10-customers plan with real names or places → messaging → distribution time budget → channel experiments. Also the post-launch "nobody came" diagnosis. → `docs/product/go-to-market.md`
+**`product:gtm`** — Narrow beachhead ICP → named watering holes → one inner-ring channel checked against your CAC ceiling → first-10-customers plan with real names or places → a one-liner. Adds distribution rows to the assumption map. Pro adds the full channel bullseye, messaging, distribution time budget, and channel experiments. Also the post-launch "nobody came" diagnosis. → `docs/product/go-to-market.md`
 
 ### 4 · Test
 
-**`product:experiment`** — One of six methods (landing page, concierge, wizard of oz, fake door, smoke test, **pre-sale**), threshold set before running, hard time budget; `record` writes the verdict into the assumption map. → `docs/specs/…-experiment.md`
+**`product:experiment`** — One of six methods (landing page, concierge, wizard of oz, fake door, smoke test, **pre-sale**), threshold set before running, hard time budget. `product:experiment record [slug]` writes the verdict — validated / invalidated / inconclusive — into the assumption map; a row not worth testing gets `waived — <reason>` by hand instead. On an audited product with no assumption map yet, it creates one around the assumption under test. → `docs/specs/…-experiment.md`
 
 ### 5 · Define
 
-**`product:model`** — Core objects, relationships, lifecycle states, glossary, information architecture, opportunities, positioning (pre-filled from the critique and go-to-market), non-goals. → `product-model.md`, `glossary.md`, `information-architecture.md`
+**`product:model`** — Core objects, relationships, lifecycle states, glossary, and an IA skeleton. Pro adds opportunities, positioning (main alternative pre-filled from the critique; primary user checked against go-to-market), non-goals, and a full information architecture. Needs an assumption map or an audit. → `docs/product/product-model.md`, `docs/product/glossary.md`, `docs/product/information-architecture.md` (pro)
 
-**`product:journey "<flow>"`** — Trigger → steps (user action + system response) → failure states per step → completion. → `docs/product/journeys/<name>.md`
+**`product:journey "<flow>"`** — Trigger → steps (user action + system response) → failure states → completion. Lite maps the happy path and the top 2 failure states; pro covers every failure state, decisions, and preconditions. → `docs/product/journeys/<name>.md`
 
 ### 6 · Architect
 
-**`product:stack`** — Use-what-you-know constraints, build-vs-buy for auth/billing/email/jobs/analytics/AI (default: managed), max 2 innovation tokens, data model sketch, hosting profile, cost at 0/100/1,000 users, security baseline, mandatory not-now list. → `docs/product/architecture.md`
+**`product:stack`** — Use-what-you-know constraints, build-vs-buy per capability (auth, billing, tax, email, storage, jobs, search, analytics, error monitoring, admin, AI — default: managed), max 2 innovation tokens, hosting picked from the deployment rubric, the [arche-ui profile-fit check](docs/playbooks.md#stack-profiles-seeding-from-arche-ui) for Next.js frontends, and a not-now list of at least 3 items. Pro adds a data model sketch, cost at 0/100/1,000 users, and a security baseline. → `docs/product/architecture.md`
 
 ### 7 · Scope
 
-**`product:shape "<feature>"`** — Problem, appetite (a maximum, not an estimate), solution outline, no-gos, risks, rabbit holes, testable done criteria. Refuses on untested high-risk assumptions; warns when business model or go-to-market is missing. → `docs/specs/…-pitch.md`
+**`product:shape "<feature>"`** — Problem, appetite (a maximum, not an estimate), solution outline, no-gos, testable done criteria; pro adds risks, rabbit holes, and the user flow. Refuses until the model's core objects and lifecycle states exist and every high-risk assumption is tested or waived; on a new product, warns when business model or go-to-market is missing. → `docs/specs/…-pitch.md`
 
-**`product:spec "<screen>"`** — Purpose, primary user question, layout, all states (loading, empty, error, domain-specific), copy rules, acceptance criteria. → `docs/screens/<name>.md`
+**`product:spec "<screen>"`** — Purpose, primary user question, layout, primary action, and core states (loading, empty, error, main). Pro adds entry points, data, domain-specific states, copy rules, and acceptance criteria. Needs a pitch and the glossary. → `docs/screens/<name>.md`
 
 ### 8 · Build
 
-**`product:build`** — Readiness checklist, architecture skeleton, instrumentation plan, and a self-contained execution brief; records `readiness: ready|blocked`. → `docs/specs/…-build.md`
+**`product:build`** — Readiness checklist and a self-contained execution brief; records `readiness: ready|blocked` (missing screen states and scope that contradicts `architecture.md` are blockers). Pro adds an architecture skeleton and an instrumentation plan. → `docs/specs/…-build.md`
 
-**`product:plan`** — Walking skeleton first, riskiest work early, tasks ≤2 sessions with verifiable acceptance checks, coverage of every done criterion and screen state, cuts proposed when estimates exceed appetite, per-task agent handoff blocks, parking lot. → `docs/specs/…-plan.md`
+**`product:plan`** — Walking skeleton first, riskiest work early, tasks ≤2 sessions with verifiable acceptance checks, coverage of every done criterion and screen state, cuts proposed when the estimate passes 80% of the appetite, parking lot. Pro adds milestones and per-task agent handoff blocks. `product:plan progress [slug]` ticks tasks against their checks and flags appetite burn. → `docs/specs/…-plan.md`
 
 ### 9 · Launch
 
-**`product:launch`** — Readiness where every item is a blocker (loses data, money, or trust) or nice; payments, legal and ops checklists; launch threshold set in advance; channel sequence from your go-to-market; T-14 → T+7 timeline; launch-day runbook; `record` mode for results. → `docs/specs/…-launch.md`
+**`product:launch`** — Readiness where every item — payments, legal, and ops included — is a blocker (loses data, money, or trust) or nice; launch threshold set in advance; channel sequence from your go-to-market; launch day through T+7. Pro adds the full nice list, the T-14 → T-1 timeline, and a launch-day runbook. `product:launch record [slug]` fills results and a hit / partial / miss verdict. Needs a build file, or an audit for an existing product. → `docs/specs/…-launch.md`
 
-**`product:measure`** — Feature mode: primary metric from the pitch's done criteria, baseline, target, events. `product` mode: activation moment, active-user definition, retention cohorts, acquisition sources, revenue events. → `docs/product/journeys/<slug>-telemetry.md` · `product-telemetry.md`
+**`product:measure`** — `product:measure "<feature>"`: primary metric from the pitch's done criteria, baseline, target; pro adds secondary metrics, false positives, events, and a first review date. `product:measure product`: activation moment, active-user definition, activation and week-4 retention targets, the analytics tool; pro adds acquisition sources, revenue events, a north-star number, and a cohort review cadence. → `docs/product/journeys/<slug>-telemetry.md` · `docs/product/journeys/product-telemetry.md`
 
 ### 10 · Learn
 
-**`product:reflect "<feature>"`** — Evaluates the pitch's bet against evidence → continue / improve / simplify / pivot / kill. → `docs/specs/…-retro.md`
+**`product:reflect "<feature>"`** — Evaluates the pitch's bet against evidence → continue / improve / simplify / pivot / kill. For a feature cancelled before it shipped: `product:reflect --pre-ship "<feature>"`. → `docs/specs/…-retro.md`
 
-**`product:pmf`** — Cohort retention, Sean Ellis survey, segment pull, vanity metrics excluded, the sunk-cost question → fit verdict (too early → strong) and decision (persevere-narrow / iterate core / pivot / kill with a shutdown plan) with a next review date. → `docs/specs/…-pmf.md`
+**`product:pmf`** — Cohort retention, pull signals, vanity metrics excluded, and the sunk-cost question → a verdict (Too early / No fit / Signal in a segment / Approaching / Strong) and a decision (persevere-narrow / iterate core / pivot / kill with a shutdown plan), with a next review date and flip thresholds. Under 10 active users the verdict is capped at Too early; Strong needs a Sean Ellis survey at ≥40% "very disappointed" from ≥30 responses. Pro adds the survey, segments, and revenue quality. → `docs/specs/…-pmf.md`
 
 ---
 
@@ -208,25 +210,27 @@ Drop briefs, notes, transcripts, tickets, exports there (interview material in `
 
 **Judge an idea — stop before building:**
 ```
-product:discover lite → product:critique → product:interview prep → [talk to 5 people] → product:interview synthesize → product:viability → product:experiment
+product:discover lite → product:critique → product:interview prep → [talk to 5 people] → product:interview synthesize → product:viability → product:experiment → [run it] → product:experiment record
 ```
 
 **New product, full:**
 ```
-(product:ideate) → product:discover → product:critique → product:interview → product:viability → product:gtm → product:experiment → product:model → product:stack → product:journey → product:shape → product:spec → product:build → product:plan → [build] → product:measure product → product:launch → product:reflect / product:pmf
+(product:ideate) → product:discover → product:critique → product:interview prep → [talk to 5 people] → product:interview synthesize → product:viability → product:gtm → product:experiment → [run it] → product:experiment record → product:model → product:stack → product:journey → product:shape → product:spec → product:build → product:plan → [build] → product:measure product → product:launch → [ship] → product:launch record → product:reflect / product:pmf
 ```
 
 **Fast MVP:**
 ```
-product:discover lite → product:critique lite → product:experiment → product:model lite → product:shape lite → product:build lite → product:plan lite → product:launch lite → product:pmf
+product:discover lite → product:critique lite → product:experiment lite → [run it, ≤3 days] → product:experiment record → product:model lite → product:shape lite → product:spec lite → product:build lite → product:plan lite → [build] → product:launch lite → [ship] → product:launch record → product:pmf lite
 ```
 
 **Existing product / revamp:**
 ```
-product:audit → product:model → (product:stack) → (product:experiment) → product:shape → product:spec → product:build → product:plan → product:launch → product:measure → product:reflect / product:pmf
+product:audit → product:model → (product:stack) → (product:experiment → [run it] → product:experiment record) → product:shape → product:spec → product:build → product:plan → [build] → product:measure → product:launch → [ship] → product:launch record → product:reflect / product:pmf
 ```
 
 **Any time:** `product:next` · `product:checkin` weekly · `product:triage` across projects
+
+Every track passes the gates in order. Two legal shortcuts: a high-risk assumption not worth testing can be waived instead of tested (`Verdict: waived — <reason>` in the assumption map), and `spec` can be skipped when the pitch says "No new screens". The matching playbooks carry the gate notes.
 
 ---
 
@@ -238,21 +242,23 @@ product:audit → product:model → (product:stack) → (product:experiment) →
 |---|---|---|
 | No idea yet · Judge an idea · Handed-over idea · New idea, full · Money questions · Fast MVP · Portfolio overload | Stack decision · Unfocused build · Build execution · Legacy replacement | Pre-launch tightening · Public launch · Close the loop · Nobody came · Fit or quit · Feedback flood · Stuck · Reorientation |
 
+Plus [**Stack profiles**](docs/playbooks.md#stack-profiles-seeding-from-arche-ui): the deployment rubric `product:stack` picks hosting from, and when to seed a Next.js frontend from the arche-ui companion repo instead of designing its architecture from scratch.
+
 ---
 
 ## Depth tiers
 
 | | `lite` | `pro` |
 |---|---|---|
-| Questions | 3–5 essential | 8–15 full |
+| Questions | 3–5 essential (critique: 8 short steps) | The full set — 5 to 14, depending on the skill |
 | Optional sections | `[deferred]` | Required |
-| Time | ~5–15 min | ~20–40 min |
+| Time | ~5–15 min | ~15–40 min |
 | Use for | Fast validation, small projects | Decisions you'll build months on |
 
 ```
 product:critique lite
 product:critique pro
-product:critique          ← picks a default from project state and says why
+product:critique          ← picks a default from project state and says why — or asks when nothing decides it
 ```
 
 ---

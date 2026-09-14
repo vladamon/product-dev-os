@@ -34,7 +34,7 @@ If `docs/product/audit.md` already exists:
 
 Read in this order:
 
-**1. User-specified files** (from `--from`, `--using`, or natural mention in invocation)
+**1. User-specified files** (`from`, `using`, or natural mention in invocation)
 
 **2. `docs/intake/`** — read all files if folder exists and no files were specified
 

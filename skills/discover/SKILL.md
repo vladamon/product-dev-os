@@ -27,7 +27,7 @@ Updates: nothing (creates new; if files exist, shows the conflict and asks to ov
 
 ## Step 2: Read context
 
-1. **User-specified files** (from `from`, `using`, or natural mention)
+1. **User-specified files** (`from`, `using`, or natural mention)
 2. **`docs/intake/`** — read all files if the folder exists and no files were specified
 3. **Ideation file** — `docs/ideas/*-ideation.md` in the cwd or parent, if present: the pick, founder constraints, first 5 conversations
 4. **Cold critique** — `docs/specs/*-critique.md` with `mode: cold`, if present: restated idea, alternatives found, critic-surfaced assumptions, verdict

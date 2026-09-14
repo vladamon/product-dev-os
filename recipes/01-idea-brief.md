@@ -20,7 +20,7 @@ A good one-sentence explanation:
 ## Inputs
 
 - The user's mind (nothing formal required)
-- Optional: any notes, briefs, or documents the user has (via `--from`/`--using` or `docs/intake/`)
+- Optional: any notes, briefs, or documents the user has (via `from`/`using` or `docs/intake/`)
 
 ## Lite version (5 questions)
 

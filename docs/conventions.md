@@ -196,7 +196,7 @@ Escape `|` inside cells as `\|`.
 | `docs/ideas/YYYY-MM-DD-ideation.md` (cwd) | point-in-time | `ideation` | ideate | discover, triage |
 | `docs/triage/YYYY-MM-DD-triage.md` (cwd) | point-in-time | `triage` | triage | checkin, next |
 | `docs/product/product-model.md` | living | `product-model` | discover (seed), model | most skills |
-| `docs/product/assumptions.md` | living | `assumptions` | discover; updated by critique, interview, viability, gtm, stack, experiment | experiment, shape, next, critique, model |
+| `docs/product/assumptions.md` | living | `assumptions` | discover (or experiment, seeding it for an audited product); updated by critique, interview, viability, gtm, stack, experiment | experiment, shape, next, critique, model |
 | `docs/product/audit.md` | living | `audit` | audit | model, stack, viability, launch |
 | `docs/product/glossary.md` | living | `glossary` | model | spec, build |
 | `docs/product/information-architecture.md` | living | `information-architecture` | model | spec |

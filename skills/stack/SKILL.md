@@ -53,7 +53,7 @@ Then STOP.
 
 ## Step 2: Read context
 
-**1. User-specified files** (from `--from`, `--using`, or natural mention)
+**1. User-specified files** (`from`, `using`, or natural mention)
 **2. `docs/intake/`** — if exists and no files specified
 **3. Product docs:**
 - `docs/product/product-model.md` — core objects, lifecycle states, user roles, non-goals

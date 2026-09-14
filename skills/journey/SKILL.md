@@ -64,7 +64,7 @@ Read all files in `docs/product/journeys/`. If a similar journey already exists,
 
 ## Step 4: Read context
 
-**1. User-specified files** (from `--from`, `--using`, or natural mention)
+**1. User-specified files** (`from`, `using`, or natural mention)
 **2. Product model:** `docs/product/product-model.md` — read to understand objects and states
 **3. Existing journeys:** `docs/product/journeys/` — check for dependencies or overlaps
 

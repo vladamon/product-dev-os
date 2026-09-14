@@ -33,7 +33,7 @@ Updates: docs/product/assumptions.md (warm mode only) — appends critic-surface
 
 ## Step 2: Read context
 
-**1. User-specified files** (from `--from`, `--using`, or natural mention) — briefs, pitch decks, notes, chat transcripts
+**1. User-specified files** (`from`, `using`, or natural mention) — briefs, pitch decks, notes, chat transcripts
 **2. `docs/intake/`** — if it exists and no files were specified
 **3. Warm mode:** `docs/product/assumptions.md` (full), `docs/product/product-model.md` (Product Promise, Primary Users), `docs/research/*-synthesis.md` (existing evidence), prior `docs/specs/*-critique.md` for this idea (note the previous verdict — do not repeat it without new reasons)
 **4. Check research tools:** determine whether WebSearch/WebFetch are available in this session. State it in the summary.

@@ -99,7 +99,7 @@ If a feature name is given: match the slug. If a plan already exists for the slu
 **2. Screen specs** listed in the brief — every state each screen requires.
 **3. `docs/product/architecture.md`** — stack, managed capabilities, data model sketch, Not Now list.
 **4. Codebase:** `find . -type d -not -path '*/node_modules/*' -not -path '*/.git/*' | head -40`; test/lint/dev commands from `package.json` scripts, `Makefile`, `pyproject.toml`, CI workflows; `git log --oneline -10`.
-**5. User-specified files** (from `--from`, `--using`) and `docs/intake/`.
+**5. User-specified files** (`from`, `using`) and `docs/intake/`.
 
 ## Step 4: Show context summary
 
