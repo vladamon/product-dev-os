@@ -34,7 +34,7 @@ It matches your words to one of 19 [playbooks](docs/playbooks.md) and gives you 
 
 Five layers:
 
-- **Skills** (22) — runners that interview you, read context, and write artifacts. Each gated skill refuses to run when upstream work is missing, so the sequence is enforced by structure, not willpower.
+- **Skills** (23) — runners that interview you, read context, and write artifacts. Each gated skill refuses to run when upstream work is missing, so the sequence is enforced by structure, not willpower.
 - **Recipes** (30) — the authoritative process: what to ask, what good output looks like, what "done" means. Improving a recipe improves its skill.
 - **Templates** (9) — the shape of living documents.
 - **Conventions** — [`docs/conventions.md`](docs/conventions.md): the companion map, the canonical assumption map, the artifact map, gates, and the research and honesty protocols every skill follows.
@@ -45,7 +45,7 @@ Five layers:
 | # | Stage | Question | Skills |
 |---|---|---|---|
 | 0 | Choose | What should I work on at all? | `ideate` · `triage` |
-| 1 | Understand | Who has what problem, really? | `discover` · `audit` · `interview` |
+| 1 | Understand | Who has what problem, really? | `discover` · `audit` · `interview` · `field` |
 | 2 | Challenge | Is this idea any good? What kills it? | `critique` |
 | 3 | Money & reach | Can it pay? Can I reach buyers? | `viability` · `gtm` |
 | 4 | Test | Is the riskiest assumption true? | `experiment` |
@@ -156,6 +156,8 @@ Where a skill has more than one mode, every mode is shown. "Pro adds" marks what
 
 **`product:interview`** — `prep`: who qualifies, where to find them, a non-pitching outreach message, a Mom Test script mapped to assumption IDs, what would change your mind. `synthesize`: reads notes, transcripts, tickets, and feature requests; separates behavior from compliments; clusters patterns across ≥2 sources; updates evidence. → `docs/research/…-interview-kit.md`, `…-synthesis.md`
 
+**`product:field`** — Discovery inside a client's or a segment's operations, before any idea exists. You run the conversation; it runs everything around it under a 30-rule doctrine distilled from 13 books (recipe 30). `prep`: Founder Context, objectives, a coverage map and a one-page interview card in your interview language, outreach per channel. `rehearse`: it plays a realistic owner and scores your questions. `live`: paste what they say, get the next probe. `debrief`: verbatim evidence on a L0–L5 ladder, pre/post-pitch split, workflow, workarounds, cost, stakeholders, unknowns. `synthesize`: opportunities earn `signal → pattern → client-/market-validated`, get attacked, and end in one directive. → `docs/research/field/<engagement>/`
+
 ### 2 · Challenge
 
 **`product:critique`** — The red team. Restates the idea as a falsifiable sentence, researches competitors, substitutes, and prior failures, runs a pre-mortem, and scores lenses — 7 in lite (problem reality, user specificity, why now, why you, alternatives, willingness to pay, distribution), 11 in pro (adds build scope, commoditization, trust/data, unit economics) plus a steelman. Ends with **Pursue / Sharpen / Park / Kill**, the riskiest assumption, the cheapest test, and a dated kill criterion. Cold on a paragraph, it writes only the critique; warm on discovery artifacts, it adds high-risk rows to the assumption map (and in pro re-rates your risks). → `docs/specs/…-critique.md`
@@ -228,6 +230,11 @@ product:discover lite → product:critique lite → product:experiment lite → 
 product:audit → product:model → (product:stack) → (product:experiment → [run it] → product:experiment record) → product:shape → product:spec → product:build → product:plan → [build] → product:measure → product:launch → [ship] → product:launch record → product:reflect / product:pmf
 ```
 
+**Client / SMB field discovery — find the opportunity before there is an idea:**
+```
+product:field prep → [product:field rehearse] → [talk to them; product:field live alongside] → product:field debrief (each conversation) → product:field synthesize (every 3–5) → TEST_ASSUMPTION → product:discover using <synthesis> → product:experiment
+```
+
 **Any time:** `product:next` · `product:checkin` weekly · `product:triage` across projects
 
 Every track passes the gates in order. Two legal shortcuts: a high-risk assumption not worth testing can be waived instead of tested (`Verdict: waived — <reason>` in the assumption map), and `spec` can be skipped when the pitch says "No new screens". The matching playbooks carry the gate notes.
@@ -236,11 +243,11 @@ Every track passes the gates in order. Two legal shortcuts: a high-risk assumpti
 
 ## Scenario playbooks
 
-[`docs/playbooks.md`](docs/playbooks.md) — 19 situations, each an exact sequence that passes every gate:
+[`docs/playbooks.md`](docs/playbooks.md) — 20 situations, each an exact sequence that passes every gate:
 
 | Before building | While building | Launching & after |
 |---|---|---|
-| No idea yet · Judge an idea · Handed-over idea · New idea, full · Money questions · Fast MVP · Portfolio overload | Stack decision · Unfocused build · Build execution · Legacy replacement | Pre-launch tightening · Public launch · Close the loop · Nobody came · Fit or quit · Feedback flood · Stuck · Reorientation |
+| No idea yet · Client discovery · Judge an idea · Handed-over idea · New idea, full · Money questions · Fast MVP · Portfolio overload | Stack decision · Unfocused build · Build execution · Legacy replacement | Pre-launch tightening · Public launch · Close the loop · Nobody came · Fit or quit · Feedback flood · Stuck · Reorientation |
 
 Plus [**Stack profiles**](docs/playbooks.md#stack-profiles-seeding-from-arche-ui): the deployment rubric `product:stack` picks hosting from, and when to seed a Next.js frontend from the arche-ui companion repo instead of designing its architecture from scratch.
 
@@ -284,7 +291,7 @@ docs/product/     living: product-model, assumptions, audit, glossary, informati
                   business-model, go-to-market, architecture, journeys/, journeys/*-telemetry
 docs/specs/       point-in-time: critique, experiment, pitch, build, plan, launch, retro, pmf
 docs/screens/     living screen specs
-docs/research/    interview kits and syntheses
+docs/research/    interview kits and syntheses; field/<engagement>/ for field discovery
 docs/checkins/    weekly check-ins
 docs/intake/      yours — read by skills, never written (interview material in intake/interviews/)
 docs/ideas/, docs/triage/   written in the folder where you run ideate/triage

@@ -8,6 +8,8 @@ Use this skill when the user needs to run customer conversations (`prep`) or tur
 
 ## Purpose
 
+No idea or assumption map yet — you want to find the problem inside a client's or a segment's operations? Use `product:field` instead; this skill tests assumptions you already have.
+
 The rest of the OS assumes customer conversations happened. This skill makes them happen and makes them count.
 
 - **`prep`** builds an interview kit for specific assumptions: who qualifies, where to find them, an outreach message that asks for advice (never pitches), a Mom Test script tagged to assumption IDs, and — decided up front — what would change your mind. Produces `docs/research/YYYY-MM-DD-[slug]-interview-kit.md`.

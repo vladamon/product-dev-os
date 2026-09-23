@@ -76,11 +76,15 @@ Asks for advice, names the situation, not the product. ≤80 words. Example shap
 
 ### Evidence strength (strongest first)
 
-1. **Commitment** — gave money, time, a pilot, an intro
-2. **Spend** — already pays or pays people to work around it
-3. **Past behavior** — did something specific, recently
-4. **Stated pain** — described cost or frustration with specifics
-5. *Not evidence* — compliments, "I would", feature wishes
+The OS-wide ladder is `recipes/30-discovery-doctrine.md` §3. The labels here map onto it:
+
+1. **Commitment** — gave money, time, a pilot, an intro → **L5**
+2. **Spend** — already pays or pays people to work around it → **L4**
+3. **Past behavior** — did something specific, recently → **L3**
+4. **Stated pain** — described cost or frustration with specifics → **L3** if tied to an instance, **L2** if general ("it's always slow")
+5. *Not evidence* — compliments (**L0**), "I would", feature wishes (**L1**)
+
+Tag Evidence cells with the level when writing them (`L4: 2/5 pay a VA …`), so interview and field evidence read on one scale.
 
 ## Output structure
 

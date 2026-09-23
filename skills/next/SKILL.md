@@ -27,6 +27,7 @@ Use the artifact map in `docs/conventions.md` §6. In the current project, look 
 **Point-in-time documents** (existence, date, frontmatter `status` / `verdict` / `decision`):
 - `docs/specs/` — group by slug: `critique`, `experiment`, `pitch`, `build`, `plan`, `launch`, `retro`, and `*-pmf.md`
 - `docs/research/` — interview kits and syntheses
+- `docs/research/field/<engagement>/` — field engagements: `engagement.md` frontmatter `directive`, session count, latest `*-synthesis.md` `decision`
 - `docs/checkins/` — latest check-in date and its commitments
 
 **Outside the project:** `docs/ideas/` and `docs/triage/` in the cwd or its parent.
@@ -39,7 +40,7 @@ Report the **furthest stage reached** and any **gaps behind it**.
 
 | Stage | Signal |
 |-------|--------|
-| 0 Choose | No project docs; ideation or triage file nearby |
+| 0 Choose | No project docs; ideation or triage file nearby, or only a field engagement (report its directive) |
 | 1 Understand | `assumptions.md` or `audit.md` exists |
 | 2 Challenge | a `*-critique.md` exists |
 | 3 Money & reach | `business-model.md` and/or `go-to-market.md` exist |
@@ -119,7 +120,7 @@ Recommended next step:
 
 **Choosing the recommendation — first match wins:**
 1. An overdue decision → the skill that records it (`product:experiment record`, `product:pmf`, `product:triage`)
-2. No artifacts at all → `product:discover` (new) or `product:audit` (existing codebase); no idea yet → `product:ideate`
+2. No artifacts at all → `product:discover` (new) or `product:audit` (existing codebase); no idea yet → `product:ideate`; a field engagement exists → its directive (`CONTINUE_INTERVIEWING` with undebriefed files in `docs/intake/interviews/<engagement>/` → `product:field debrief`; ≥3 debriefs since the last synthesis → `product:field synthesize`; `TEST_ASSUMPTION` → `product:discover using <synthesis>`)
 3. Assumptions exist, no critique → `product:critique`
 4. Evidence level none/opinion and no synthesis → `product:interview prep`
 5. Untested high-risk assumptions → `product:experiment`

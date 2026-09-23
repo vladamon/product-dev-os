@@ -8,7 +8,7 @@ A globally-installed Claude Code plugin (`product`) that acts as a solo-founder 
 
 When the user invokes a `product:*` skill, load and follow `skills/<name>/SKILL.md`.
 
-Gated skills run a Step 0 prerequisite check and refuse with a specific "run X first" message when upstream artifacts are missing. `--skip-gate` overrides; every gated skill then writes `gate_override: true` into the artifact frontmatter and a `Gate skipped — …` note. Entry points (`ideate`, `discover`, `audit`, `critique`, `checkin`, `next`) have no gate.
+Gated skills run a Step 0 prerequisite check and refuse with a specific "run X first" message when upstream artifacts are missing. `--skip-gate` overrides; every gated skill then writes `gate_override: true` into the artifact frontmatter and a `Gate skipped — …` note. Entry points (`ideate`, `discover`, `audit`, `critique`, `checkin`, `next`, `field prep`) have no gate.
 
 | Stage | Skill | When to use |
 |-------|-------|-------------|
@@ -19,6 +19,7 @@ Gated skills run a Step 0 prerequisite check and refuse with a specific "run X f
 | 1 Understand | `product:discover` | New idea — brief, canonical assumption map, evidence level |
 | 1 Understand | `product:audit` | Existing product — reconstruct current state before a revamp |
 | 1 Understand | `product:interview` | `prep`: Mom Test kit + recruiting · `synthesize`: turn notes, tickets, requests into evidence |
+| 1 Understand | `product:field` | Client / SMB discovery before any idea — `prep` (card, coverage map) · `rehearse` · `live` copilot · `debrief` per session · `synthesize` → opportunity + directive. Enforces the 30-rule doctrine (recipe 30) |
 | 2 Challenge | `product:critique` | "Is this idea any good?" — landscape research, 7 lenses (lite) / 11 (pro), pre-mortem, Pursue/Sharpen/Park/Kill |
 | 3 Money & reach | `product:viability` | Pricing, ramen math, unit economics, funding path — "does the math work?" |
 | 3 Money & reach | `product:gtm` | Beachhead ICP, watering holes, channel bullseye, first-10-customers plan, messaging |
@@ -42,7 +43,7 @@ Gated skills run a Step 0 prerequisite check and refuse with a specific "run X f
 hooks/           ← hooks.json — PostToolUse on Skill → scripts/log-skill-usage.sh
 scripts/         ← usage logger (log path from PRODUCT_OS_USAGE_LOG)
 skills/          ← one directory per skill: skills/<name>/SKILL.md (frontmatter name = short name)
-recipes/         ← knowledge base — authoritative process docs read by skills (00–28, 03b)
+recipes/         ← knowledge base — authoritative process docs read by skills (00–30, 03b; 30 = discovery doctrine rulebook)
 templates/       ← living-document templates filled in by skills
 docs/            ← conventions.md (contract), playbooks.md (situations), notes/ (decisions), superpowers/specs/ (designs)
 ```
@@ -71,11 +72,16 @@ product:audit → product:model → (product:stack) → (product:experiment → 
 
 Every track passes the gates in order. A high-risk assumption not worth testing can be waived instead (`Verdict: waived — <reason>`); `spec` is skippable when the pitch says "No new screens". Gate notes per sequence: `docs/playbooks.md`.
 
+**Client / SMB field discovery — find the opportunity before the idea:**
+```
+product:field prep → [rehearse] → [conversation, optional live copilot] → product:field debrief (each session) → product:field synthesize (every 3–5 sessions) → directive → TEST_ASSUMPTION: product:discover using <synthesis> → product:experiment (concierge / pre-sale)
+```
+
 **Always:** `product:next` · `product:checkin` (weekly) · `product:triage` (portfolio)
 
 ## Scenario Playbooks
 
-When the user describes a **situation** rather than naming a skill ("my friend has an idea", "launched and nobody came", "not sure it's working", "stuck", "too many feature requests", "what stack", "no idea what to build"), consult `docs/playbooks.md` — it maps 19 situations to exact skill sequences that pass every gate without `--skip-gate`. `product:next "<situation>"` does the matching.
+When the user describes a **situation** rather than naming a skill ("my friend has an idea", "I'm meeting a client — is there a product in their business?", "launched and nobody came", "not sure it's working", "stuck", "too many feature requests", "what stack", "no idea what to build"), consult `docs/playbooks.md` — it maps 20 situations to exact skill sequences that pass every gate without `--skip-gate`. `product:next "<situation>"` does the matching.
 
 ## Depth Tiers
 
@@ -108,7 +114,7 @@ Skills write into the **current project's** `docs/` tree (full map: `docs/conven
 - `docs/product/` — living documents: product model, assumptions, audit, glossary, IA, business model, go-to-market, architecture, journeys, telemetry
 - `docs/specs/` — point-in-time decisions (date-prefixed): critique, experiment, pitch, build, plan, launch, retro, pmf
 - `docs/screens/` — screen specifications
-- `docs/research/` — interview kits and syntheses
+- `docs/research/` — interview kits and syntheses; `docs/research/field/<engagement>/` — field engagements (engagement, card, live logs, session debriefs, syntheses)
 - `docs/checkins/` — weekly check-ins
 - `docs/ideas/`, `docs/triage/` — written in the cwd, outside any single project
 - `docs/intake/` — user-managed drop zone (read by skills, never written by skills); `docs/intake/interviews/` for notes, transcripts, tickets, feature requests

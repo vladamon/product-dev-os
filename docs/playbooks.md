@@ -12,6 +12,7 @@ Every sequence respects the Step 0 gates: followed in order, no playbook needs `
 |---|---|
 | **Before building** | |
 | "I want to start something but have no idea what" | [9. No idea yet](#9-no-idea-yet) |
+| "I'm meeting a client / small businesses — is there a product in how they work?" | [20. Client discovery](#20-client-discovery) |
 | "Is this idea any good?" — mine, or one a friend brought me | [10. Judge an idea](#10-judge-an-idea) |
 | "Someone handed me a clear, ready-made idea and I intend to build it" | [3. Handed-over idea](#3-handed-over-idea) |
 | "Brand-new idea, I want to do this properly end to end" | [6. New idea, full validation](#6-new-idea-full-validation) |
@@ -190,6 +191,8 @@ Run `product:next`. Read-only, writes nothing, safe any time. Reports stage, gap
 
 **Stop condition:** a critique verdict on the pick.
 
+**Alternative:** if you have access to businesses (clients, a trade you know), skip ideation and find the idea in their operations — [20. Client discovery](#20-client-discovery).
+
 ---
 
 ## 10. Judge an idea
@@ -353,6 +356,30 @@ Run `product:next`. Read-only, writes nothing, safe any time. Reports stage, gap
 
 ---
 
+## 20. Client discovery
+
+**Situation:** You're talking to a client, or to several small businesses, and you don't have an idea yet. You want to find out — from how they actually work — whether there's a problem worth a product, a service, or a paid pilot. And you want to interview properly: no pitching, no compliments counted, nothing invented.
+
+| Step | Run | Why | Recipes |
+|---|---|---|---|
+| 1 | `product:field prep` (pro when you need outreach) | Founder Context (what you'll build), ≤3 objectives as problem hypotheses, change-my-mind signals, coverage map, one-page card in the interview language | 29, 30 |
+| 2 | `product:field rehearse` (optional, ~15 min) | Practice against an owner who generalizes, compliments, and asks what you're building; lint report by rule ID | 29, 30 |
+| 3 | The conversation — card in hand; `product:field live` alongside if it's a call | You run it. Live copilot names the signal and the next probe; `pitch` checks the permission rule before any mode switch | 29, 30 |
+| 4 | Drop notes / transcript / photos into `docs/intake/interviews/<engagement>/` → `product:field debrief` — **same day** | Verbatim ledger L0–L5, PRE/POST split, workflow with citations, workarounds, cost, stakeholders, Unknowns, resume card, one directive | 29, 30 |
+| 5 | Repeat 3–4 per person. After 3–5 sessions: `product:field synthesize` | Pattern matrix with earned statuses, severity, founder-fit filter, adversarial pass, one directive | 29, 30 |
+| 6 | Follow the directive | `CONTINUE_INTERVIEWING` / `DECOMPOSE_OPPORTUNITY` → back to 1 · `HALT_FOR_TECHNICAL_SPIKE` → spike on their real files · `PIVOT` → new objective or `product:triage` · `TEST_ASSUMPTION` → step 7 | 30 |
+| 7 | New project dir → `product:discover using docs/research/field/<engagement>/<date>-synthesis.md` → `product:experiment` (concierge or pre-sale) | Hands the validated opportunity to the main track with its evidence intact | 01, 02, 03b |
+
+**Stop condition:** a synthesis with `TEST_ASSUMPTION` (continue into [10](#10-judge-an-idea) from step 5, or straight to the experiment), or `PIVOT` with the reason recorded.
+
+**Notes**
+- **Client scope** (one business, several people) can reach `client-validated` — enough for a paid pilot or custom work for that client, never enough to claim a market. For a product, open a **segment** engagement and find the same structure in ≥3 businesses.
+- Owners rarely give 45 minutes. Plan 10–20 minute sessions; each debrief writes a resume card for the next micro-session.
+- Low response to outreach is data (DOC-RULE-24): after ~20 contacts with <10% replies, change the framing or the segment before sending more.
+- Already have an idea and an assumption map? Use `product:interview` instead — it tests assumptions; this finds them.
+
+---
+
 ## Stack profiles: seeding from arche-ui
 
 For frontend projects there is a companion repo — **arche-ui**
@@ -411,6 +438,7 @@ skills and run `review-changes` on the diff before handing back.
 | 1 | `product:discover` | 01, 02, 03 | none (entry point) | `product-model.md` (seed), `assumptions.md` |
 | 1 | `product:audit` | 00 | none (entry point) | `docs/product/audit.md` |
 | 1 | `product:interview` | 03, 21 | prep: `assumptions.md` · synthesize: ≥1 source file | `docs/research/…-interview-kit.md` / `…-synthesis.md`; Evidence in `assumptions.md` |
+| 1 | `product:field` | 29, 30 | prep: none (entry point) · debrief: engagement + raw source · synthesize: ≥1 debrief | `docs/research/field/<engagement>/` — engagement, card, live logs, session debriefs, syntheses |
 | 2 | `product:critique` | 20 | none (warm mode if `assumptions.md` exists) | `docs/specs/…-critique.md`; critic rows in `assumptions.md` |
 | 3 | `product:viability` | 22 | `assumptions.md` or `audit.md` + Product Promise/Primary Users | `docs/product/business-model.md`; viability rows |
 | 3 | `product:gtm` | 23 | Product Promise + Primary Users non-deferred | `docs/product/go-to-market.md`; distribution rows |

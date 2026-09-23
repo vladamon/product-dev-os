@@ -31,6 +31,7 @@ Updates: nothing (creates new; if files exist, shows the conflict and asks to ov
 2. **`docs/intake/`** — read all files if the folder exists and no files were specified
 3. **Ideation file** — `docs/ideas/*-ideation.md` in the cwd or parent, if present: the pick, founder constraints, first 5 conversations
 4. **Cold critique** — `docs/specs/*-critique.md` with `mode: cold`, if present: restated idea, alternatives found, critic-surfaced assumptions, verdict
+5. **Field synthesis** — a `type: field-synthesis` file passed via `using` (from `product:field`): the target opportunity is the problem; its jobs and customer-voice wording seed the brief; its Bridge rows seed the assumption map with `Source: field` and their Evidence cells (levels and session IDs kept); its evidence level is the synthesis's best status (`client-validated` / `market-validated`), never higher
 
 Extract: problem description, target user, alternatives/workarounds, assumptions already named, any evidence (conversations, spend, sign-ups).
 
