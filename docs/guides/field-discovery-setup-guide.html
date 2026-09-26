@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Field Discovery Setup Guide</title>
+<!--
+  Source for field-discovery-setup-guide.pdf. Regenerate the PDF after editing:
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --no-pdf-header-footer \
+    --print-to-pdf=docs/guides/field-discovery-setup-guide.pdf docs/guides/field-discovery-setup-guide.html
+-->
+<style>
+  @page { size: A4; margin: 18mm 17mm 18mm 17mm; }
+  :root { --ink: #1d1b18; --muted: #6b655c; --rule: #d9d3c7; --accent: #8a4b12; --code: #f4f1ea; }
+  * { box-sizing: border-box; }
+  body { font: 10.5pt/1.5 -apple-system, "Helvetica Neue", Arial, sans-serif; color: var(--ink); background: #fff; margin: 0; }
+  h1 { font-size: 24pt; line-height: 1.15; margin: 0 0 4pt; letter-spacing: -0.01em; }
+  h2 { font-size: 14pt; margin: 22pt 0 6pt; padding-top: 8pt; border-top: 1px solid var(--rule); break-after: avoid; }
+  h3 { font-size: 11pt; margin: 14pt 0 4pt; break-after: avoid; }
+  p, li { margin: 0 0 6pt; }
+  ul, ol { padding-left: 18pt; margin: 0 0 8pt; }
+  .meta { color: var(--muted); font-size: 9.5pt; margin-bottom: 14pt; }
+  .lead { font-size: 12pt; margin-bottom: 10pt; }
+  .num { color: var(--accent); font-weight: 700; margin-right: 4pt; }
+  code { font: 9pt/1.4 "SF Mono", Menlo, monospace; background: var(--code); padding: 0 3pt; border-radius: 2pt; }
+  pre { font: 8.8pt/1.45 "SF Mono", Menlo, monospace; background: var(--code); padding: 8pt 10pt; border-radius: 3pt; white-space: pre-wrap; break-inside: avoid; margin: 4pt 0 10pt; }
+  pre code { background: none; padding: 0; }
+  table { width: 100%; border-collapse: collapse; margin: 4pt 0 12pt; font-size: 9.5pt; break-inside: avoid; }
+  th, td { text-align: left; vertical-align: top; padding: 4pt 6pt; border-bottom: 1px solid var(--rule); }
+  th { font-weight: 600; border-bottom: 1.5px solid var(--ink); }
+  .box { border-left: 3px solid var(--accent); padding: 4pt 0 4pt 10pt; margin: 8pt 0 12pt; break-inside: avoid; }
+  .box p:last-child { margin-bottom: 0; }
+  .toc { columns: 2; column-gap: 24pt; font-size: 10pt; padding-left: 16pt; }
+  .page-break { break-before: page; }
+  .small { font-size: 9pt; color: var(--muted); }
+  @media screen { body { max-width: 780px; margin: 32px auto; padding: 0 16px; } }
+</style>
+</head>
+<body>
+
+<h1>Field Discovery Setup Guide</h1>
+<div class="meta">Product Dev OS · <code>/product:field</code> · Version 2026-09-26 · Written for a business-side partner who runs interviews with small businesses</div>
+
+<p class="lead">You run the conversations with business owners. Claude Code, with the Product Dev OS plugin, prepares you before each one and turns the recording into graded evidence afterwards. You need Claude Code and a phone recorder, nothing else.</p>
+
+<ol class="toc">
+  <li>How it works</li>
+  <li>One-time setup</li>
+  <li>Prep: before the first conversation</li>
+  <li>Rehearse (optional)</li>
+  <li>During the conversation</li>
+  <li>Live copilot (video calls only)</li>
+  <li>Debrief: same day</li>
+  <li>Synthesize: every 3–5 conversations</li>
+  <li>Reading the evidence</li>
+  <li>Cheat sheet and folder layout</li>
+  <li>Troubleshooting</li>
+  <li>Why this setup (and what comes later)</li>
+</ol>
+
+<h2><span class="num">1</span>How it works</h2>
+<p>The goal is to find a problem worth a product, service or paid pilot inside someone's business, before you have any idea what to build. If there is no such problem, the process should show that too.</p>
+<pre>prep ──► [rehearse] ──► conversation ──► debrief (same day)
+  ▲                                           │  repeat 3–5×
+  │                                           ▼
+  └──────── directive (what next) ◄──── synthesize</pre>
+
+<h3>What is fixed, and what adapts</h3>
+<ul>
+  <li><strong>The card is not a script.</strong> It is a map of topics to cover, plus ready-made follow-ups ("when you hear X, say Y"). You follow the owner's story and improvise the next question. The card shows you what is still uncovered.</li>
+  <li><strong>The plan adapts between conversations.</strong> Each debrief records what is still unknown about this business and gives three probes for a short follow-up. Each new <code>prep</code> rebuilds the card around those gaps.</li>
+  <li><strong>Question-by-question adaptation exists too</strong>: <code>live</code> mode. Use it on video calls, where a second window does not cost you the owner's attention. In person, use the printed card.</li>
+</ul>
+
+<div class="box">
+  <p><strong>Three rules that matter most</strong></p>
+  <p>1. Ask about the <em>last time</em> something happened, not what they usually do or would do.<br>
+  2. Never describe your idea during discovery.<br>
+  3. Count what they <em>did and paid for</em>, not what they say they like.</p>
+</div>
+
+<h2><span class="num">2</span>One-time setup (15 minutes)</h2>
+<h3>Install the plugin</h3>
+<p>You need Claude Code installed and signed in. You also need access to the <code>vladamon/product-dev-os</code> GitHub repository; ask Vladimir if the clone fails.</p>
+<pre>git clone https://github.com/vladamon/product-dev-os.git ~/tools/product-dev-os
+claude plugin marketplace add ~/tools/product-dev-os
+claude plugin install product@product-dev-os-local</pre>
+
+<h3>Create a workspace</h3>
+<p>Keep all field work in one folder. Every engagement gets its own subfolder automatically.</p>
+<pre>mkdir -p ~/field-work &amp;&amp; cd ~/field-work &amp;&amp; git init &amp;&amp; claude</pre>
+<p>Check it works: type <code>/product:field</code>. It should offer to start <code>prep</code>.</p>
+
+<h3>Pick a recorder</h3>
+<ul>
+  <li><strong>In person:</strong> your phone's voice memo app. Most recorder apps can transcribe; otherwise any transcription tool works.</li>
+  <li><strong>Calls:</strong> the meeting tool's own transcript (Zoom, Google Meet, Teams), or Granola.</li>
+</ul>
+<p>Anything that produces a text transcript is fine. Your own written notes also work, but count as weaker evidence (see section 9).</p>
+
+<h3>Updating the plugin</h3>
+<pre>cd ~/tools/product-dev-os &amp;&amp; git pull
+claude plugin marketplace update product-dev-os-local</pre>
+<p>Then start a new Claude Code session. A <code>git pull</code> alone does not change what Claude Code loads.</p>
+
+<h2 class="page-break"><span class="num">3</span>Prep: before the first conversation (about 10 minutes)</h2>
+<p>Run <code>/product:field prep</code> inside <code>~/field-work</code>. Claude asks five questions. Short, honest answers work best.</p>
+<table>
+  <tr><th style="width:24%">Question</th><th>What a good answer looks like</th></tr>
+  <tr><td>1. Scope</td><td><strong>Client</strong>: one business, several people inside it (owner, office, field). <strong>Segment</strong>: several independent businesses with the same way of working. Define it by behavior ("trades that price every job from supplier quotes"), not by size or industry code.</td></tr>
+  <tr><td>2. What you can build and run</td><td>Your skills, hours per week, what you refuse to build (hardware, regulated advice, heavy integrations), and whether you want a product, a service or a pilot.</td></tr>
+  <tr><td>3. Up to 3 things to learn</td><td>Questions to <em>yourself</em>, not to them: "Where do quotes get stuck between the office and the field?" Claude turns each into problem hypotheses and rejects any that already contain a solution.</td></tr>
+  <tr><td>4. What would change your mind</td><td>For each objective: what past behavior would you have to hear to drop it?</td></tr>
+  <tr><td>5. Language and format</td><td>Interview language, in person or call, and the time you will get. Owners often give 10–20 minutes, so plan short sessions.</td></tr>
+</table>
+<p>Prep writes two files in <code>docs/research/field/&lt;engagement&gt;/</code>:</p>
+<ul>
+  <li><code>engagement.md</code>: the running record. Claude keeps it updated; you rarely edit it.</li>
+  <li><code>card.md</code>: the one-page interview card, in the interview language. <strong>Print it.</strong></li>
+</ul>
+<p><code>/product:field prep pro</code> adds outreach messages per channel (WhatsApp, email, phone), screening questions and a recruiting log.</p>
+
+<h3>What the card contains</h3>
+<table>
+  <tr><th style="width:26%">Section</th><th>Purpose</th></tr>
+  <tr><td>Open (≤2 min)</td><td>Who you are, that you are learning how they handle something, that you are not selling, how long it takes. Then the first question about their business.</td></tr>
+  <tr><td>Coverage</td><td>Checkboxes for the topics to cover, each with an opening question. Follow the story, not the order.</td></tr>
+  <tr><td>When you hear… → say</td><td>Ready follow-ups for the moments that usually derail interviews (table below).</td></tr>
+  <tr><td>Anchors</td><td>Questions that pull a vague answer back to a real scene.</td></tr>
+  <tr><td>At 60–70% of the time</td><td>"Is there anything important about this I haven't asked?"</td></tr>
+  <tr><td>Close</td><td>A small commitment ask, a referral ask, and the permission line (only if the conditions are met).</td></tr>
+  <tr><td>Never</td><td>"Would you use / pay / like…", describing your idea, "great!", jargon they didn't use.</td></tr>
+</table>
+
+<h3>The topics the card covers</h3>
+<table>
+  <tr><th style="width:26%">Topic</th><th>Example opening question</th></tr>
+  <tr><td>Business and role</td><td>"Tell me about the business and what a normal week looks like for you."</td></tr>
+  <tr><td>A recent episode <em>(always)</em></td><td>"Think of the last job you handled. When did it come in?" … "Was that a normal one?"</td></tr>
+  <tr><td>Workflow and handoffs <em>(always)</em></td><td>"What happened next? Who got it, and how did they know?"</td></tr>
+  <tr><td>Artifacts</td><td>"Could you show me the sheet you use for that?"</td></tr>
+  <tr><td>Exceptions and failures <em>(always)</em></td><td>"Tell me about the last time that went wrong."</td></tr>
+  <tr><td>Workarounds and spend <em>(always)</em></td><td>"Who built that? How long does keeping it up take each week?"</td></tr>
+  <tr><td>Frequency, cost, risk <em>(always)</em></td><td>"How many times last month? What did the worst one cost? Have you tried to change how it's done?"</td></tr>
+  <tr><td>People and buying <em>(always)</em></td><td>"When you last took on a new tool, who decided and who paid?"</td></tr>
+  <tr><td>Switching history</td><td>"What did you use before? What finally made you change?"</td></tr>
+  <tr><td>Key-person dependency</td><td>"What happens if you're away for a week?"</td></tr>
+  <tr><td>Commitment</td><td>"Could you send me the last three files so I can see the real thing?"</td></tr>
+</table>
+
+<h2><span class="num">4</span>Rehearse (optional, recommended the first time)</h2>
+<p>Run <code>/product:field rehearse</code>. Claude plays a realistic business owner. The persona:</p>
+<ul>
+  <li>talks in generalities ("we usually…") until you ask for the last specific time;</li>
+  <li>praises you, suggests features, and asks "so what are you building?" at least once;</li>
+  <li>hides one real workaround, one key person, one costly exception and one payer who isn't them, revealed only to good follow-ups;</li>
+  <li>says yes to hypothetical pricing, to see whether you count it.</li>
+</ul>
+<p>Type <code>end</code> for a report: each of your questions tagged (ok, leading, pitch, hypothetical, praise-seeking, jargon), topics reached, your three weakest questions rewritten, and what the persona was hiding. Add <code>coach</code> to get feedback after every question. Rehearse writes no files.</p>
+
+<h2 class="page-break"><span class="num">5</span>During the conversation</h2>
+<ol>
+  <li><strong>Ask before you record.</strong> "Mind if I record so I don't have to take notes? It stays with me." If they say no, write notes immediately afterwards.</li>
+  <li><strong>Open with the card's opener.</strong> Keep it under two minutes.</li>
+  <li><strong>Get one specific, recent episode</strong> and walk through it step by step: who, when, what tool, what happened next.</li>
+  <li><strong>Follow their story, not the card's order.</strong> Glance at the card to see what is still unchecked.</li>
+  <li><strong>Ask to see things</strong>: a spreadsheet, a WhatsApp group, a paper form. Take a photo if they allow it. Things you saw count as strong evidence.</li>
+  <li><strong>At about two thirds of the time</strong>, ask the "anything I haven't asked?" question.</li>
+  <li><strong>Close with a small ask</strong>: the last three files, 10 minutes with the person in the office, an introduction to someone else who deals with this.</li>
+</ol>
+
+<h3>When you hear… → say</h3>
+<table>
+  <tr><th style="width:38%">When you hear</th><th>Say</th></tr>
+  <tr><td>"usually / normally"</td><td>"The last time — walk me through it."</td></tr>
+  <tr><td>"I would / we'd probably"</td><td>"What did you do the last time it came up?"</td></tr>
+  <tr><td>praise ("great idea!")</td><td>"Thanks. When did you last look for a fix?"</td></tr>
+  <tr><td>a feature request</td><td>"What would you do with that right after?"</td></tr>
+  <tr><td>"nightmare / I hate this"</td><td>"Tell me about the last time that happened."</td></tr>
+  <tr><td>a file, sheet or chat group</td><td>"Could you show me?"</td></tr>
+  <tr><td>"it gets sorted / they handle it"</td><td>"Who, exactly — and how?"</td></tr>
+  <tr><td>"officially we…"</td><td>"On the last one — what actually happened?"</td></tr>
+  <tr><td>"ask [name] / I do it in the evenings"</td><td>"What happens if [name] is away a week?"</td></tr>
+  <tr><td>"so what are you building?"</td><td>The deflection line on your card.</td></tr>
+</table>
+
+<h3>When you may talk about a solution</h3>
+<p>Only when both are true: you have a real episode, the workflow, and a workaround or cost from this person, <strong>and</strong> they agree to switch. Use the card's permission line, for example: <em>"Based on what you described, I'm working on something that might help with that delay. Want to spend five minutes on it, or should we wrap up here?"</em> If they demand to see something, that counts as agreement. Everything said after the switch is tracked separately and never counts as problem evidence.</p>
+
+<h2><span class="num">6</span>Live copilot (video calls only)</h2>
+<p>Keep <code>/product:field live</code> open in a second window. Paste short fragments of what the owner says. Claude answers in three lines or fewer:</p>
+<pre>▸ generalizer → ABSTRACT_TO_SPECIFIC
+Ask: "The last quote you sent — when did the request come in?"
+Coverage: C2 ✓ C3 ◐ C5 ○ C6 ○ · 8/20 min</pre>
+<table>
+  <tr><th style="width:26%">Command</th><th>Effect</th></tr>
+  <tr><td><code>time 12/20</code></td><td>Minutes elapsed / total; prompts the "anything I haven't asked?" question at 60–70%.</td></tr>
+  <tr><td><code>pitch</code></td><td>Checks whether you have enough problem evidence to ask permission to switch. If not, says what is missing.</td></tr>
+  <tr><td><code>demand</code></td><td>The owner asked to see something; marks the switch.</td></tr>
+  <tr><td><code>stuck</code></td><td>Suggests the best next topic.</td></tr>
+  <tr><td><code>end</code></td><td>Closes the log. The log feeds the debrief.</td></tr>
+</table>
+<p>In person, skip it. Typing while someone talks costs you their attention, and attention is what gets you the real story.</p>
+
+<h2 class="page-break"><span class="num">7</span>Debrief: same day (about 15 minutes)</h2>
+<ol>
+  <li><strong>Get the transcript</strong> out of your recorder or meeting tool.</li>
+  <li><strong>Drop it into the intake folder</strong>, one file per conversation, photos next to it:<br>
+  <code>docs/intake/interviews/&lt;engagement&gt;/2026-10-01-mueller.txt</code></li>
+  <li><strong>Run <code>/product:field debrief</code>.</strong> Claude first asks up to three questions: did you hint at a solution and when, did they give or promise anything, what surprised you. Add <code>pro</code> for two more: what you saw that isn't in the notes, and where you felt yourself leading.</li>
+</ol>
+<p>You get a session file in <code>docs/research/field/&lt;engagement&gt;/sessions/</code> containing:</p>
+<ul>
+  <li><strong>Evidence ledger</strong>: verbatim quotes with location and strength level. Claude re-checks every quote against the transcript.</li>
+  <li><strong>The actual workflow</strong> as a step table (trigger, who, tool, handoff, wait), every row backed by a quote or marked as inferred.</li>
+  <li><strong>Exceptions, artifacts and workarounds</strong>: what breaks, what they built to cope, what it costs to maintain.</li>
+  <li><strong>Commercial severity</strong>: frequency × cost × risk, only from numbers they gave; otherwise "unknown".</li>
+  <li><strong>Stakeholders</strong>: user, champion, approver, payer, blocker.</li>
+  <li><strong>Unknowns</strong> and a <strong>resume card</strong> with three probes for a 5-minute follow-up.</li>
+  <li><strong>Interviewer check</strong>: your leading or hypothetical questions, if they're in the transcript.</li>
+  <li><strong>One directive</strong> with a count and a date.</li>
+</ul>
+<div class="box"><p>Do it the same day. After a week you will remember "it went well" and not much else, and that counts as zero evidence.</p></div>
+
+<h2><span class="num">8</span>Synthesize: every 3–5 conversations</h2>
+<p>Run <code>/product:field synthesize</code>. Claude compares all debriefed sessions, gives its own verdict first (including the strongest case against it), and then asks for your view.</p>
+<ul>
+  <li>One participant can only produce a <strong>signal</strong>.</li>
+  <li>A <strong>pattern</strong> needs at least 2 people.</li>
+  <li><strong>Market-validated</strong> needs 3 separate businesses. A client engagement can reach <strong>client-validated</strong> at most, which is enough for a pilot with that client, not for a product.</li>
+</ul>
+<p>Every synthesis ends with exactly one directive:</p>
+<table>
+  <tr><th style="width:30%">Directive</th><th style="width:30%">Meaning</th><th>What you do next</th></tr>
+  <tr><td>CONTINUE_INTERVIEWING</td><td>Not enough evidence yet</td><td>Run <code>prep</code> again (the card refocuses on gaps), keep talking</td></tr>
+  <tr><td>DECOMPOSE_OPPORTUNITY</td><td>Something is there, but too broad</td><td><code>prep</code> with a narrower segment or problem</td></tr>
+  <tr><td>TEST_ASSUMPTION</td><td>Problem confirmed; solution options exist</td><td>A small paid test or pilot: <code>/product:experiment</code></td></tr>
+  <tr><td>HALT_FOR_TECHNICAL_SPIKE</td><td>The biggest risk is whether it can be built</td><td>Stop interviewing; hand the technical check to Vladimir</td></tr>
+  <tr><td>PIVOT</td><td>The pain isn't there, or it's cheap</td><td>New segment or objective, or close the engagement</td></tr>
+</table>
+<p>TEST_ASSUMPTION only comes from <code>/product:field synthesize pro</code>, which also builds the opportunity tree and at least three solution options.</p>
+
+<h2 class="page-break"><span class="num">9</span>Reading the evidence</h2>
+<p>Every quote in a debrief gets one level. Only L3 and above count as evidence of a problem.</p>
+<table>
+  <tr><th style="width:8%">Level</th><th style="width:22%">Kind</th><th>Example</th><th style="width:22%">Counts for</th></tr>
+  <tr><td>L0</td><td>Opinion, praise</td><td>"Great idea", "sounds useful"</td><td>Nothing</td></tr>
+  <tr><td>L1</td><td>Hypothetical, wish</td><td>"I would pay €100", "you should add X"</td><td>Hypotheses only</td></tr>
+  <tr><td>L2</td><td>General claim</td><td>"We usually…", official policy</td><td>Ranking; must be tied to a real episode</td></tr>
+  <tr><td>L3</td><td>Specific episode</td><td>A recent event with named people and steps</td><td>Desirability</td></tr>
+  <tr><td>L4</td><td>Revealed behavior</td><td>A sheet you saw, an active workaround, current spend</td><td>Desirability, feasibility, viability</td></tr>
+  <tr><td>L5</td><td>Commitment</td><td>Deposit, paid pilot, real files handed over, decision-maker time</td><td>Viability, traction</td></tr>
+</table>
+<p class="small">A transcript lets quotes reach any level. Notes or a paraphrase cap at L3, or L4 for artifacts you confirm you saw.</p>
+
+<h2><span class="num">10</span>Cheat sheet and folder layout</h2>
+<table>
+  <tr><th style="width:36%">When</th><th style="width:32%">Command</th><th>Output</th></tr>
+  <tr><td>New business or segment, or when a directive says so</td><td><code>/product:field prep</code></td><td><code>engagement.md</code>, <code>card.md</code></td></tr>
+  <tr><td>Practice before the first real one</td><td><code>/product:field rehearse</code></td><td>Score report in chat</td></tr>
+  <tr><td>Video call, optional</td><td><code>/product:field live</code></td><td>Live log</td></tr>
+  <tr><td>Same day as each conversation</td><td><code>/product:field debrief</code></td><td>Session file</td></tr>
+  <tr><td>Every 3–5 conversations</td><td><code>/product:field synthesize</code></td><td>Synthesis and directive</td></tr>
+</table>
+<pre>~/field-work/
+  docs/intake/interviews/&lt;engagement&gt;/     ← you put transcripts and photos here (never edited by Claude)
+  docs/research/field/&lt;engagement&gt;/
+      engagement.md                        ← running record (Claude updates it)
+      card.md                              ← print this; regenerated by each prep
+      live/                                ← live copilot logs
+      sessions/                            ← one debrief per conversation
+      YYYY-MM-DD-synthesis.md              ← cross-session findings</pre>
+<p>Commit the folder to git after each debrief, so nothing gets lost and Vladimir can review it.</p>
+
+<h2><span class="num">11</span>Troubleshooting</h2>
+<table>
+  <tr><th style="width:36%">Problem</th><th>Fix</th></tr>
+  <tr><td><code>/product:field</code> is not found</td><td>Type <code>/plugin</code> inside Claude Code and check that <code>product</code> is installed and enabled. If not, repeat the install step, then start a new session.</td></tr>
+  <tr><td>The clone fails with "not found"</td><td>The repository is private; ask Vladimir to add you as a collaborator.</td></tr>
+  <tr><td>Debrief says "Cannot run yet"</td><td>Run <code>prep</code> first, and make sure the transcript sits in <code>docs/intake/interviews/&lt;engagement&gt;/</code>.</td></tr>
+  <tr><td>Several engagements; Claude picks the wrong one</td><td>Claude asks which engagement when there are several; name it in your command, e.g. <code>/product:field debrief mueller-elektro</code>.</td></tr>
+  <tr><td>No recording allowed</td><td>Write notes within the hour and debrief from those. Mark photos of artifacts clearly.</td></tr>
+  <tr><td>Owner gave only 10 minutes</td><td>Cover one recent episode well. Use the resume card's three probes for a second short session.</td></tr>
+</table>
+
+<h2><span class="num">12</span>Why this setup (and what comes later)</h2>
+<p>We considered building a dedicated interview app with live transcription, either inside SpecSmith or on OpenAI's API. We decided against it for now:</p>
+<ul>
+  <li>The value is in the discovery rules, evidence grading and quote checking, which already run in <code>/product:field</code>. A new app would rebuild them in a weaker place.</li>
+  <li>The missing piece is only getting a transcript into the intake folder. Existing recorders already solve that.</li>
+  <li>Most of the value is before the conversation (the card) and after it (the debrief), not in real-time prompts during it.</li>
+  <li>The real bottleneck is the number of conversations, not tooling.</li>
+</ul>
+<p>Next steps, only if the current setup still hurts after about 5 real interviews:</p>
+<ol>
+  <li><strong>Step 1, a glue script</strong> (about a day of work): one command records audio, transcribes it, saves it to the intake folder and runs the debrief headlessly with <code>claude -p</code>.</li>
+  <li><strong>Step 2, a live side panel</strong>, only if live prompts prove valuable: a small local page that streams transcription and feeds the <code>live</code> mode, glanceable on a phone or tablet. Still a thin client over the same plugin.</li>
+</ol>
+
+</body>
+</html>
