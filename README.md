@@ -329,6 +329,7 @@ Ingredients, not religion.
 - **Not a design system.** It writes specs; design skills implement them.
 - **Not a catalog.** Every skill has a stage and a route; you shouldn't have to browse.
 - **Not a pipeline you must finish.** A Kill verdict is the system working.
+- **Not the build line.** Once a brief is ready, [`software-factory`](https://github.com/vladamon/software-factory) takes it from intake to release. How the two fit with the rest of the system: its [`docs/system.md`](https://github.com/vladamon/software-factory/blob/main/docs/system.md).
 
 ---
 
