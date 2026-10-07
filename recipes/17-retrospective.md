@@ -98,6 +98,10 @@ related:
 [If kill: what to remove and when]
 ```
 
+## Exit condition
+
+One of the five decisions is recorded with the evidence that supports it, and unless the decision is "kill", the next slice is specific enough to hand to `product:shape` today.
+
 ## AI review prompt
 
 1. Is the decision supported by the evidence, or is it wishful thinking?

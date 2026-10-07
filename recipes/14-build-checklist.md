@@ -17,6 +17,7 @@ Use this after shaping a feature and writing screen specs, before writing code. 
 
 ### Product readiness
 - [ ] Shaped pitch exists with explicit done criteria and no-gos
+- [ ] Every done criterion carries a stable id (`DC1…`), names where it came from (`derived_from`), and has a yes/no check
 - [ ] Every screen in scope has a screen spec
 - [ ] Every screen spec has loading, empty, and error states defined
 - [ ] Domain-specific states (degraded, failed, out-of-sync, etc.) are specced
@@ -54,7 +55,7 @@ Run all sections including architecture and instrumentation.
 
 ## Exit condition
 
-All product readiness items are checked. The feature can be handed to an implementation agent or started immediately without requiring clarification on scope, states, or terminology.
+All product readiness items are checked. The feature can be handed to an implementation agent or started immediately without requiring clarification on scope, states, or terminology. The brief's ids (`DC<n>`, `[screen]/[state]`, `A<n>`) are what the plan, the reviewer and any downstream intake cite; `contract_version: 0` in the frontmatter says this shape applies.
 
 ## AI review prompt
 
@@ -68,3 +69,4 @@ All product readiness items are checked. The feature can be handed to an impleme
 - [ ] All product readiness items checked
 - [ ] At least one instrumentation event per user journey covered
 - [ ] Done criteria from the pitch are reflected in acceptance criteria in screen specs
+- [ ] No done criterion lacks an id, a `derived_from` line, or a check (else `readiness: blocked`)

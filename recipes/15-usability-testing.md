@@ -54,6 +54,14 @@ Fix blockers before shipping. Fix friction if time allows. Log confusion and sug
 
 If you can only do one thing: give one person a task and watch them try to do it without explaining anything. Even one session reveals problems you can't see yourself.
 
+## Output structure
+
+No artifact of its own. Blockers and friction go into the retro's **Problems Found** section (`recipes/17-retrospective.md`) when the feature is reviewed, or straight into the next pitch's no-gos and next slice when a fix is shaped.
+
+## Exit condition
+
+At least one person has been observed attempting a goal-framed task without help, and every blocker found is fixed or parked with an owner and a date.
+
 ## Checklist
 
 - [ ] At least 2 task scenarios prepared (goal-framing, not instruction-framing)

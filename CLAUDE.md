@@ -41,7 +41,7 @@ Gated skills run a Step 0 prerequisite check and refuse with a specific "run X f
 ```
 .claude-plugin/  ← plugin.json + marketplace.json (plugin "product", marketplace "product-dev-os-local")
 hooks/           ← hooks.json — PostToolUse on Skill → scripts/log-skill-usage.sh
-scripts/         ← usage logger (log path from PRODUCT_OS_USAGE_LOG)
+scripts/         ← usage logger (log path from PRODUCT_OS_USAGE_LOG); check-conformance.sh — run before committing a skill, recipe or conventions change
 skills/          ← one directory per skill: skills/<name>/SKILL.md (frontmatter name = short name)
 recipes/         ← knowledge base — authoritative process docs read by skills (00–30, 03b; 30 = discovery doctrine rulebook)
 templates/       ← living-document templates filled in by skills

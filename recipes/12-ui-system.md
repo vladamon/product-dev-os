@@ -66,6 +66,10 @@ Build components in this order (stop when you have enough):
 
 `docs/design/ui-system.md` — document your decisions as you build them. Do not plan the full system upfront.
 
+## Exit condition
+
+Every state in the product model has a status token and a `StatusBadge` variant, `EmptyState` exists, and new screens are assembled from the layout primitives rather than ad-hoc layout. The system is documented as it grows, not planned upfront.
+
 ## Checklist
 
 - [ ] Status colors defined for all pipeline/entity states

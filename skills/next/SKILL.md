@@ -14,6 +14,13 @@ Orientation. Two modes, both read-only:
 
 Do not ask questions. Do not produce artifacts.
 
+## Contract
+Requires: nothing (entry point — reads whatever exists under `docs/`)
+Produces: nothing — both modes are read-only
+Updates: nothing
+
+No recipe: the navigator's authority is `docs/conventions.md` §1 (stages) and `docs/playbooks.md` (situations). Improve those, not this file, when routing is wrong.
+
 ## Step 1: Read all product artifacts
 
 Use the artifact map in `docs/conventions.md` §6. In the current project, look for:

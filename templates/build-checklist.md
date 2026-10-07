@@ -5,6 +5,7 @@ feature: FEATURE_NAME
 tier: TIER
 status: draft
 readiness: blocked
+contract_version: 0
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 skill: product:build
@@ -18,6 +19,10 @@ related:
 ## Readiness
 
 **Readiness:** [ready | blocked] — `ready` only when the list below is empty. `product:plan` reads the frontmatter field.
+
+`ready` also means the Execution Brief is a contract (`contract_version: 0`): every done criterion
+has a stable id and a `derived_from` line, every screen row names its required states, and every
+no-go is verbatim. A brief missing any of these is `blocked`, with the gap listed below.
 
 ### Blockers
 
@@ -36,14 +41,22 @@ the pitch, glossary, screen specs, and architecture — do not re-derive scope f
 **Out of scope (no-gos — reject any work here):**
 - [no-go, verbatim from pitch]
 
-**Done criteria (each must pass a yes/no test):**
-- [ ] [criterion, verbatim from pitch]
+**Done criteria (each must pass a yes/no test; ids are the pitch's and never renumber):**
+- [ ] **DC1** — [criterion, verbatim from pitch]
+  derived_from: pitch `docs/specs/YYYY-MM-DD-FEATURE-pitch.md` › Done Means › DC1
+  check: [the yes/no test — a command, an observable behaviour, or a screen state id]
 
 **Screens to build** (full specs in `docs/screens/`):
 
 | Screen | Spec file | States required |
 |--------|-----------|-----------------|
-| | | loading, empty, error, [domain-specific] |
+| [screen] | `docs/screens/[screen].md` | loading, empty, error, [domain-specific] |
+
+A screen state is cited downstream as `[screen]/[state]` (e.g. `pipeline-list/empty`). Plan tasks
+and reviewers use these ids; a state not listed here is not part of the contract.
+
+**Assumptions this feature bets on** (ids from `docs/product/assumptions.md`, if it exists):
+- A[n] — [assumption, verbatim] · evidence: [verdict or "untested"]
 
 **Terminology (use these exact terms in all user-facing copy):**
 

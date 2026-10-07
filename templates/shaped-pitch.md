@@ -60,10 +60,12 @@ skill: product:shape
 
 ## Done Means
 
-[Specific, testable criteria. Not "it works" — what specifically must be true.]
+[Specific, testable criteria. Not "it works" — what specifically must be true. Each carries a
+stable id, `DC1`, `DC2`, … in this order. The build brief, the plan and the reviewer cite these ids;
+a criterion that is cut keeps its id and is struck through, never renumbered.]
 
-- [ ] [Done criterion 1]
-- [ ] [Done criterion 2]
+- [ ] **DC1** — [Done criterion 1]
+- [ ] **DC2** — [Done criterion 2]
 
 ---
 *Updated YYYY-MM-DD via product:shape*

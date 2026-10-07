@@ -190,7 +190,7 @@ Where a skill has more than one mode, every mode is shown. "Pro adds" marks what
 
 ### 8 · Build
 
-**`product:build`** — Readiness checklist and a self-contained execution brief; records `readiness: ready|blocked` (missing screen states and scope that contradicts `architecture.md` are blockers). Pro adds an architecture skeleton and an instrumentation plan. → `docs/specs/…-build.md`
+**`product:build`** — Readiness checklist and a self-contained execution brief; records `readiness: ready|blocked` (missing screen states and scope that contradicts `architecture.md` are blockers). Pro adds an architecture skeleton and an instrumentation plan. → `docs/specs/…-build.md` The brief is a contract (`contract_version: 0`): done criteria keep the pitch's `DC` ids with a `derived_from` line and a check each, screen states are `screen/state`, and nothing is ever renumbered, so a plan, a reviewer or another team's intake can check it item by item.
 
 **`product:plan`** — Walking skeleton first, riskiest work early, tasks ≤2 sessions with verifiable acceptance checks, coverage of every done criterion and screen state, cuts proposed when the estimate passes 80% of the appetite, parking lot. Pro adds milestones and per-task agent handoff blocks. `product:plan progress [slug]` ticks tasks against their checks and flags appetite burn. → `docs/specs/…-plan.md`
 
@@ -391,6 +391,10 @@ The plugin's hook logs every `product:*` run so you can see which skills pull we
 ```
 
 Without it, rows go to `~/.claude/product-os/usage-log.md`.
+
+### Changing a skill or recipe
+
+`scripts/check-conformance.sh` checks what `docs/conventions.md` §2 requires by hand today: every skill has a stage, an artifact-map row, a playbook entry, a `CLAUDE.md` row and a README entry; every recipe's frontmatter names a real phase and a real skill and has the sections the anatomy lists. It needs only bash. Run it before committing; a failure names the file and the missing piece.
 
 ### Without installing
 

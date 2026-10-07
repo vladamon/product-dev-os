@@ -62,7 +62,7 @@ The `description` is what makes the skill trigger. Include the natural-language 
 
 Modes (e.g. `product:experiment record <slug>`, `product:interview synthesize`, `product:measure product`) get their own `## Mode: <name>` section after Step 7, or explicit per-mode branches inside the steps.
 
-Adding a skill also requires: a stage in §1, a row in §6, a playbook entry in `docs/playbooks.md`, a row in the `CLAUDE.md` skill table, and a README entry.
+Adding a skill also requires: a stage in §1, a row in §6, a playbook entry in `docs/playbooks.md`, a row in the `CLAUDE.md` skill table, and a README entry. `scripts/check-conformance.sh` fails when any of these is missing, or when a recipe's frontmatter names a phase or skill that does not exist. Run it before committing.
 
 ### Recipe anatomy
 
@@ -233,7 +233,7 @@ Escape `|` inside cells as `\|`.
 |---|---|
 | critique | `mode`, `verdict` (pursue/sharpen/park/kill), `kill_criterion`, `kill_date`, `research` |
 | experiment | `assumption_id`, `status`, `verdict`, `conclude_by`, `ran`, `concluded` |
-| build | `readiness` (ready/blocked) |
+| build | `readiness` (ready/blocked), `contract_version` (0; the shape of the Execution Brief downstream readers may rely on) |
 | launch | `launch_type`, `status` (planned/launched/complete), `verdict` (pending/hit/partial/miss), `launch_date` |
 | pmf | `verdict`, `decision`, `next_review` |
 | research-synthesis | `sources`, `source_phase` (pre-launch/post-launch) |
@@ -242,6 +242,8 @@ Escape `|` inside cells as `\|`.
 | field-synthesis | `scope`, `decision` (CONTINUE_INTERVIEWING/DECOMPOSE_OPPORTUNITY/TEST_ASSUMPTION/HALT_FOR_TECHNICAL_SPIKE/PIVOT), `target_opportunity` |
 | checkin | `commitments_total`, `commitments_done`, `missed_week`, `missed_streak`, `energy`, `user_contacts`, `mvp_exists` |
 | telemetry | `scope` (feature/product) |
+
+**Stable ids.** Things that other artifacts, tasks or reviewers cite by name carry an id that never changes once assigned: `A<n>` assumptions (`assumptions.md`), `DC<n>` done criteria (assigned in the pitch, carried verbatim by build and plan), `[screen]/[state]` screen states (listed in the build brief's screens table), `T<n>` plan tasks. Add, strike through, never renumber. The build brief states `derived_from` for each criterion so a reader can trace it to the pitch, and a reviewer downstream (in this OS or in a team's factory) checks acceptance by `DC` id rather than by re-reading prose.
 
 **"MVP exists"** (used by checkin and next): any `*-launch.md` exists, OR the newest plan has every task ticked, OR the founder says so.
 

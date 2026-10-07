@@ -130,7 +130,9 @@ Found:
   Architecture: [found — shape + key capabilities / not found]
 
 Done criteria from pitch:
-  [list done criteria]
+  DC1 — [criterion]
+  DC2 — [criterion]
+  [ids come from the pitch; a pitch without ids gets them now, in order]
 
 Will check: [list checklist sections to run]
 
@@ -207,6 +209,22 @@ the feature's copy must use; list the architecture decisions the feature must re
 feature from this file plus the referenced screen specs alone — without opening the
 pitch, product model, glossary, or architecture file.
 
+The brief is also a contract (`contract_version: 0` in frontmatter), so anything
+downstream — `product:plan`, a reviewer, another team's intake — can cite its parts
+by id and check them one by one:
+
+- **Done criteria** keep the pitch's `DC<n>` ids. If the pitch predates ids, assign
+  `DC1…DCn` in pitch order and say so in the summary. On a re-run for the same slug,
+  reuse the previous build file's ids; a criterion that was cut stays listed, struck
+  through, with its id. Never renumber.
+- Each criterion gets a `derived_from:` line (pitch file › section › id) and a
+  `check:` line naming the yes/no test. A criterion with no statable check is a blocker.
+- **Screen states** are cited as `[screen]/[state]`; the states column of the screens
+  table is the full list.
+- **Assumptions** the feature bets on are listed by their `A<n>` id from
+  `docs/product/assumptions.md`, with the current verdict, so a later retro can say
+  which bet the feature tested.
+
 ## Step 9: Summarize
 
 ```
@@ -235,6 +253,8 @@ Point-in-time artifact — never overwritten. If `docs/specs/` already contains 
 ## Rules
 
 - Do not mark a feature as "ready to build" if any screen spec is missing required states.
+- Do not mark `readiness: ready` while any done criterion lacks an id, a `derived_from` line, or a yes/no `check`, or while any screen row lacks its states. List the gap as a blocker instead.
+- Ids (`DC<n>`, `A<n>`, `[screen]/[state]`) are stable across re-runs. Add, strike through, never renumber.
 - Architecture proposals are suggestions — the implementer adapts them to the actual codebase.
 - Instrumentation events should cover: start, key steps, completion, abandonment, and errors.
 - Scope that contradicts `architecture.md` is a blocker until the pitch or the architecture changes.

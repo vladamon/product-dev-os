@@ -78,3 +78,13 @@ Evidence section in `docs/specs/YYYY-MM-DD-[feature]-retro.md`:
 ### Baseline comparison
 [How does this compare to before the feature shipped?]
 ```
+
+## Exit condition
+
+Each metric in the telemetry doc has a baseline or an explicit "none yet", and the retro's Evidence section carries at least one quantitative and one qualitative point. A number without a comparison is not evidence.
+
+## Checklist
+
+- [ ] Activation, completion and drop-off are measured or explicitly marked unmeasurable
+- [ ] At least one qualitative finding from a conversation or ticket
+- [ ] Baseline comparison stated, or "no baseline" written down

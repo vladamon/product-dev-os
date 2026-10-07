@@ -133,7 +133,7 @@ Read `recipes/25-build-plan.md`. Follow lite or pro question set.
 - **T1 is the walking skeleton** — a thin vertical slice running end-to-end through UI → logic → data, ugly is fine.
 - **Riskiest work lands in the first third** of the task list.
 - **Each task ≤ 2 sessions**, with: goal · likely files · acceptance check (a command, test, or observable behavior — never "works") · advances (done criterion IDs / screen states) · depends on.
-- **Coverage matrix:** number done criteria `DC1…DCn` verbatim from the brief; list screen states as `[screen]/[state]`. Every row maps to ≥ 1 task.
+- **Coverage matrix:** use the brief's `DC<n>` ids and wording verbatim (never renumber; a brief without ids predates `contract_version: 0` — re-run `product:build`, or assign `DC1…DCn` in brief order and say so in Cuts & Risks); list screen states as `[screen]/[state]` exactly as the brief's screens table names them. Every row maps to ≥ 1 task.
 - **Appetite check:** planned sessions must fit within 80% of the session budget. If over, show a cuts block — never extend the appetite:
 ```
 ⚠ Estimate [N] sessions > budget [M] (80% of [appetite]).

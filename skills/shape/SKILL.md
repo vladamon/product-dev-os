@@ -144,6 +144,11 @@ Full filename example: `docs/specs/2026-05-09-connection-library-pitch.md`
 For lite: fill in Problem, Appetite, Solution Outline, What's Included, What's Excluded, Done Means.
 For pro: fill in all sections including Risks and Rabbit Holes.
 
+Number the Done Means `DC1…DCn` in the order agreed. These ids are the contract downstream:
+`product:build` carries them verbatim into the brief, `product:plan` maps tasks to them, and a
+reviewer checks acceptance by them. When re-shaping a feature, keep the earlier pitch's ids and
+strike through a criterion that is cut; never renumber.
+
 ## Step 7: Summarize
 
 ```

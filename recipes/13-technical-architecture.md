@@ -78,6 +78,10 @@ Architecture section in `docs/specs/YYYY-MM-DD-[feature]-build.md`:
 [Description of how data flows from API to UI state to components]
 ```
 
+## Exit condition
+
+The build file's Architecture section names the new and modified files, the new components and the data flow, and the structure follows the codebase's existing pattern (or `docs/product/architecture.md` where it exists). An implementer can start without asking where things go.
+
 ## Checklist
 
 - [ ] Domain objects from the product model have corresponding code structures
