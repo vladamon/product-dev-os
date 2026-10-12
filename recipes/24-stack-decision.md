@@ -37,13 +37,14 @@ For the structure of a single feature inside an existing codebase, use `recipes/
 
 | Capability | Default | Build only if |
 |---|---|---|
-| Auth & sessions | managed auth provider or framework-native auth library | regulated identity flows the vendor can't support |
+| Auth & sessions | framework-native auth library on the app's own database; a managed auth provider only when it isn't the database vendor's (database-vendor auth makes a host move a migration) | regulated identity flows the vendor can't support |
 | Billing & subscriptions | payment provider's hosted checkout + customer portal | usage model the provider can't express |
 | Sales tax / VAT | merchant of record, or provider tax add-on | never at MVP |
 | Transactional email | managed email API | never |
 | File storage | object storage bucket | never |
 | Background jobs | framework job library on the same database, or managed queue | throughput a DB-backed queue can't handle |
 | Search | database full-text search | relevance is the core product |
+| Vector search | pgvector in the app's own database | one app passes ~10M vectors or needs heavy filtered search |
 | Product analytics | managed analytics | never |
 | Error monitoring & logs | managed error tracking + host logs | never |
 | Admin / back-office | framework admin generator or direct DB console | customer-facing admin is the product |
@@ -55,7 +56,7 @@ For the structure of a single feature inside an existing codebase, use `recipes/
 2. **What is the monthly spend ceiling before revenue?**
 3. **Realistically, how many active users in 12 months?**
 4. **Here are the capability defaults — which do you intend to build yourself, and what product requirement forces each?**
-5. **Where will it run, and how does a change reach production?** (Match a row of the deployment rubric.)
+5. **Where will it run, and how does a change reach production?** (Match a row of the deployment rubric, and a hosting tier with its promotion trigger.)
 
 Produce: Constraints + Capabilities + Architecture Shape + Hosting & Deploy + Not Now.
 

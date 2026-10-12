@@ -415,6 +415,21 @@ its `observability-saas` profile, enforced by a `tenant-scope` CI gate:
 | Simple project, single node or managed container host | Keep arche-ui docs 01/12's *image* half (one container, `startup.sh` runtime env); borrow orchestration from the host's proven recipe — Kamal or Docker Compose on a VPS, Fly.io, Coolify, Railway. No arche-ui doc covers this yet, by design: it gets written by extraction after the first such project ships |
 | Frontend-only / serverless (e.g. next-forge on Vercel) | Vercel's own recipes; arche-ui docs 01 and 12 don't apply |
 
+**Hosting tier** (the third axis, for any stack). A solo builder with several projects picks the tier
+by what the project *is now*, records it in `architecture.md` → Hosting & Deploy, and writes the
+promotion trigger next to it:
+
+| Tier | When | Ground | Promote when |
+|---|---|---|---|
+| Spin-up | Idea, prototype, demo | Serverless host free tier + managed Postgres free tier (Vercel + Neon/Supabase) | Users would notice it gone; or a free-tier wall hits (pausing, function duration cap, no backups); or it charges money (Vercel Hobby forbids commercial use) |
+| Stable | Live, not yet earning | One shared VPS with a self-hosted PaaS (e.g. Coolify), one Postgres cluster with pgvector, one database + owning role per app, WAL-archived backups off the box | Paying users, an isolation or residency requirement, or a noticeable share of the box |
+| Earning | Paying users | Its own server on the same PaaS (or managed services where revenue covers them), own Postgres with point-in-time recovery | — |
+
+Two choices keep promotion cheap, so make them at spin-up: **auth on the app's own database**
+(framework-native library, not the database vendor's auth — vendor auth is what turns a connection-string
+swap into a migration), and the **portable app contract**: a Dockerfile, a `/health` endpoint, config
+only through env vars, migrations as a deploy step, scheduled work as secret-guarded HTTP endpoints.
+
 **Known seam:** in an arche-ui-seeded repo, ignore the folder pattern in
 `recipes/13-technical-architecture.md` — the architecture skeleton in
 `product:build` must follow arche-ui docs 09/15 (`components/ui → common →
